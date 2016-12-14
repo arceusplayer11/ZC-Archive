@@ -69,3 +69,11 @@ bld/
 *.gcda
 makefile.inc
 
+/allegro
+/.d/
+/allegro.bak/
+/allegro/winalleg.h
+/makefile.bak
+*#*#
+.#*
+/zelda-l

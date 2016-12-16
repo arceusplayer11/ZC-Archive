@@ -1,129 +1,146 @@
+default: all
+
+# Build Options
 -include makefile.inc
 
-# Libraries needed for statically linking allegro 4. Result of calling "allegro-config --static"
+CXX_FLAGS := -std=c++03 -fPIC -m32 -g -fpermissive -D USE_ENCRYPTION
+LINKING_FLAGS := -m32 -g
+
+################################################################
+# File Lists
+
+SOURCE_FILES := $(wildcard src/*.cpp) $(wildcard src/*/*.cpp)
+
+EXECUTABLE_FILES := zelda zquest romview
+EXECUTABLE_FILES := $(addprefix bin/,$(EXECUTABLE_FILES))
+
+ZELDA_DEPENDENCIES := aglogo colors debug decorations defdata editbox EditboxModel EditboxView ending ffscript gamedata gui guys init items jwin jwinfsel link load_gif maps matrix md5 midi pal particles qst save_gif script_drawing single_instance sprite subscr tab_ctl tiles title weapons win32 zc_custom zc_init zc_items zc_sprite zc_subscr zc_sys zelda zscriptversion zsys zc_icon
+ZELDA_DEPENDENCIES := $(addprefix obj/,$(ZELDA_DEPENDENCIES))
+ZELDA_DEPENDENCIES := $(addsuffix .o,$(ZELDA_DEPENDENCIES))
+
+ZQUEST_DEPENDENCIES := zquest colors defdata editbox EditboxModel EditboxView gamedata gui init items jwin jwinfsel load_gif md5 midi particles qst questReport save_gif sprite subscr tab_ctl tiles win32 zc_custom zq_class zq_cset zq_custom zq_doors zq_files zq_items zq_init zq_misc zq_rules zq_sprite zq_strings zq_subscr zq_tiles zqscale zsys ffasm parser/AST parser/BuildVisitors parser/ByteCode parser/DataStructs parser/GlobalSymbols parser/lex.yy parser/ParseError parser/ScriptParser parser/SymbolVisitors parser/TypeChecker parser/UtilVisitors parser/y.tab zq_icon
+ZQUEST_DEPENDENCIES := $(addprefix obj/,$(ZQUEST_DEPENDENCIES))
+ZQUEST_DEPENDENCIES := $(addsuffix .o,$(ZQUEST_DEPENDENCIES))
+
+ROMVIEW_DEPENDENCIES := editbox EditboxModel EditboxView gui jwin jwinfsel load_gif romview save_gif tab_ctl zqscale zsys rv_icon
+ROMVIEW_DEPENDENCIES := $(addprefix obj/,$(ROMVIEW_DEPENDENCIES))
+ROMVIEW_DEPENDENCIES := $(addsuffix .o,$(ROMVIEW_DEPENDENCIES))
+
+################################################################
+# Headers
+
+INCLUDE_DIRS := alogg almp3 allegro dumb gme lpng1212 loadpng lpng1212 jpgalleg-2.5 zlib123
+INCLUDE_DIRS := -I./src -I./include $(addprefix -I./include/,$(INCLUDE_DIRS))
+
+################################################################
+# Libraries
+
+# Statically linking allegro 4. Result of calling "allegro-config --static"
 ALLEGRO_LIBS := -lalleg -lm -lpthread -lrt -lSM -lICE -lX11 -lXext -lXext -lXcursor -lXcursor -lXpm -lXxf86vm -lasound -ljack -lpthread -lXxf86dga -lSM -lICE -lX11 -lXext -ldl
-# Libraries for zcsound.so
+
+# Sound libraries.
 SOUND_LIBS = -lgme -lalogg -lalmp3 -laldmb -ldumb
+
 # Image libraries.
 IMAGE_LIBS = -ljpgal -lldpng -lpng -lz
 
-CFLAGS := -std=c99 -fPIC -m32 -g
-CXXFLAGS := -std=c++03 -fPIC -m32 -g -fpermissive -D USE_ENCRYPTION
-LDFLAGS := -m32 -g
+################################################################
+# Automatic Dependency Generation
 
-# Various directories
-SRCDIR := src
-OBJDIR := obj
-BINDIR := bin
-DEPDIR := .d
+# Don't freak out if a generated dependency file doesn't exist.
+.d/%.d: ;
 
-# Create parent directories.
-$(shell mkdir -p $(DEPDIR) > /dev/null)
-$(shell mkdir -p $(DEPDIR)/item > /dev/null)
-$(shell mkdir -p $(DEPDIR)/parser > /dev/null)
-$(shell mkdir -p $(DEPDIR)/sequence > /dev/null)
-$(shell mkdir -p $(OBJDIR) > /dev/null)
-$(shell mkdir -p $(OBJDIR)/parser > /dev/null)
-$(shell mkdir -p $(OBJDIR)/sequence > /dev/null)
-$(shell mkdir -p $(BINDIR) > /dev/null)
+# Don't treat the dependency files as intermediate files.
+.PRECIOUS: .d/%.d
 
-SOURCES := $(wildcard $(SRCDIR)/*.cpp)
-HEADERS := $(wildcard $(SRCDIR)/*.h)
-OBJECTS := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+# Load all the created dependency files.
+-include $(patsubst %,.d/%.d,$(basename $(SOURCE_FILES)))
 
-INCLUDES := alogg almp3 allegro dumb gme lpng1212 loadpng lpng1212 jpgalleg-2.5 zlib123
-INCLUDES := -I./src -I./include $(addprefix -I./include/,$(INCLUDES))
-
-.PHONY: default veryclean clean all msg gp2x test done zc zq
-
-default: all
-
--include $(patsubst %,$(DEPDIR)/%.d,$(basename $(SOURCES)))
+################################################################
+# OS Specific Rules
 
 ifdef COMPILE_FOR_LINUX
-  PLATEXT = -l
-  ZCSOUND_ALLEG_LIB = -L./include/linux -L/usr/lib32 -lalleg -lm -lpthread -lrt -lSM -lICE -lX11 -lXext -lXext -lXcursor -lXcursor -lXpm -lXxf86vm -lasound -ljack -lpthread -lXxf86dga -lSM -lICE -lX11 -lXext -ldl
-  ZC_ICON = $(OBJDIR)/zc_icon.o
-  ZC_ICON_DEPS = $(SRCDIR)/zc_icon.c
-  ZC_ICON_CMD = $(CXX) $(CXXFLAGS) $(INCLUDES) -c $(SRCDIR)/zc_icon.c -o $(OBJDIR)/zc_icon.o
-  ZQ_ICON = $(OBJDIR)/zq_icon.o
-  ZQ_ICON_DEPS = $(SRCDIR)/zq_icon.c
-  ZQ_ICON_CMD = $(CC) $(OPTS) $(CFLAGS) $(INCLUDES) -m32 -c $(SRCDIR)/zq_icon.c -o $(OBJDIR)/zq_icon.o $(SFLAG)
-  RV_ICON = $(OBJDIR)/rv_icon.o
-  RV_ICON_DEPS = $(SRCDIR)/rv_icon.c
-  RV_ICON_CMD = $(CC) $(OPTS) $(CFLAGS) $(INCLUDES) -m32 -c $(SRCDIR)/rv_icon.c -o $(OBJDIR)/rv_icon.o $(SFLAG)
-  ZC_PLATFORM = Linux
-
-	LDFLAGS := -Wl,--export-dynamic $(LDFLAGS) -L./$(BINDIR) -L./libs/linux -L/usr/lib32 -Wl,-rpath,.
-	LDLIBS := $(ALLEGRO_LIBS) -lzcsound $(STDCXX_LIB)
-
-	ZCSOUND_DLL := $(BINDIR)/libzcsound.so
-
-	SINGLE_INSTANCE_O = single_instance_unix.o
+	ICON_DEPENDENCIES = src/%.c
+	ICON_CREATION = $(CXX) $(OUTPUT_OPTION) -c $(CXX_FLAGS) $(INCLUDE_FLAGS) $^
+	SOUND_LIBRARY := zcsound.so
+	LINKING_FLAGS := $(LINKING_FLAGS) -Llibs/linux -L/usr/lib -Wl,-rpath,.
+	SOUND_FLAGS := -Wl,-soname,zcsound.so
+# Append -l to executable names.
+	EXECUTABLE_SUFFIX := -l
+	ZELDA_DEPENDENCIES := $(subst single_instance,single_instance_unix,$(ZELDA_DEPENDENCIES))
 endif
 
-ZELDA_PREFIX = zelda
-ZQUEST_PREFIX = zquest
-ROMVIEW_PREFIX = romview
+EXECUTABLE_FILES := $(addsuffix $(EXECUTABLE_SUFFIX), $(EXECUTABLE_FILES))
 
-ZELDA_EXE = $(BINDIR)/$(ZELDA_PREFIX)$(PLATEXT)$(EXEEXT)
-ZQUEST_EXE = $(BINDIR)/$(ZQUEST_PREFIX)$(PLATEXT)$(EXEEXT)
-ROMVIEW_EXE = $(BINDIR)/$(ROMVIEW_PREFIX)$(PLATEXT)$(EXEEXT)
+################################################################
+# Object File Compilation
+obj/%.o : src/%.cpp .d/%.d
+# Make sure needed folders are present.
+	@mkdir -p obj/$(*D)
+	@mkdir -p .d/obj/$(*D)
+# Compile the object file. Automatically detect needed dependencies
+# and generate a tempory makefile so we don't need to do it again.
+	$(CXX) $(OUTPUT_OPTION) -c $< $(DEP_FLAGS) $(CXX_FLAGS) $(INCLUDE_DIRS) -MT $@ -MMD -MP -MF .d/obj/$(*D).Td
+# Rename the .Td file to .d,
+	@mv -f .d/obj/$(*D).Td .d/obj/$(*D).d
 
-ZCSOUND_OBJECTS = $(OBJDIR)/zcmusic.o $(OBJDIR)/zcmusicd.o
+################################################################
+# Icons
+obj/zc_icon.o obj/zq_icon.o obj/rv_icon.o : obj/%.o : $(ICON_DEPENDENCIES)
+# Make sure needed folders are present.
+	@mkdir -p obj
+	$(ICON_CREATION)
 
-SEQUENCES := gameOver.o ganonIntro.o getBigTriforce.o getTriforce.o potion.o sequence.o whistle.o
-ZELDA_OBJECTS := aglogo.o colors.o debug.o decorations.o defdata.o editbox.o EditboxModel.o EditboxView.o encryptionEnabled.o ending.o enemyAttack.o ffc.o ffscript.o fontClass.o gamedata.o gui.o guys.o init.o inventory.o items.o jwin.o jwinfsel.o link.o load_gif.o maps.o matrix.o md5.o message.o messageManager.o messageRenderer.o messageStream.o midi.o pal.o particles.o qst.o refInfo.o room.o save_gif.o screenFreezeState.o screenWipe.o script_drawing.o sfxAllegro.o sfxClass.o sfxManager.o $(SINGLE_INSTANCE_O) sound.o sprite.o subscr.o tab_ctl.o tiles.o title.o weapons.o win32.o zc_custom.o zc_init.o zc_items.o zc_sprite.o zc_subscr.o zc_sys.o zelda.o zscriptversion.o zsys.o
-ZELDA_OBJECTS := $(addprefix $(OBJDIR)/,$(ZELDA_OBJECTS)) $(addprefix $(OBJDIR)/sequence/,$(SEQUENCES)) $(ZC_ICON)
+################################################################
+# Sound Library
+bin/$(SOUND_LIBRARY) : obj/zcmusic.o obj/zcmusicd.o
+# Make sure needed folders are present.
+	@mkdir -p bin
+# Compile the library.
+	$(CXX) $(OUTPUT_OPTION) -shared obj/zcmusic.o obj/zcmusicd.o -Wl,-soname,$(SOUND_LIBRARY) $(LINKING_FLAGS) $(SOUND_FLAGS) $(ALLEGRO_LIBS) $(SOUND_LIBS)
 
-ZQUEST_OBJECTS = zquest.o colors.o defdata.o editbox.o EditboxModel.o EditboxView.o gamedata.o gui.o init.o items.o jwin.o jwinfsel.o load_gif.o md5.o midi.o particles.o qst.o questReport.o save_gif.o sprite.o subscr.o tab_ctl.o tiles.o win32.o zc_custom.o zq_class.o zq_cset.o zq_custom.o zq_doors.o zq_files.o zq_items.o zq_init.o zq_misc.o zq_sprite.o zq_strings.o zq_subscr.o zq_tiles.o zqscale.o zsys.o ffasm.o parser/AST.o parser/BuildVisitors.o parser/ByteCode.o parser/DataStructs.o parser/GlobalSymbols.o parser/lex.yy.o parser/ParseError.o parser/ScriptParser.o parser/SymbolVisitors.o parser/TypeChecker.o parser/UtilVisitors.o parser/y.tab.o
-ZQUEST_OBJECTS := $(addprefix $(OBJDIR)/,$(ZQUEST_OBJECTS)) $(ZQ_ICON)
+################################################################
+# Zelda
+bin/zelda$(EXECUTABLE_SUFFIX) : bin/$(SOUND_LIBRARY) $(ZELDA_DEPENDENCIES)
+# Make sure needed folders are present.
+	@mkdir -p bin/
+	@mkdir -p .d/bin/
+# Compile the program.  Automatically detect needed dependencies and
+# generate a tempory makefile so we don't need to do it again.
+	$(CXX) $(OUTPUT_OPTION) bin/$(SOUND_LIBRARY) $(ZELDA_DEPENDENCIES) $(LINKING_FLAGS) $(STDCXX_LIB) $(ALLEGRO_LIBS) $(IMAGE_LIBS)
 
-ROMVIEW_OBJECTS = editbox.o EditboxModel.o EditboxView.o gui.o jwin.o jwinfsel.o load_gif.o romview.o save_gif.o tab_ctl.o zqscale.o zsys.o
-ROMVIEW_OBJECTS := $(addprefix $(OBJDIR)/,$(ROMVIEW_OBJECTS)) $(RV_ICON)
+################################################################
+# ZQuest
+bin/zquest$(EXECUTABLE_SUFFIX) : bin/$(SOUND_LIBRARY) $(ZQUEST_DEPENDENCIES)
+# Make sure needed folders are present.
+	@mkdir -p bin/
+	@mkdir -p .d/bin/
+# Compile the program.  Automatically detect needed dependencies and
+# generate a tempory makefile so we don't need to do it again.
+	$(CXX) $(OUTPUT_OPTION) bin/$(SOUND_LIBRARY) $(ZQUEST_DEPENDENCIES) $(LINKING_FLAGS) $(STDCXX_LIB) $(ALLEGRO_LIBS) $(IMAGE_LIBS)
 
-DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
-COMPILE.cpp = $(CXX) -o $@ $(CXXFLAGS) $(DEPFLAGS) $(INCLUDES) -c
-POSTCOMPILE = mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d
+################################################################
+# Romview
+bin/romview$(EXECUTABLE_SUFFIX) : bin/$(SOUND_LIBRARY) $(ROMVIEW_DEPENDENCIES)
+# Make sure needed folders are present.
+	@mkdir -p bin/
+	@mkdir -p .d/bin/
+# Compile the program.  Automatically detect needed dependencies and
+# generate a tempory makefile so we don't need to do it again.
+	$(CXX) $(OUTPUT_OPTION) $(ROMVIEW_DEPENDENCIES) $(LINKING_FLAGS) $(STDCXX_LIB) $(ALLEGRO_LIBS) $(IMAGE_LIBS)
 
-%.o : %.cpp
-$(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(DEPDIR)/%.d
-	$(COMPILE.cpp) $<
-	$(POSTCOMPILE)
+################################################################
+# Various Other Rules
 
-$(DEPDIR)/%.d: ;
-.PRECIOUS: $(DEPDIR)/%.d
+.PHONY: default all clean veryclean zc zelda zq zquest rv romview sound zcsound
 
-msg:
-	@echo Compiling Zelda Classic for $(ZC_PLATFORM)...
-done:
-	@echo Done!
+all: $(EXECUTABLE_FILES)
+
 clean:
-	rm -rf $(OBJDIR)
+	rm -rf obj
 veryclean: clean
-	rm -rf $(DEPDIR) $(ZELDA_EXE) $(ZQUEST_EXE) $(ROMVIEW_EXE)
-
-all: msg $(ZELDA_EXE) $(ZQUEST_EXE) $(ROMVIEW_EXE) done
-
-sound: $(ZCSOUND_DLL)
-$(ZCSOUND_DLL): $(ZCSOUND_OBJECTS)
-	$(CXX) -shared -o $(ZCSOUND_DLL) $(ZCSOUND_OBJECTS) $(LDFLAGS) $(ALLEGRO_LIBS) $(SOUND_LIBS)
-
-zc: $(ZELDA_EXE)
-$(ZELDA_EXE): $(ZELDA_OBJECTS)
-	$(CXX) -o $(ZELDA_EXE) $(ZELDA_OBJECTS) $(LDFLAGS) $(LDLIBS) $(IMAGE_LIBS) #-Wl,--verbose
-
-$(ZQUEST_EXE): $(ZQUEST_OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $(ZQUEST_EXE) $(ZQUEST_OBJECTS) $(LDFLAGS) $(LIBDIR) $(IMAGE_LIBS) $(ZCSOUND_LIB) $(ALLEG_LIB) $(STDCXX_LIB) $(ZQ_ICON) $(SFLAG) $(WINFLAG)
-
-$(ROMVIEW_EXE): $(ROMVIEW_OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $(ROMVIEW_EXE) $(ROMVIEW_OBJECTS) $(LDFLAGS) $(LIBDIR) $(IMAGE_LIBS) $(ALLEG_LIB) $(STDCXX_LIB) $(RV_ICON) $(SFLAG) $(WINFLAG)
-
-$(ZC_ICON) : $(ZC_ICON_DEPS)
-	$(ZC_ICON_CMD)
-
-$(ZQ_ICON) : $(ZQ_ICON_DEPS)
-	$(ZQ_ICON_CMD)
-
-$(RV_ICON) : $(RV_ICON_DEPS)
-	$(RV_ICON_CMD)
+	rm -rf .d bin
+zc zelda : $(word 1, $(EXECUTABLE_FILES))
+zq zquest : $(word 2, $(EXECUTABLE_FILES))
+rv romview :  $(word 3, $(EXECUTABLE_FILES))
+sound zcsound : bin/$(SOUND_LIBRARY)

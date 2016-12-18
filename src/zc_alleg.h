@@ -16,11 +16,15 @@
 #include <allegro.h>
 #include <allegro/internal/aintern.h>
 
+#ifdef USE_ALLEG_COMPAT
+#include "alleg_compat.h"
+#endif
+
 #ifdef __cplusplus
 INLINE fix abs(fix f)
 {
     fix t;
-    
+
     if(f < 0)
     {
         t.v = -f.v;
@@ -29,7 +33,7 @@ INLINE fix abs(fix f)
     {
         t.v = f.v;
     }
-    
+
     return t;
 }
 #endif
@@ -71,5 +75,3 @@ INLINE void YIELD(void)
 #endif
 
 #endif
-
-

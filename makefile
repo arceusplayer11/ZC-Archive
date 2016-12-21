@@ -14,7 +14,7 @@ ifndef ARCH
   ARCH := i686
 endif
 ifndef ALLEGRO_VERSION
-  ALLEGRO_VERSION := 4.2.2.modded
+  ALLEGRO_VERSION := 4.2.modded
 endif
 ifndef DEBUG_SYMBOLS
   DEBUG_SYMBOLS := ON
@@ -56,20 +56,30 @@ ROMVIEW_DEPENDENCIES := $(addsuffix .o,$(ROMVIEW_DEPENDENCIES))
 ################################################################
 # Headers
 
-INCLUDE_DIRS := alogg almp3 allegro dumb gme lpng1212 loadpng lpng1212 jpgalleg-2.5 zlib123
+INCLUDE_DIRS := alogg almp3 dumb gme lpng1212 loadpng lpng1212 jpgalleg-2.5 zlib123
 INCLUDE_DIRS := -I./src -I./include $(addprefix -I./include/,$(INCLUDE_DIRS))
+
+ifeq ($(ALLEGRO_VERSION),4.2.modded)
+  INCLUDE_DIRS := -Iinclude/allegro-4.2 $(INCLUDE_DIRS)
+else ifeq ($(ALLEGRO_VERSION),4.4)
+  INCLUDE_DIRS := -Iinclude/allegro-4.4 $(INCLUDE_DIRS)
+endif
 
 ################################################################
 # Libraries
 
 # Statically linking allegro 4. Result of calling "allegro-config --static"
-ALLEGRO_LIBS = $(ALLEGRO_LIBRARY_FILE) -lm -lpthread -lrt -lSM -lICE -lX11 -lXext -lXext -lXcursor -lXcursor -lXpm -lXxf86vm -lasound -ljack -lpthread -lXxf86dga -lSM -lICE -lX11 -lXext -ldl
+ALLEGRO_LIBS := -lalleg -lm -lpthread -lrt -lSM -lICE -lX11 -lXext -lXext -lXcursor -lXcursor -lXpm -lXxf86vm -lasound -ljack -lpthread -lXxf86dga -lSM -lICE -lX11 -lXext -ldl
 
 # Sound libraries.
-SOUND_LIBS = -lgme -lalogg -lalmp3 -laldmb -ldumb
+SOUND_LIBS := -lgme -lalmp3 -laldmb -ldumb -lalogg
+
+ifeq ($(ALLEGRO_VERSION),4.4)
+  SOUND_LIBS := $(SOUND_LIBS) -lalleg-alsadigi -lalleg-alsamidi -lalleg-jack -lalleg-dga2
+endif
 
 # Image libraries.
-IMAGE_LIBS = -ljpgal -lldpng -lpng -lz
+IMAGE_LIBS := -lldpng -lpng -lz
 
 ################################################################
 # OS Specific Rules
@@ -78,20 +88,22 @@ ifeq ($(OS),Linux)
   ICON_DEPENDENCIES = src/%.c
   ICON_CREATION = $(CXX) $(OUTPUT_OPTION) -c $(CXX_FLAGS) $(INCLUDE_FLAGS) $^
   SOUND_LIBRARY := zc_sound.so
-  LINKING_FLAGS := $(LINKING_FLAGS) -Llibs/linux -L/usr/lib -Wl,-rpath,.
   SOUND_FLAGS :=
   # Append -l to executable names.
   EXECUTABLE_SUFFIX := -l
   ZELDA_DEPENDENCIES := $(subst single_instance,single_instance_unix,$(ZELDA_DEPENDENCIES))
-  ifeq ($(ALLEGRO_VERSION),4.2.2.modded)
-    ALLEGRO_LIBRARY_FILE := libs/linux/liballeg.a.4.2.2.modded
-  else ifeq ($(ALLEGRO_VERSION),4.2.2)
-    ALLEGRO_LIBRARY := liballeg.so.4.2
-    ALLEGRO_LIBRARY_FILE := libs/linux/liballeg.so.4.2
-  else ifeq ($(ALLEGRO_VERSION),4.4.2)
-    ALLEGRO_LIBRARY := liballeg.so.4.4.2
-    ALLEGRO_LIBRARY_FILE := libs/linux/liballeg.so.4.4.2
+  ifeq ($(ALLEGRO_VERSION),4.2.modded)
+    LINKING_FLAGS := $(LINKING_FLAGS) -Llibs/linux/4.2
+    IMAGE_LIBS := -ljpgal $(IMAGE_LIBS)
+  else ifeq ($(ALLEGRO_VERSION),4.4)
+    LINKING_FLAGS := $(LINKING_FLAGS) -Llibs/linux/4.4
+    IMAGE_LIBS := -ljpgalleg $(IMAGE_LIBS)
+    SHARED_LIBRARIES := $(wildcard libs/linux/4.4/*.so)
+    ifeq ($(DEBUG_SYMBOLS),ON)
+      ALLEGRO_LIBS := $(subst -lalleg,-lalleg-debug,$(ALLEGRO_LIBS))
+    endif
   endif
+  LINKING_FLAGS := $(LINKING_FLAGS) -Llibs/linux -L/usr/lib32 -L/usr/lib -Wl,-rpath,.
 endif
 
 EXECUTABLE_FILES := $(addsuffix $(EXECUTABLE_SUFFIX), $(EXECUTABLE_FILES))
@@ -99,8 +111,9 @@ EXECUTABLE_FILES := $(addsuffix $(EXECUTABLE_SUFFIX), $(EXECUTABLE_FILES))
 ################################################################
 # Allegro Compat
 
-ifneq ($(ALLEGRO_VERSION),4.2.2.modded)
-  CXXFLAGS := $(CXXFLAGS) -D USE_ALLEG_COMPAT
+ifneq ($(ALLEGRO_VERSION),4.2.modded)
+  $(info Using Compat)
+  CXX_FLAGS := $(CXX_FLAGS) -D USE_ALLEG_COMPAT
 	ZELDA_DEPENDENCIES := $(ZELDA_DEPENDENCIES) obj/alleg_compat.o
 	ZQUEST_DEPENDENCIES := $(ZQUEST_DEPENDENCIES) obj/alleg_compat.o
 	ROMVIEW_DEPENDENCIES := $(ROMVIEW_DEPENDENCIES) obj/alleg_compat.o
@@ -135,17 +148,17 @@ lin linux :
 	@mkdir -p config
 	echo ARCH := i686 > config/arch
 
-allegro-4.2.2.modded modded :
+allegro-4.2.modded modded :
 	@mkdir -p config
-	echo ALLEGRO_VERSION := 4.2.2.modded > config/allegro_version
+	echo ALLEGRO_VERSION := 4.2.modded > config/allegro_version
 
 allegro-4.2 4.2 :
 	@mkdir -p config
 	echo ALLEGRO_VERSION := 4.2 > config/allegro_version
 
-allegro-4.4.2 4.4 :
+allegro-4.4 4.4 :
 	@mkdir -p config
-	echo ALLEGRO_VERSION := 4.4.2 > config/allegro_version
+	echo ALLEGRO_VERSION := 4.4 > config/allegro_version
 
 debug-on :
 	@mkdir -p config
@@ -181,14 +194,6 @@ obj/zc_icon.o obj/zq_icon.o obj/rv_icon.o : obj/%.o : $(ICON_DEPENDENCIES)
 	$(ICON_CREATION)
 
 ################################################################
-# Allegro Library
-bin/$(ALLEGRO_LIBRARY) :
-ifdef ALLEGRO_LIBRARY
-	@mkdir -p bin
-	cp $(ALLEGRO_LIBRARY_FILE) bin/$(ALLEGRO_LIBRARY)
-endif
-
-################################################################
 # Sound Library
 bin/$(SOUND_LIBRARY) : obj/zcmusic.o obj/zcmusicd.o
 # Make sure needed folders are present.
@@ -197,8 +202,14 @@ bin/$(SOUND_LIBRARY) : obj/zcmusic.o obj/zcmusicd.o
 	$(CXX) $(OUTPUT_OPTION) -shared obj/zcmusic.o obj/zcmusicd.o -Wl,-soname,$(SOUND_LIBRARY) $(LINKING_FLAGS) $(SOUND_FLAGS) $(ALLEGRO_LIBS) $(SOUND_LIBS)
 
 ################################################################
+# Shared Libraries
+
+$(addprefix bin/,$(SHARED_LIBRARIES)) : bin/%.so :
+	cp $*.so bin/$(@F)
+
+################################################################
 # Zelda
-bin/zelda$(EXECUTABLE_SUFFIX) : bin/$(ALLEGRO_LIBRARY) bin/$(SOUND_LIBRARY) $(ZELDA_DEPENDENCIES)
+bin/zelda$(EXECUTABLE_SUFFIX) : bin/$(SOUND_LIBRARY) $(ZELDA_DEPENDENCIES)
   # Make sure needed folders are present.
 	@mkdir -p bin/
 	@mkdir -p .d/bin/
@@ -208,7 +219,7 @@ bin/zelda$(EXECUTABLE_SUFFIX) : bin/$(ALLEGRO_LIBRARY) bin/$(SOUND_LIBRARY) $(ZE
 
 ################################################################
 # ZQuest
-bin/zquest$(EXECUTABLE_SUFFIX) : bin/$(ALLEGRO_LIBRARY) bin/$(SOUND_LIBRARY) $(ZQUEST_DEPENDENCIES)
+bin/zquest$(EXECUTABLE_SUFFIX) : bin/$(SOUND_LIBRARY) $(ZQUEST_DEPENDENCIES)
 # Make sure needed folders are present.
 	@mkdir -p bin/
 	@mkdir -p .d/bin/
@@ -229,14 +240,15 @@ bin/romview$(EXECUTABLE_SUFFIX) : bin/$(SOUND_LIBRARY) $(ROMVIEW_DEPENDENCIES)
 ################################################################
 # Various Other Rules
 
-.PHONY : default all clean veryclean zc zelda zq zquest rv romview sound zcsound lin linux 32 32bit i686 allegro-4.2-stupid stupid allegro-4.2 4.2 allegro-4.4 4.4 debug-on debug-off show-config
+.PHONY : default all clean veryclean zc zelda zq zquest rv romview sound zcsound lin linux 32 32bit i686 allegro-4.2.modded modded allegro-4.2 4.2 allegro-4.4 4.4 debug-on debug-off show-config
 
-all : $(EXECUTABLE_FILES)
+all : $(EXECUTABLE_FILES) $(addprefix bin/,$(SHARED_LIBRARIES))
 
 clean :
-	rm -rf obj
+	-rm -rf obj
 veryclean : clean
-	rm -rf .d bin
+	-rm -rf .d
+	-rm $(EXECUTABLE_FILES)
 zc zelda : $(word 1, $(EXECUTABLE_FILES))
 zq zquest : $(word 2, $(EXECUTABLE_FILES))
 rv romview :  $(word 3, $(EXECUTABLE_FILES))

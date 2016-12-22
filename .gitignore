@@ -19,7 +19,6 @@
 # Compiled static libraries
 *.lai
 *.la
-*.a
 *.lib
 *.lo
 

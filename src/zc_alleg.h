@@ -15,10 +15,7 @@
 #define ALLEGRO_NO_COMPATIBILITY
 #include <allegro.h>
 #include <allegro/internal/aintern.h>
-
-#ifdef USE_ALLEG_COMPAT
 #include "alleg_compat.h"
-#endif
 
 #ifdef __cplusplus
 INLINE fix abs(fix f)

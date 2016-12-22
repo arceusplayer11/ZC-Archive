@@ -41,15 +41,15 @@ SOURCE_FILES := $(wildcard src/*.cpp) $(wildcard src/*/*.cpp)
 EXECUTABLE_FILES := zelda zquest romview
 EXECUTABLE_FILES := $(addprefix bin/,$(EXECUTABLE_FILES))
 
-ZELDA_DEPENDENCIES := aglogo colors debug decorations defdata editbox EditboxModel EditboxView ending ffscript gamedata gui guys init items jwin jwinfsel link load_gif maps matrix md5 midi pal particles qst save_gif script_drawing single_instance sprite subscr tab_ctl tiles title weapons win32 zc_custom zc_init zc_items zc_sprite zc_subscr zc_sys zelda zscriptversion zsys zc_icon
+ZELDA_DEPENDENCIES := aglogo alleg_compat colors debug decorations defdata editbox EditboxModel EditboxView ending ffscript gamedata gui guys init items jwin jwinfsel link load_gif maps matrix md5 midi pal particles qst save_gif script_drawing single_instance sprite subscr tab_ctl tiles title weapons win32 zc_custom zc_init zc_items zc_sprite zc_subscr zc_sys zelda zscriptversion zsys zc_icon
 ZELDA_DEPENDENCIES := $(addprefix obj/,$(ZELDA_DEPENDENCIES))
 ZELDA_DEPENDENCIES := $(addsuffix .o,$(ZELDA_DEPENDENCIES))
 
-ZQUEST_DEPENDENCIES := zquest colors defdata editbox EditboxModel EditboxView gamedata gui init items jwin jwinfsel load_gif md5 midi particles qst questReport save_gif sprite subscr tab_ctl tiles win32 zc_custom zq_class zq_cset zq_custom zq_doors zq_files zq_items zq_init zq_misc zq_rules zq_sprite zq_strings zq_subscr zq_tiles zqscale zsys ffasm parser/AST parser/BuildVisitors parser/ByteCode parser/DataStructs parser/GlobalSymbols parser/lex.yy parser/ParseError parser/ScriptParser parser/SymbolVisitors parser/TypeChecker parser/UtilVisitors parser/y.tab zq_icon
+ZQUEST_DEPENDENCIES := zquest alleg_compat colors defdata editbox EditboxModel EditboxView gamedata gui init items jwin jwinfsel load_gif md5 midi particles qst questReport save_gif sprite subscr tab_ctl tiles win32 zc_custom zq_class zq_cset zq_custom zq_doors zq_files zq_items zq_init zq_misc zq_rules zq_sprite zq_strings zq_subscr zq_tiles zqscale zsys ffasm parser/AST parser/BuildVisitors parser/ByteCode parser/DataStructs parser/GlobalSymbols parser/lex.yy parser/ParseError parser/ScriptParser parser/SymbolVisitors parser/TypeChecker parser/UtilVisitors parser/y.tab zq_icon
 ZQUEST_DEPENDENCIES := $(addprefix obj/,$(ZQUEST_DEPENDENCIES))
 ZQUEST_DEPENDENCIES := $(addsuffix .o,$(ZQUEST_DEPENDENCIES))
 
-ROMVIEW_DEPENDENCIES := editbox EditboxModel EditboxView gui jwin jwinfsel load_gif romview save_gif tab_ctl zqscale zsys rv_icon
+ROMVIEW_DEPENDENCIES := alleg_compat editbox EditboxModel EditboxView gui jwin jwinfsel load_gif romview save_gif tab_ctl zqscale zsys rv_icon
 ROMVIEW_DEPENDENCIES := $(addprefix obj/,$(ROMVIEW_DEPENDENCIES))
 ROMVIEW_DEPENDENCIES := $(addsuffix .o,$(ROMVIEW_DEPENDENCIES))
 
@@ -73,10 +73,6 @@ ALLEGRO_LIBS := -lalleg -lm -lpthread -lrt -lSM -lICE -lX11 -lXext -lXext -lXcur
 
 # Sound libraries.
 SOUND_LIBS := -lgme -lalmp3 -laldmb -ldumb -lalogg
-
-ifeq ($(ALLEGRO_VERSION),4.4)
-  SOUND_LIBS := $(SOUND_LIBS) -lalleg-alsadigi -lalleg-alsamidi -lalleg-jack -lalleg-dga2
-endif
 
 # Image libraries.
 IMAGE_LIBS := -lldpng -lpng -lz
@@ -107,16 +103,6 @@ ifeq ($(OS),Linux)
 endif
 
 EXECUTABLE_FILES := $(addsuffix $(EXECUTABLE_SUFFIX), $(EXECUTABLE_FILES))
-
-################################################################
-# Allegro Compat
-
-ifneq ($(ALLEGRO_VERSION),4.2.modded)
-  CXX_FLAGS := $(CXX_FLAGS) -D USE_ALLEG_COMPAT
-  ZELDA_DEPENDENCIES := $(ZELDA_DEPENDENCIES) obj/alleg_compat.o
-  ZQUEST_DEPENDENCIES := $(ZQUEST_DEPENDENCIES) obj/alleg_compat.o
-  ROMVIEW_DEPENDENCIES := $(ROMVIEW_DEPENDENCIES) obj/alleg_compat.o
-endif
 
 ################################################################
 ################################################################
@@ -241,7 +227,7 @@ clean :
 	-rm -rf obj
 veryclean : clean
 	-rm -rf .d
-	-rm $(EXECUTABLE_FILES)
+	-rm -f $(EXECUTABLE_FILES)
 zc zelda : $(word 1, $(EXECUTABLE_FILES))
 zq zquest : $(word 2, $(EXECUTABLE_FILES))
 rv romview :  $(word 3, $(EXECUTABLE_FILES))

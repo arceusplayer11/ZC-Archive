@@ -106,10 +106,10 @@
 /*---------------------------------------------------------------------------*/
 
 /* Define if target platform is linux. */
-#define ALLEGRO_LINUX 1
+#define ALLEGRO_LINUX
 
 /* Define to enable Linux console fbcon driver. */
-#define ALLEGRO_LINUX_FBCON 1
+#define ALLEGRO_LINUX_FBCON
 
 /* Define to enable Linux console SVGAlib driver. */
 /* #undef ALLEGRO_LINUX_SVGALIB */

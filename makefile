@@ -112,11 +112,10 @@ EXECUTABLE_FILES := $(addsuffix $(EXECUTABLE_SUFFIX), $(EXECUTABLE_FILES))
 # Allegro Compat
 
 ifneq ($(ALLEGRO_VERSION),4.2.modded)
-  $(info Using Compat)
   CXX_FLAGS := $(CXX_FLAGS) -D USE_ALLEG_COMPAT
-	ZELDA_DEPENDENCIES := $(ZELDA_DEPENDENCIES) obj/alleg_compat.o
-	ZQUEST_DEPENDENCIES := $(ZQUEST_DEPENDENCIES) obj/alleg_compat.o
-	ROMVIEW_DEPENDENCIES := $(ROMVIEW_DEPENDENCIES) obj/alleg_compat.o
+  ZELDA_DEPENDENCIES := $(ZELDA_DEPENDENCIES) obj/alleg_compat.o
+  ZQUEST_DEPENDENCIES := $(ZQUEST_DEPENDENCIES) obj/alleg_compat.o
+  ROMVIEW_DEPENDENCIES := $(ROMVIEW_DEPENDENCIES) obj/alleg_compat.o
 endif
 
 ################################################################
@@ -177,13 +176,13 @@ show-config :
 ################################################################
 # Object File Compilation
 obj/%.o : src/%.cpp .d/%.d
-# Make sure needed folders are present.
+  # Make sure needed folders are present.
 	@mkdir -p obj/$(*D)
 	@mkdir -p .d/obj/$(*D)
-# Compile the object file. Automatically detect needed dependencies
-# and generate a tempory makefile so we don't need to do it again.
+  # Compile the object file. Automatically detect needed dependencies
+  # and generate a tempory makefile so we don't need to do it again.
 	$(CXX) $(OUTPUT_OPTION) -c $< $(DEP_FLAGS) $(CXX_FLAGS) $(INCLUDE_DIRS) -MT $@ -MMD -MP -MF .d/obj/$*.Td
-# Rename the .Td file to .d,
+  # Rename the .Td file to .d,
 	@mv -f .d/obj/$*.Td .d/obj/$*.d
 
 ################################################################
@@ -205,7 +204,7 @@ bin/$(SOUND_LIBRARY) : obj/zcmusic.o obj/zcmusicd.o
 # Shared Libraries
 
 $(addprefix bin/,$(SHARED_LIBRARIES)) : bin/%.so :
-	cp $*.so bin/$(@F)
+	cp $*.so bin/lib$(@F)
 
 ################################################################
 # Zelda
@@ -213,8 +212,6 @@ bin/zelda$(EXECUTABLE_SUFFIX) : bin/$(SOUND_LIBRARY) $(ZELDA_DEPENDENCIES)
   # Make sure needed folders are present.
 	@mkdir -p bin/
 	@mkdir -p .d/bin/
-# Compile the program.  Automatically detect needed dependencies and
-# generate a tempory makefile so we don't need to do it again.
 	$(CXX) $(OUTPUT_OPTION) bin/$(SOUND_LIBRARY) $(ZELDA_DEPENDENCIES) $(LINKING_FLAGS) $(STDCXX_LIB) $(ALLEGRO_LIBS) $(IMAGE_LIBS)
 
 ################################################################
@@ -223,8 +220,6 @@ bin/zquest$(EXECUTABLE_SUFFIX) : bin/$(SOUND_LIBRARY) $(ZQUEST_DEPENDENCIES)
 # Make sure needed folders are present.
 	@mkdir -p bin/
 	@mkdir -p .d/bin/
-# Compile the program.  Automatically detect needed dependencies and
-# generate a tempory makefile so we don't need to do it again.
 	$(CXX) $(OUTPUT_OPTION) bin/$(SOUND_LIBRARY) $(ZQUEST_DEPENDENCIES) $(LINKING_FLAGS) $(STDCXX_LIB) $(ALLEGRO_LIBS) $(IMAGE_LIBS)
 
 ################################################################
@@ -233,8 +228,6 @@ bin/romview$(EXECUTABLE_SUFFIX) : bin/$(SOUND_LIBRARY) $(ROMVIEW_DEPENDENCIES)
 # Make sure needed folders are present.
 	@mkdir -p bin/
 	@mkdir -p .d/bin/
-# Compile the program.  Automatically detect needed dependencies and
-# generate a tempory makefile so we don't need to do it again.
 	$(CXX) $(OUTPUT_OPTION) $(ROMVIEW_DEPENDENCIES) $(LINKING_FLAGS) $(STDCXX_LIB) $(ALLEGRO_LIBS) $(IMAGE_LIBS)
 
 ################################################################

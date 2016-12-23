@@ -48,6 +48,7 @@ class ASTExprArrow;
 class ASTExprArray;
 class ASTNumConstant;
 class ASTFuncCall;
+class ASTFuncId;
 class ASTBoolConstant;
 class ASTBlock;
 class ASTStmt;
@@ -193,6 +194,10 @@ public:
         caseDefault(param);
     }
     virtual void caseFuncCall(ASTFuncCall &, void *param)
+    {
+        caseDefault(param);
+    }
+    virtual void caseFuncId(ASTFuncId &, void *param)
     {
         caseDefault(param);
     }
@@ -376,14 +381,14 @@ class ASTProgram : public AST
 {
 public:
     ASTProgram(ASTDeclList *Decls, LocationData Loc) : AST(Loc), decls(Decls) {};
-    
+
     ASTDeclList *getDeclarations()
     {
         return decls;
     }
-    
+
     ~ASTProgram();
-    
+
     void execute(ASTVisitor &visitor, void *param)
     {
         visitor.caseProgram(*this,param);
@@ -446,7 +451,7 @@ public:
     {
         return str;
     }
-    
+
     void execute(ASTVisitor &visitor, void *param)
     {
         return visitor.caseString(*this,param);
@@ -485,12 +490,12 @@ class ASTImportDecl : public ASTDecl
 {
 public:
     ASTImportDecl(string file, LocationData Loc) : ASTDecl(Loc), filename(file) {}
-    
+
     string getFilename()
     {
         return filename;
     }
-    
+
     void execute(ASTVisitor &visitor, void *param)
     {
         visitor.caseImportDecl(*this,param);
@@ -582,7 +587,7 @@ public:
     {
         delete operand;
     }
-    
+
     void setOperand(ASTExpr *e)
     {
         operand=e;
@@ -662,7 +667,7 @@ class ASTExprAnd : public ASTLogExpr
 {
 public:
     ASTExprAnd(LocationData Loc) : ASTLogExpr(Loc) {}
-    
+
     void execute(ASTVisitor &visitor, void *param)
     {
         visitor.caseExprAnd(*this,param);
@@ -677,7 +682,7 @@ class ASTExprOr : public ASTLogExpr
 {
 public:
     ASTExprOr(LocationData Loc) : ASTLogExpr(Loc) {}
-    
+
     void execute(ASTVisitor &visitor, void *param)
     {
         visitor.caseExprOr(*this,param);
@@ -880,7 +885,7 @@ class ASTExprNegate : public ASTUnaryExpr
 {
 public:
     ASTExprNegate(LocationData Loc) : ASTUnaryExpr(Loc) {}
-    
+
     void execute(ASTVisitor &visitor, void *param)
     {
         visitor.caseExprNegate(*this,param);
@@ -891,7 +896,7 @@ class ASTExprNot : public ASTUnaryExpr
 {
 public:
     ASTExprNot(LocationData Loc) : ASTUnaryExpr(Loc) {}
-    
+
     void execute(ASTVisitor &visitor, void *param)
     {
         visitor.caseExprNot(*this,param);
@@ -962,17 +967,17 @@ class ASTNumConstant : public ASTExpr
 {
 public:
     ASTNumConstant(ASTFloat *value, LocationData Loc) : ASTExpr(Loc), val(value) {}
-    
+
     ASTFloat *getValue()
     {
         return val;
     }
-    
+
     ~ASTNumConstant()
     {
         delete val;
     }
-    
+
     void execute(ASTVisitor &visitor, void *param)
     {
         visitor.caseNumConstant(*this,param);
@@ -985,12 +990,12 @@ class ASTFuncCall : public ASTExpr
 {
 public:
     ASTFuncCall(LocationData Loc) : ASTExpr(Loc), params() {}
-    
+
     list<ASTExpr *> &getParams()
     {
         return params;
     }
-    
+
     void setName(ASTExpr *n)
     {
         name=n;
@@ -1003,9 +1008,9 @@ public:
     {
         params.push_front(param);
     }
-    
+
     ~ASTFuncCall();
-    
+
     void execute(ASTVisitor &visitor, void *param)
     {
         visitor.caseFuncCall(*this,param);
@@ -1013,6 +1018,37 @@ public:
 private:
     ASTExpr *name;
     list<ASTExpr *> params;
+};
+
+class ASTFuncId : public ASTExpr
+{
+public:
+	ASTFuncId(string Name, LocationData Loc) : ASTExpr(Loc), name(Name), params() {}
+	ASTFuncId(LocationData Loc) : ASTExpr(Loc), params() {}
+	~ASTFuncId();
+
+	string getName()
+	{
+		return name;
+	}
+	void setName(string n)
+	{
+		name = n;
+	}
+
+	void addParam(ASTType *param);
+	list<ASTType *> &getParams()
+	{
+		return params;
+	}
+
+	void execute(ASTVisitor &visitor, void *param)
+	{
+		visitor.caseFuncId(*this,param);
+	}
+private:
+	string name;
+	list<ASTType *> params;
 };
 
 class ASTBoolConstant : public ASTExpr
@@ -1036,7 +1072,7 @@ class ASTBlock : public ASTStmt
 public:
     ASTBlock(LocationData Loc) : ASTStmt(Loc), statements() {}
     ~ASTBlock();
-    
+
     list<ASTStmt *> &getStatements()
     {
         return statements;
@@ -1046,7 +1082,7 @@ public:
         return &arrayRefs;
     }
     void addStatement(ASTStmt *Stmt);
-    
+
     void execute(ASTVisitor &visitor, void *param)
     {
         visitor.caseBlock(*this,param);
@@ -1124,7 +1160,7 @@ public:
     ~ASTExprArrow()
     {
         delete lval;
-        
+
         if(index) delete index;
     }
     void execute(ASTVisitor &visitor, void *param)
@@ -1690,4 +1726,3 @@ private:
 
 
 #endif
-

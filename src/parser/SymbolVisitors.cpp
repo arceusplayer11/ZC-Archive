@@ -10,7 +10,7 @@
 void BuildScriptSymbols::caseScript(ASTScript &host,void *param)
 {
     list<ASTDecl *> ad = host.getScriptBlock()->getDeclarations();
-    
+
     for(list<ASTDecl *>::iterator it = ad.begin(); it != ad.end(); it++)
     {
         (*it)->execute(*this,param);
@@ -23,7 +23,7 @@ void BuildScriptSymbols::caseExprDot(ASTExprDot &host, void *param)
     BuildFunctionSymbols bfs;
     BFSParam newp = {p->first,p->second,ScriptParser::TYPE_VOID};
     host.execute(bfs, &newp);
-    
+
     if(!bfs.isOK())
     {
         failure=true;
@@ -36,12 +36,12 @@ void BuildScriptSymbols::caseExprArray(ASTExprArray &host, void *param)
     BuildFunctionSymbols bfs;
     BFSParam newp = {p->first,p->second,ScriptParser::TYPE_VOID};
     host.execute(bfs, &newp);
-    
+
     if(!bfs.isOK())
     {
         failure=true;
     }
-    
+
     host.getIndex()->execute(bfs, &newp);
 }
 
@@ -211,12 +211,12 @@ void BuildFunctionSymbols::caseBlock(ASTBlock &host, void *param)
     Scope *newscope = new Scope(p->scope);
     BFSParam newparam = {newscope, p->table,p->type};
     list<ASTStmt *> stmts = host.getStatements();
-    
+
     for(list<ASTStmt *>::iterator it = stmts.begin(); it != stmts.end(); it++)
     {
         (*it)->execute(*this, &newparam);
     }
-    
+
     delete newscope;
 }
 
@@ -231,7 +231,7 @@ void BuildFunctionSymbols::caseStmtFor(ASTStmtFor &host, void *param)
     host.getTerminationCondition()->execute(*this, &newparam);
     host.getIncrement()->execute(*this, &newparam);
     ASTStmt * stmt = host.getStmt();
-    
+
     stmt->execute(*this,&newparam);
     delete newscope;
 }
@@ -245,7 +245,7 @@ void BuildFunctionSymbols::caseFuncCall(ASTFuncCall &host, void *param)
     bool isdot = false;
     IsDotExpr temp;
     ident->execute(temp, &isdot);
-    
+
     if(!isdot)
     {
         //recur to get any dotexprs inside
@@ -258,28 +258,43 @@ void BuildFunctionSymbols::caseFuncCall(ASTFuncCall &host, void *param)
         string name = dotname->getName();
         string nspace = dotname->getNamespace();
         vector<int> possibleFuncs = p->scope->getFuncsInScope(nspace, name);
-        
+
         if(possibleFuncs.size() == 0)
         {
             string fullname;
-            
+
             if(nspace == "")
                 fullname=name;
             else
                 fullname = nspace + "." + name;
-                
+
             printErrorMsg(&host, FUNCUNDECLARED, fullname);
             failure = true;
             return;
         }
-        
+
         p->table->putAmbiguousFunc(&host, possibleFuncs);
     }
-    
+
     for(list<ASTExpr *>::iterator it = host.getParams().begin(); it != host.getParams().end(); it++)
     {
         (*it)->execute(*this,param);
     }
+}
+
+void BuildFunctionSymbols::caseFuncId(ASTFuncId &host, void *param)
+{
+	BFSParam *p = (BFSParam *)param;
+	vector<int> possibleFuncs = p->scope->getFuncsInScope("", host.getName());
+
+	if (possibleFuncs.size() == 0)
+	{
+		printErrorMsg(&host, FUNCUNDECLARED, host.getName());
+		failure = true;
+		return;
+	}
+
+	p->table->putAmbiguousFunc(&host, possibleFuncs);
 }
 
 void BuildFunctionSymbols::caseExprDot(ASTExprDot &host, void *param)
@@ -288,21 +303,21 @@ void BuildFunctionSymbols::caseExprDot(ASTExprDot &host, void *param)
     string name = host.getName();
     string nspace = host.getNamespace();
     int id = p->scope->getVarInScope(nspace, name);
-    
+
     if(id == -1 && !(nspace == "" && p->table->isConstant(name)))
     {
         string fullname;
-        
+
         if(nspace == "")
             fullname=name;
         else
             fullname = nspace + "." + name;
-            
+
         printErrorMsg(&host, VARUNDECLARED, fullname);
         failure = true;
         return;
     }
-    
+
     p->table->putAST(&host, id);
 }
 
@@ -310,11 +325,11 @@ void BuildFunctionSymbols::caseExprArrow(ASTExprArrow &host, void *param)
 {
     //recur on the name
     host.getLVal()->execute(*this,param);
-    
+
     //recur on the index, if it exists
     if(host.getIndex())
         host.getIndex()->execute(*this,param);
-        
+
     //wait for type-checking to do rest of work
 }
 
@@ -324,23 +339,23 @@ void BuildFunctionSymbols::caseExprArray(ASTExprArray &host, void *param)
     string name = host.getName();
     string nspace = host.getNamespace();
     int id = p->scope->getVarInScope(nspace, name);
-    
+
     if(id == -1 && !(nspace == "" && p->table->isConstant(name)))
     {
         string fullname;
-        
+
         if(nspace == "")
             fullname=name;
         else
             fullname = nspace + "." + name;
-            
+
         printErrorMsg(&host, VARUNDECLARED, fullname);
         failure = true;
         return;
     }
-    
+
     p->table->putAST(&host, id);
-    
+
     if(host.getIndex())
         host.getIndex()->execute(*this,param);
 }

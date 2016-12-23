@@ -24,6 +24,7 @@ public:
     virtual void caseExprNegate(ASTExprNegate &host, void *param);
     virtual void caseNumConstant(ASTNumConstant &host, void *param);
     virtual void caseFuncCall(ASTFuncCall &host, void *param);
+		virtual void caseFuncId(ASTFuncId &host, void *param);
     virtual void caseBoolConstant(ASTBoolConstant &host, void *param);
     virtual void caseStmtAssign(ASTStmtAssign &host, void *param);
     virtual void caseExprDot(ASTExprDot &host, void *param);
@@ -69,4 +70,3 @@ public:
 };
 
 #endif
-

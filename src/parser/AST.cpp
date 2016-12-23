@@ -29,12 +29,12 @@ ASTProgram::~ASTProgram()
 ASTDeclList::~ASTDeclList()
 {
     list<ASTDecl *>::iterator it;
-    
+
     for(it = decls.begin(); it != decls.end(); it++)
     {
         delete *it;
     }
-    
+
     decls.clear();
 }
 
@@ -48,14 +48,30 @@ void ASTDeclList::addDeclaration(ASTDecl *newdecl)
 ASTFuncCall::~ASTFuncCall()
 {
     list<ASTExpr *>::iterator it;
-    
+
     for(it = params.begin(); it != params.end(); it++)
     {
         delete *it;
     }
-    
+
     params.clear();
     delete name;
+}
+
+ASTFuncId::~ASTFuncId()
+{
+	list<ASTType *>::iterator it;
+	for (it = params.begin(); it != params.end(); it++)
+	{
+		delete *it;
+	}
+
+	params.clear();
+}
+
+void ASTFuncId::addParam(ASTType *param)
+{
+	params.push_front(param);
 }
 
 void ASTBlock::addStatement(ASTStmt *stmt)
@@ -66,12 +82,12 @@ void ASTBlock::addStatement(ASTStmt *stmt)
 ASTBlock::~ASTBlock()
 {
     list<ASTStmt *>::iterator it;
-    
+
     for(it=statements.begin(); it != statements.end(); it++)
     {
         delete *it;
     }
-    
+
     statements.clear();
 }
 
@@ -86,13 +102,13 @@ pair<string, string> ASTFloat::parseValue()
     string f = getValue();
     string intpart;
     string fpart;
-    
+
     switch(getType())
     {
     case TYPE_DECIMAL:
     {
         bool founddot = false;
-        
+
         for(unsigned int i=0; i<f.size(); i++)
         {
             if(f.at(i) == '.')
@@ -103,30 +119,30 @@ pair<string, string> ASTFloat::parseValue()
                 break;
             }
         }
-        
+
         if(!founddot)
         {
             intpart = f;
             fpart = "";
         }
-        
+
         if(negative) intpart = "-" + intpart;
-        
+
         break;
     }
-    
+
     case TYPE_HEX:
     {
         //trim off the "0x"
         f = f.substr(2,f.size()-2);
         //parse the hex
         long val2=0;
-        
+
         for(unsigned int i=0; i<f.size(); i++)
         {
             char d = f.at(i);
             val2*=16;
-            
+
             if('0' <= d && d <= '9')
                 val2+=(d-'0');
             else if('A' <= d && d <= 'F')
@@ -134,31 +150,31 @@ pair<string, string> ASTFloat::parseValue()
             else
                 val2+=(10+d-'a');
         }
-        
+
         if(negative && val2 > 0) val2 *= -1;
-        
+
         char temp[60];
         sprintf(temp, "%ld", val2);
         intpart = temp;
         fpart = "";
         break;
     }
-    
+
     case TYPE_BINARY:
     {
         //trim off the 'b'
         f = f.substr(0,f.size()-1);
         long val2=0;
-        
+
         for(unsigned int i=0; i<f.size(); i++)
         {
             char b = f.at(i);
             val2<<=1;
             val2+=b-'0';
         }
-        
+
         if(negative && val2 > 0) val2 *= -1;
-        
+
         char temp[60];
         sprintf(temp, "%ld", val2);
         intpart = temp;
@@ -166,7 +182,7 @@ pair<string, string> ASTFloat::parseValue()
         break;
     }
     }
-    
+
     return pair<string,string>(intpart, fpart);
 }
 

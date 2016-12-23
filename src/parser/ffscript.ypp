@@ -90,6 +90,7 @@ extern YYLTYPE noloc;
 %token IDENTIFIER
 %token QUOTEDSTRING
 %token SINGLECHAR
+%token ATSIGN
 
 %left LSHIFT RSHIFT
 %left BITAND BITOR BITXOR
@@ -424,6 +425,7 @@ Factor : LPAREN Expr RPAREN {$$=$2;}
 			$$ = new ASTNumConstant(new ASTFloat(val,0,@1),@1);}
 	| BoolConstant {$$ = $1;}
 	| FuncCall {$$=$1;}
+	|	FuncId {$$=$1;}
 	;
 
 BoolConstant : TRUE {$$ = new ASTBoolConstant(true,@1);}
@@ -449,6 +451,32 @@ ExprList : Expr COMMA ExprList {ASTFuncCall *fc = (ASTFuncCall *)$3;
 		  fc->addParam(e);
 		  $$ = fc;}
 	;
+
+FuncId : ATSIGN IDENTIFIER {
+		ASTString *name = (ASTString *)$2;
+		$$ = new ASTFuncId(name->getValue(), @2);
+		delete name;}
+	| ATSIGN IDENTIFIER LPAREN RPAREN {
+		ASTString *name = (ASTString *)$2;
+		$$ = new ASTFuncId(name->getValue(), @2);
+		delete name;}
+	| ATSIGN IDENTIFIER LPAREN TypeList RPAREN {
+		ASTFuncId *fid = (ASTFuncId *)$4;
+		ASTString *name = (ASTString *)$2;
+		fid->setName(name->getValue());
+		delete name;
+		$$ = fid;}
+	;
+
+TypeList : Type COMMA TypeList {
+		ASTFuncId *fid = (ASTFuncId *)$3;
+		fid->addParam((ASTType *)$1);
+		$$ = fid;}
+	| Type {
+		ASTFuncId *fid = new ASTFuncId(@1);
+		fid->addParam((ASTType *)$1);
+		$$ = fid;}
+  ;
 
 ForStmt : FOR LPAREN StmtNoSemi SEMICOLON Expr SEMICOLON StmtNoSemi RPAREN Stmt {ASTStmt *prec = (ASTStmt *)$3;
 												ASTExpr *term = (ASTExpr *)$5;
@@ -635,4 +663,3 @@ if(!yyin)
 	fclose(yyin);
 	return result;
 }
-

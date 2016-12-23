@@ -91,6 +91,7 @@ eweapon					{doLines(); return EWEAPON;}
 \^				{ doLines(); return BITXOR; }
 \!			{ doLines();return NOT; }
 \%			{ doLines(); return MODULO; }
+@       { doLines(); return ATSIGN; }
 
 "//".*                   { ; }
 "/*"                     { doLines(); BEGIN(COMMENT); }
@@ -109,7 +110,7 @@ eweapon					{doLines(); return EWEAPON;}
 [_a-zA-Z]([_a-zA-Z]|[0-9])*	{
 						doLines();
 						yylval = new ASTString(yytext, yylloc);
-						return IDENTIFIER; 
+						return IDENTIFIER;
 					}
 
 ([0-9]*\.?[0-9]+) 		{ doLines();yylval = new ASTFloat(yytext, ASTFloat::TYPE_DECIMAL, yylloc); return NUMBER; }
@@ -128,7 +129,7 @@ eweapon					{doLines(); return EWEAPON;}
 
 .		{
 	char temp[512];
-	sprintf(temp, "Scanner, line %d: lexical error '%s'.\n", yylineno, yytext); 
+	sprintf(temp, "Scanner, line %d: lexical error '%s'.\n", yylineno, yytext);
 	box_out(temp);
 	box_eol();
 	}
@@ -142,4 +143,3 @@ void doLines()
 YYLTYPE rval = {yylineno, 0, yylineno, 0};
 yylloc = rval;
 }
- 

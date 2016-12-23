@@ -36,6 +36,7 @@ public:
     virtual void caseStmtReturnVal(ASTStmtReturnVal &host, void *param);
     virtual void caseStmtEmpty(ASTStmtEmpty &host, void *param);
     virtual void caseNumConstant(ASTNumConstant &host, void *param);
+    virtual void caseFuncId(ASTFuncId &host, void *param);
     virtual void caseBoolConstant(ASTBoolConstant &host, void *param);
     virtual void caseStmtWhile(ASTStmtWhile &host, void *param);
     virtual void caseStmtDo(ASTStmtDo &host, void *param);
@@ -122,7 +123,7 @@ public:
     {
         map<int, int> *labels = (map<int, int> *)param;
         int lineno = (*labels)[host.getID()];
-        
+
         if(lineno==0)
         {
             char temp[200];
@@ -130,10 +131,9 @@ public:
             box_out(temp);
             box_eol();
         }
-        
+
         host.setLineNo(lineno);
     }
 };
 
 #endif
-

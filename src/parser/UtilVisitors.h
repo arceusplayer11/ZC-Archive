@@ -31,6 +31,7 @@ public:
     virtual void caseExprNegate(ASTExprNegate &host, void *param);
     virtual void caseNumConstant(ASTNumConstant &host, void *param);
     virtual void caseFuncCall(ASTFuncCall &host, void *param);
+    virtual void caseFuncId(ASTFuncId &host, void *param);
     virtual void caseBoolConstant(ASTBoolConstant &host, void *param);
     virtual void caseBlock(ASTBlock &host, void *param);
     virtual void caseStmtAssign(ASTStmtAssign &host, void *param);
@@ -98,7 +99,7 @@ public:
     virtual void caseDeclList(ASTDeclList &host, void *param)
     {
         list<ASTDecl *> l = host.getDeclarations();
-        
+
         for(list<ASTDecl *>::iterator it = l.begin(); it != l.end(); it++)
         {
             (*it)->execute(*this,param);
@@ -225,7 +226,7 @@ public:
     virtual void caseExprArrow(ASTExprArrow &host, void*param)
     {
         host.getLVal()->execute(*this,param);
-        
+
         if(host.getIndex())
             host.getIndex()->execute(*this,param);
     }
@@ -240,16 +241,19 @@ public:
     virtual void caseFuncCall(ASTFuncCall &host, void *param)
     {
         list<ASTExpr *> l = host.getParams();
-        
+
         for(list<ASTExpr *>::iterator it = l.begin(); it != l.end(); it++)
         {
             (*it)->execute(*this,param);
         }
     }
+    virtual void caseFuncId(ASTNumConstant &host, void *param)
+    {
+    }
     virtual void caseBlock(ASTBlock &host, void *param)
     {
         list<ASTStmt *> l = host.getStatements();
-        
+
         for(list<ASTStmt *>::iterator it = l.begin(); it != l.end(); it++)
             (*it)->execute(*this,param);
     }

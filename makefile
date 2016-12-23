@@ -186,10 +186,6 @@ obj/%.o : src/%.cpp .d/%.d
   # Rename the .Td file to .d,
 	@mv -f .d/obj/$*.Td .d/obj/$*.d
 
-obj/parser/AST.o : src/parser/AST.cpp $(PARSER_FILES)
-	@mkdir -p obj/parser
-	$(CXX) $(OUTPUT_OPTION) -c src/parser/AST.cpp $(DEP_FLAGS) $(CXX_FLAGS) $(INCLUDE_DIRS)
-
 ################################################################
 # Icons
 obj/zc_icon.o obj/zq_icon.o obj/rv_icon.o : obj/%.o : $(ICON_DEPENDENCIES)

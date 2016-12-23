@@ -72,7 +72,7 @@ static const char *ZC_str = "Zelda Classic";
 static  const char *qst_dir_name = "dos_qst_dir";
 #elif defined(ALLEGRO_WINDOWS)
 static  const char *qst_dir_name = "win_qst_dir";
-#elif defined(ALLEGRO_LINUX)
+#elif defined(ALLEGRO_UNIX) || defined(ALLEGRO_LINUX)
 static  const char *qst_dir_name = "linux_qst_dir";
 #elif defined(ALLEGRO_MACOSX)
 static  const char *qst_dir_name = "macosx_qst_dir";

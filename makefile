@@ -110,6 +110,7 @@ EXECUTABLE_FILES := $(addsuffix $(EXECUTABLE_SUFFIX), $(EXECUTABLE_FILES))
 ################################################################
 ################################################################
 
+.PHONY : default
 default: all
 
 ################################################################
@@ -127,35 +128,38 @@ default: all
 ################################################################
 # Configuration Interaction
 
+.PHONY: lin linux
 lin linux :
 	@mkdir -p config
 	echo OS := Linux > config/os
 
+.PHONY: 32 32bit i686
 32 32bit i686 :
 	@mkdir -p config
 	echo ARCH := i686 > config/arch
 
-allegro-4.2.modded modded :
+.PHONY: allegro-4.2.modded 4.2
+allegro-4.2.modded 4.2 :
 	@mkdir -p config
 	echo ALLEGRO_VERSION := 4.2.modded > config/allegro_version
 
-allegro-4.2 4.2 :
-	@mkdir -p config
-	echo ALLEGRO_VERSION := 4.2 > config/allegro_version
-
+.PHONY: allegro-4.4 4.4
 allegro-4.4 4.4 :
 	@mkdir -p config
 	echo ALLEGRO_VERSION := 4.4 > config/allegro_version
 
+.PHONY : debug-on
 debug-on :
 	@mkdir -p config
 	echo DEBUG_SYMBOLS := ON > config/debug_symbols
 
+.PHONY : debug-off
 debug-off :
 	@mkdir -p config
 	echo DEBUG_SYMBOLS := OFF > config/debug_symbols
 
-show-config :
+.PHONY : config show-config
+config show-config :
 	@echo OS = $(OS)
 	@echo ARCH = $(ARCH)
 	@echo ALLEGRO_VERSION = $(ALLEGRO_VERSION)
@@ -183,8 +187,8 @@ obj/%.o : src/%.cpp .d/%.d
 	@mv -f .d/obj/$*.Td .d/obj/$*.d
 
 obj/parser/AST.o : src/parser/AST.cpp $(PARSER_FILES)
-	@mkdir -p obj/$(*D)
-	$(CXX) $(OUTPUT_OPTION) -c $< $(DEP_FLAGS) $(CXX_FLAGS) $(INCLUDE_DIRS)
+	@mkdir -p obj/parser
+	$(CXX) $(OUTPUT_OPTION) -c src/parser/AST.cpp $(DEP_FLAGS) $(CXX_FLAGS) $(INCLUDE_DIRS)
 
 ################################################################
 # Icons
@@ -234,15 +238,17 @@ bin/romview$(EXECUTABLE_SUFFIX) : bin/$(SOUND_LIBRARY) $(ROMVIEW_DEPENDENCIES)
 ################################################################
 # Various Other Rules
 
-.PHONY : default all clean veryclean zc zelda zq zquest rv romview sound zcsound lin linux 32 32bit i686 allegro-4.2.modded modded allegro-4.2 4.2 allegro-4.4 4.4 debug-on debug-off show-config
-
+.PHONY : all
 all : $(EXECUTABLE_FILES) $(addprefix bin/,$(SHARED_LIBRARIES))
 
+.PHONY : clean veryclean
 clean :
 	-rm -rf obj/*
 veryclean : clean
 	-rm -rf .d
 	-rm -f $(EXECUTABLE_FILES) $(PARSER_FILES)
+
+.PHONY : zc zelda zq zquest rv romview sound zcsound
 zc zelda : $(word 1, $(EXECUTABLE_FILES))
 zq zquest : $(word 2, $(EXECUTABLE_FILES))
 rv romview :  $(word 3, $(EXECUTABLE_FILES))

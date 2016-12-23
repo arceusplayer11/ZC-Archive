@@ -38,6 +38,8 @@ endif
 
 SOURCE_FILES := $(wildcard src/*.cpp) $(wildcard src/*/*.cpp)
 
+PARSER_FILES := src/parser/lex.yy.cpp src/parser/y.tab.cpp src/parser/y.tab.hpp
+
 EXECUTABLE_FILES := zelda zquest romview
 EXECUTABLE_FILES := $(addprefix bin/,$(EXECUTABLE_FILES))
 
@@ -160,6 +162,15 @@ show-config :
 	@echo DEBUG_SYMBOLS = $(DEBUG_SYMBOLS)
 
 ################################################################
+# ZScript Parser
+
+src/parser/lex.yy.cpp : src/parser/ffscript.lpp src/parser/y.tab.hpp
+	flex -B -o src/parser/lex.yy.cpp src/parser/ffscript.lpp
+
+src/parser/y.tab.cpp src/parser/y.tab.hpp : src/parser/ffscript.ypp
+	bison -o src/parser/y.tab.cpp -b y -d src/parser/ffscript.ypp
+
+################################################################
 # Object File Compilation
 obj/%.o : src/%.cpp .d/%.d
   # Make sure needed folders are present.
@@ -170,6 +181,10 @@ obj/%.o : src/%.cpp .d/%.d
 	$(CXX) $(OUTPUT_OPTION) -c $< $(DEP_FLAGS) $(CXX_FLAGS) $(INCLUDE_DIRS) -MT $@ -MMD -MP -MF .d/obj/$*.Td
   # Rename the .Td file to .d,
 	@mv -f .d/obj/$*.Td .d/obj/$*.d
+
+obj/parser/AST.o : src/parser/AST.cpp $(PARSER_FILES)
+	@mkdir -p obj/$(*D)
+	$(CXX) $(OUTPUT_OPTION) -c $< $(DEP_FLAGS) $(CXX_FLAGS) $(INCLUDE_DIRS)
 
 ################################################################
 # Icons
@@ -224,10 +239,10 @@ bin/romview$(EXECUTABLE_SUFFIX) : bin/$(SOUND_LIBRARY) $(ROMVIEW_DEPENDENCIES)
 all : $(EXECUTABLE_FILES) $(addprefix bin/,$(SHARED_LIBRARIES))
 
 clean :
-	-rm -rf obj
+	-rm -rf obj/*
 veryclean : clean
 	-rm -rf .d
-	-rm -f $(EXECUTABLE_FILES)
+	-rm -f $(EXECUTABLE_FILES) $(PARSER_FILES)
 zc zelda : $(word 1, $(EXECUTABLE_FILES))
 zq zquest : $(word 2, $(EXECUTABLE_FILES))
 rv romview :  $(word 3, $(EXECUTABLE_FILES))

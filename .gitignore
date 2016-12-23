@@ -79,3 +79,6 @@ makefile.inc
 /ag.cfg
 /allegro.log
 /config/
+/src/parser/lex.yy.cpp
+/src/parser/y.tab.cpp
+/src/parser/y.tab.hpp

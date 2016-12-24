@@ -331,6 +331,7 @@ void Clone::caseFuncCall(ASTFuncCall &host, void *param)
     fc->setName(name);
     list<ASTExpr *> params = host.getParams();
     list<ASTExpr *>::reverse_iterator it;
+		fc->setIsVar(host.getIsVar());
 
     for(it = params.rbegin(); it != params.rend(); it++)
     {

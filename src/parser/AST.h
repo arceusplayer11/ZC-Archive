@@ -1009,6 +1009,15 @@ public:
         params.push_front(param);
     }
 
+		bool getIsVar()
+		{
+			return isVar;
+		}
+		void setIsVar(bool value)
+		{
+			isVar = value;
+		}
+
     ~ASTFuncCall();
 
     void execute(ASTVisitor &visitor, void *param)
@@ -1018,6 +1027,7 @@ public:
 private:
     ASTExpr *name;
     list<ASTExpr *> params;
+		bool isVar = false;
 };
 
 class ASTFuncId : public ASTExpr

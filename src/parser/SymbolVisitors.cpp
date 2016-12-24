@@ -250,30 +250,48 @@ void BuildFunctionSymbols::caseFuncCall(ASTFuncCall &host, void *param)
     {
         //recur to get any dotexprs inside
         ident->execute(*this,param);
+				host.setIsVar(false);
     }
     else
     {
-        //resolve the possible functions
+        // Find functions matching name.
         ASTExprDot *dotname = (ASTExprDot *)host.getName();
         string name = dotname->getName();
         string nspace = dotname->getNamespace();
         vector<int> possibleFuncs = p->scope->getFuncsInScope(nspace, name);
 
-        if(possibleFuncs.size() == 0)
-        {
+				// There's at least one function matching the name, so store them for later.
+				if(possibleFuncs.size() > 0)
+				{
+					p->table->putAmbiguousFunc(&host, possibleFuncs);
+					host.setIsVar(false);
+				}
+				// There aren't any functions with that name.
+				else
+				{
+					// Check for a variable.
+					int var_id = p->scope->getVarInScope(nspace, name);
+					if (var_id != -1)
+					{
+						p->table->putAST(&host, var_id);
+						host.setIsVar(true);
+					}
+					else
+					{
             string fullname;
 
             if(nspace == "")
-                fullname=name;
+							fullname=name;
             else
-                fullname = nspace + "." + name;
+							fullname = nspace + "." + name;
 
             printErrorMsg(&host, FUNCUNDECLARED, fullname);
             failure = true;
             return;
-        }
+					}
 
-        p->table->putAmbiguousFunc(&host, possibleFuncs);
+				}
+
     }
 
     for(list<ASTExpr *>::iterator it = host.getParams().begin(); it != host.getParams().end(); it++)

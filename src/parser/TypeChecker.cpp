@@ -1277,10 +1277,31 @@ void TypeCheck::caseFuncCall(ASTFuncCall &host, void *param)
 
     paramstring += ")";
 
-    if(isdotexpr)
+
+		string fullname;
+
+		if (isdotexpr)
+		{
+			if(((ASTExprDot *)host.getName())->getNamespace() == "")
+				fullname = ((ASTExprDot*)host.getName())->getName();
+			else
+				fullname = ((ASTExprDot *)host.getName())->getNamespace() + "." + ((ASTExprDot *)host.getName())->getName();
+		}
+
+		if (host.getIsVar())
+		{
+			int varID = st->getID(&host);
+			if (0 != st->getVarType(varID))
+			{
+				printErrorMsg(&host, VARNOTFUNCTIONTYPE, fullname + paramstring);
+				failure = true;
+				return;
+			}
+			host.setType(0);
+		}
+		else if(isdotexpr)
     {
         possible = st->getAmbiguousFuncs(&host);
-
 
         vector<pair<int, int> > matchedfuncs;
 
@@ -1330,13 +1351,6 @@ void TypeCheck::caseFuncCall(ASTFuncCall &host, void *param)
                 bestmatch.push_back((*it).first);
             }
         }
-
-        string fullname;
-
-        if(((ASTExprDot *)host.getName())->getNamespace() == "")
-            fullname = ((ASTExprDot*)host.getName())->getName();
-        else
-            fullname = ((ASTExprDot *)host.getName())->getNamespace() + "." + ((ASTExprDot *)host.getName())->getName();
 
         if(bestmatch.size() == 0)
         {
@@ -1486,7 +1500,7 @@ void TypeCheck::caseFuncId(ASTFuncId &host, void *param)
 	}
 
 	host.setType(ScriptParser::TYPE_FLOAT);
-	host.setIntValue(match);
+	st->putAST(&host, match);
 }
 
 void TypeCheck::caseBoolConstant(ASTBoolConstant &host, void *param)

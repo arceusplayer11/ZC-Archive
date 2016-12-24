@@ -499,7 +499,6 @@ void BuildOpcodes::caseExprPreDecrement(ASTExprPreDecrement &host, void *param)
 
 void BuildOpcodes::caseExprDecrement(ASTExprDecrement &host, void *param)
 {
-    //annoying
     OpcodeContext *c = (OpcodeContext *)param;
     //load value of the variable into EXP1
     //except if it is an arrow expr, in which case the gettor function is stored
@@ -541,40 +540,80 @@ void BuildOpcodes::caseExprDecrement(ASTExprDecrement &host, void *param)
 void BuildOpcodes::caseFuncCall(ASTFuncCall &host, void *param)
 {
     OpcodeContext *c = (OpcodeContext *)param;
-    int funclabel = c->linktable->functionToLabel(c->symbols->getID(&host));
-    //push the stack frame pointer
-    result.push_back(new OPushRegister(new VarArgument(SFRAME)));
-    //push the return address
-    int returnaddr = ScriptParser::getUniqueLabelID();
-    result.push_back(new OSetImmediate(new VarArgument(EXP1), new LabelArgument(returnaddr)));
-    result.push_back(new OPushRegister(new VarArgument(EXP1)));
-    //if the function is a pointer function (->func()) we need to push the left-hand-side
-    bool isdotexpr;
-    IsDotExpr temp;
-    host.getName()->execute(temp, &isdotexpr);
 
-    if(!isdotexpr)
-    {
+		// Push the stack frame pointer.
+		result.push_back(new OPushRegister(new VarArgument(SFRAME)));
+
+		// Push the return address.
+		int returnaddr = ScriptParser::getUniqueLabelID();
+		result.push_back(new OSetImmediate(new VarArgument(EXP1), new LabelArgument(returnaddr)));
+		result.push_back(new OPushRegister(new VarArgument(EXP1)));
+
+    // If the function is a pointer function (->func()) we need to push the left-hand-side.
+		if (!host.getIsVar())
+		{
+			bool isdotexpr;
+			IsDotExpr temp;
+			host.getName()->execute(temp, &isdotexpr);
+
+			if(!isdotexpr)
+			{
         //load the value of the left-hand of the arrow into EXP1
         ((ASTExprArrow *)host.getName())->getLVal()->execute(*this,param);
         //host.getName()->execute(*this,param);
         //push it onto the stack
         result.push_back(new OPushRegister(new VarArgument(EXP1)));
-    }
+			}
+		}
 
     //push the parameters, in forward order
-    for(list<ASTExpr *>::iterator it = host.getParams().begin(); it != host.getParams().end(); it++)
-    {
-        (*it)->execute(*this,param);
-        result.push_back(new OPushRegister(new VarArgument(EXP1)));
-    }
+		// Push the parameters, in forward order.
+		for(list<ASTExpr *>::iterator it = host.getParams().begin(); it != host.getParams().end(); it++)
+		{
+			(*it)->execute(*this, param);
+			result.push_back(new OPushRegister(new VarArgument(EXP1)));
+		}
 
-    //goto
-    result.push_back(new OGotoImmediate(new LabelArgument(funclabel)));
-    //pop the stack frame pointer
-    Opcode *next = new OPopRegister(new VarArgument(SFRAME));
-    next->setLabel(returnaddr);
-    result.push_back(next);
+		// Goto function.
+		if (host.getIsVar())
+		{
+			// Load the variable containing function pointer.
+			int varid = c->symbols->getID(&host);
+			int globalid = c->linktable->getGlobalID(varid);
+			// If it's a global variable, pull it's value.
+			if(globalid != -1)
+			{
+				result.push_back(new OSetRegister(new VarArgument(EXP1), new GlobalArgument(globalid)));
+			}
+			else // If it's a local variable, pull it's value from the stack.
+			{
+				int offset = c->stackframe->getOffset(varid);
+				result.push_back(new OSetRegister(new VarArgument(SFTEMP), new VarArgument(SFRAME)));
+				result.push_back(new OAddImmediate(new VarArgument(SFTEMP), new LiteralArgument(offset)));
+				result.push_back(new OLoadIndirect(new VarArgument(EXP1), new VarArgument(SFTEMP)));
+			}
+
+			// Goto function.
+			result.push_back(new OGotoRegister(new VarArgument(EXP1)));
+		}
+		else
+		{
+		  int funclabel = c->linktable->functionToLabel(c->symbols->getID(&host));
+			result.push_back(new OGotoImmediate(new LabelArgument(funclabel)));
+		}
+
+		// Pop the stack frame pointer.
+		Opcode *next = new OPopRegister(new VarArgument(SFRAME));
+		next->setLabel(returnaddr);
+		result.push_back(next);
+
+}
+
+void BuildOpcodes::caseFuncId(ASTFuncId &host, void *param)
+{
+  OpcodeContext *c = (OpcodeContext *)param;
+	int funclabel = c->linktable->functionToLabel(c->symbols->getID(&host));
+	result.push_back(new OSetImmediate(new VarArgument(EXP1), new LabelArgument(funclabel)));
 }
 
 void BuildOpcodes::caseStmtAssign(ASTStmtAssign &host, void *param)
@@ -923,14 +962,6 @@ void BuildOpcodes::caseNumConstant(ASTNumConstant &host, void *)
 
         result.push_back(new OSetImmediate(new VarArgument(EXP1), new LiteralArgument(val.first)));
     }
-}
-
-void BuildOpcodes::caseFuncId(ASTFuncId &host, void *)
-{
-    if(host.hasIntValue())
-        result.push_back(new OSetImmediate(new VarArgument(EXP1), new LiteralArgument(host.getIntValue())));
-		else
-		    result.push_back(new OSetImmediate(new VarArgument(EXP1), new LiteralArgument(0)));
 }
 
 void BuildOpcodes::caseBoolConstant(ASTBoolConstant &host, void *)

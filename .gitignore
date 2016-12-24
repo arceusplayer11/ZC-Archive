@@ -82,3 +82,4 @@ makefile.inc
 /src/parser/lex.yy.cpp
 /src/parser/y.tab.cpp
 /src/parser/y.tab.hpp
+/.dir-locals.el

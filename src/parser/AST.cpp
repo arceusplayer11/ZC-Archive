@@ -1,7 +1,7 @@
 
 #include "../precompiled.h" //always first
 #include "AST.h"
-
+#include "UtilVisitors.h"
 
 ASTProgram::~ASTProgram()
 {
@@ -66,6 +66,24 @@ ASTArrayList::~ASTArrayList()
 void ASTFuncDecl::addParam(ASTVarDecl *param)
 {
     params.push_front(param);
+}
+
+void ASTVarDecl::setType(ASTType *t)
+{
+    Clone c;
+    t->execute(c, NULL);
+    type = (ASTType *)c.getResult();
+}
+
+void ASTVarDeclList::setType(ASTType *type)
+{
+    list<ASTDecl *> decls = getDeclarations();
+    list<ASTDecl *>::iterator it;
+	  for (it = decls.begin(); it != decls.end(); it++)
+		{
+		    ASTVarDecl *vd = (ASTVarDecl *)(*it);
+				vd->setType(type);
+	  }
 }
 
 ASTVarDecl::~ASTVarDecl()

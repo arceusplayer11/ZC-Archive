@@ -117,12 +117,7 @@ GlobalStmt : Script {$$ = $1;}
 	| Import {$$ = $1;}
 	| FuncDecl {$$ = $1;}
 	| ConstDecl {$$ = $1;}
-	| VarDecl SEMICOLON {$$ = $1;}
-	| VarDecl ASSIGN Expr SEMICOLON {ASTVarDecl *vd = (ASTVarDecl *)$1;
-									Clone c;
-									vd->getType()->execute(c,NULL);
-									$$ = new ASTVarDeclInitializer((ASTType *)c.getResult(), vd->getName(), (ASTExpr *)$3,@1);
-									delete vd;}
+	| MultiVarDecl SEMICOLON {$$ = $1;}
 	| ArrayDecl SEMICOLON {$$ = $1;}
 	;
 
@@ -233,15 +228,38 @@ ScriptStmtList : ScriptStmt ScriptStmtList {ASTDeclList *dl = (ASTDeclList *)$2;
 					$$ = dl;}
 	;
 
-ScriptStmt : VarDecl SEMICOLON {$$ = $1;}
+ScriptStmt : MultiVarDecl SEMICOLON {$$ = $1;}
 	| ArrayDecl SEMICOLON {$$ = $1;}
-	| VarDecl ASSIGN Expr SEMICOLON {ASTVarDecl *vd = (ASTVarDecl *)$1;
-						   Clone c;
-						   vd->getType()->execute(c,NULL);
-						   $$ = new ASTVarDeclInitializer((ASTType *)c.getResult(), vd->getName(), (ASTExpr *)$3,@1);
-						   delete vd;}
 	| FuncDecl {$$ = $1;}
 	;
+
+MultiVarDecl : Type MultiVarDeclList {
+		  ASTType *type = (ASTType *)$1;
+			ASTVarDeclList *list = (ASTVarDeclList *)$2;
+			list->setType(type);
+		  delete type;
+			$$ = list;}
+  ;
+
+MultiVarDeclList : VarDeclMaybeInitializer COMMA MultiVarDeclList {
+			ASTDeclList *list = (ASTDeclList *)$3;
+			list->addDeclaration((ASTDecl *)$1);
+			$$ = list;}
+  | VarDeclMaybeInitializer {
+			ASTDeclList *list = new ASTDeclList(@1);
+			list->addDeclaration((ASTDecl *)$1);
+			$$ = list;}
+  ;
+
+VarDeclMaybeInitializer : IDENTIFIER ASSIGN Expr {
+      ASTString *name = (ASTString *)$1;
+			$$ = new ASTVarDeclInitializer(name->getValue(), (ASTExpr *)$3, @1);
+			delete name;}
+  | IDENTIFIER {
+			ASTString *name = (ASTString *)$1;
+		  $$ = new ASTVarDecl(name->getValue(), @1);
+		  delete name;}
+  ;
 
 VarDecl : Type IDENTIFIER {ASTType *type = (ASTType *)$1;
 				   ASTString *name = (ASTString *)$2;
@@ -302,7 +320,7 @@ StmtList : StmtList Stmt {ASTBlock *block = (ASTBlock *)$1;
 		  $$ = block;}
 	;
 
-Stmt : VarDecl SEMICOLON {$$ = $1;}
+Stmt : MultiVarDecl SEMICOLON {$$ = $1;}
 	| ArrayDecl SEMICOLON {$$ = $1;}
 	| AssignStmt SEMICOLON {$$ = $1;}
 	| ShortcutAssignStmt SEMICOLON {$$=$1;}
@@ -318,7 +336,7 @@ Stmt : VarDecl SEMICOLON {$$ = $1;}
 	| CONTINUE SEMICOLON {$$ = new ASTStmtContinue(@1);}
 	;
 
-StmtNoSemi : VarDecl {$$ = $1;}
+StmtNoSemi : MultiVarDecl {$$ = $1;}
 	| ArrayDecl {$$ = $1;}
 	| AssignStmt {$$ = $1;}
 	| ShortcutAssignStmt {$$=$1;}
@@ -352,8 +370,7 @@ ShortcutAssignStmt : DotExpr PLUSASSIGN Expr {SHORTCUT(ASTExprPlus,$1,$3,$$,@1,@
 AssignStmt : LVal ASSIGN Expr {$$ = new ASTStmtAssign((ASTStmt *)$1, (ASTExpr *)$3,@1);}
 	;
 
-LVal : VarDecl {$$ = $1;}
-	| DotExpr {$$ = $1;}
+LVal : DotExpr {$$ = $1;}
 	;
 
 DotExpr : IDENTIFIER DOT IDENTIFIER {ASTString *lval = (ASTString *)$1;

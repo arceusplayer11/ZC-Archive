@@ -31,6 +31,7 @@ class ASTProgram;
 class ASTDeclList;
 class ASTDecl;
 class ASTVarDecl;
+class ASTVarDeclList;
 class ASTType;
 class ASTBlock;
 class ASTTypeFloat;
@@ -835,10 +836,12 @@ class ASTVarDecl : public ASTDecl
 {
 public:
     ASTVarDecl(ASTType *Type, string Name, LocationData Loc) : ASTDecl(Loc), type(Type), name(Name) {}
+    ASTVarDecl(string Name, LocationData Loc) : ASTDecl(Loc), name(Name) {}
     ASTType *getType()
     {
         return type;
     }
+	  void setType(ASTType *t);
     string getName()
     {
         return name;
@@ -858,6 +861,8 @@ class ASTVarDeclInitializer : public ASTVarDecl
 public:
     ASTVarDeclInitializer(ASTType *Type, string Name, ASTExpr *Initial, LocationData Loc) :
         ASTVarDecl(Type,Name,Loc), initial(Initial) {}
+    ASTVarDeclInitializer(string Name, ASTExpr *Initial, LocationData Loc) :
+        ASTVarDecl(Name, Loc), initial(Initial) {}
     ~ASTVarDeclInitializer();
     ASTExpr *getInitializer()
     {
@@ -873,6 +878,13 @@ private:
     //NOT IMPLEMENTED; DO NOT USE
     ASTVarDeclInitializer(ASTVarDeclInitializer &);
     ASTVarDeclInitializer &operator=(ASTVarDeclInitializer &);
+};
+
+class ASTVarDeclList : public ASTDeclList
+{
+public:
+	ASTVarDeclList(LocationData Loc) : ASTDeclList(Loc) {}
+	void setType(ASTType *type);
 };
 
 class ASTExpr : public ASTStmt

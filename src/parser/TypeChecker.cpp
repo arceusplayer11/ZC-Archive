@@ -357,17 +357,14 @@ void TypeCheck::caseVarDeclInitializer(ASTVarDeclInitializer &host, void *param)
 
 void TypeCheck::caseArrayDecl(ASTArrayDecl &host, void *param)
 {
-    if(host.isRegister())
-    {
-        ((ASTExpr *) host.getSize())->execute(*this, param);
+	host.getSize()->execute(*this, param);
         
-        if(((ASTExpr *) host.getSize())->getType() != ScriptParser::TYPE_FLOAT)
-        {
-            printErrorMsg(&host, NONINTEGERARRAYSIZE, "");
-            failure = true;
-            return;
-        }
-    }
+	if(host.getSize()->getType() != ScriptParser::TYPE_FLOAT)
+	{
+		printErrorMsg(&host, NONINTEGERARRAYSIZE, "");
+		failure = true;
+		return;
+	}
     
     SymbolTable * st = ((pair<SymbolTable *, int>*) param)->first;
     int arraytype = st->getVarType(&host);
@@ -394,6 +391,12 @@ void TypeCheck::caseArrayDecl(ASTArrayDecl &host, void *param)
 
 void TypeCheck::caseExprAnd(ASTExprAnd &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -423,6 +426,12 @@ void TypeCheck::caseExprAnd(ASTExprAnd &host, void *param)
 
 void TypeCheck::caseExprOr(ASTExprOr &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -452,6 +461,12 @@ void TypeCheck::caseExprOr(ASTExprOr &host, void *param)
 
 void TypeCheck::caseExprGT(ASTExprGT &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -481,6 +496,12 @@ void TypeCheck::caseExprGT(ASTExprGT &host, void *param)
 
 void TypeCheck::caseExprGE(ASTExprGE &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -510,6 +531,12 @@ void TypeCheck::caseExprGE(ASTExprGE &host, void *param)
 
 void TypeCheck::caseExprLT(ASTExprLT &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -539,6 +566,12 @@ void TypeCheck::caseExprLT(ASTExprLT &host, void *param)
 
 void TypeCheck::caseExprLE(ASTExprLE &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -568,6 +601,12 @@ void TypeCheck::caseExprLE(ASTExprLE &host, void *param)
 
 void TypeCheck::caseExprEQ(ASTExprEQ &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -597,6 +636,12 @@ void TypeCheck::caseExprEQ(ASTExprEQ &host, void *param)
 
 void TypeCheck::caseExprNE(ASTExprNE &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -626,6 +671,12 @@ void TypeCheck::caseExprNE(ASTExprNE &host, void *param)
 
 void TypeCheck::caseExprPlus(ASTExprPlus &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -651,6 +702,12 @@ void TypeCheck::caseExprPlus(ASTExprPlus &host, void *param)
 
 void TypeCheck::caseExprMinus(ASTExprMinus &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -676,6 +733,12 @@ void TypeCheck::caseExprMinus(ASTExprMinus &host, void *param)
 
 void TypeCheck::caseExprTimes(ASTExprTimes &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -702,6 +765,12 @@ void TypeCheck::caseExprTimes(ASTExprTimes &host, void *param)
 
 void TypeCheck::caseExprDivide(ASTExprDivide &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -735,6 +804,12 @@ void TypeCheck::caseExprDivide(ASTExprDivide &host, void *param)
 
 void TypeCheck::caseExprBitOr(ASTExprBitOr &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -759,6 +834,12 @@ void TypeCheck::caseExprBitOr(ASTExprBitOr &host, void *param)
 }
 void TypeCheck::caseExprBitXor(ASTExprBitXor &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -783,6 +864,12 @@ void TypeCheck::caseExprBitXor(ASTExprBitXor &host, void *param)
 }
 void TypeCheck::caseExprBitAnd(ASTExprBitAnd &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -807,6 +894,12 @@ void TypeCheck::caseExprBitAnd(ASTExprBitAnd &host, void *param)
 }
 void TypeCheck::caseExprLShift(ASTExprLShift &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -840,6 +933,12 @@ void TypeCheck::caseExprLShift(ASTExprLShift &host, void *param)
 }
 void TypeCheck::caseExprRShift(ASTExprRShift &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -873,6 +972,12 @@ void TypeCheck::caseExprRShift(ASTExprRShift &host, void *param)
 }
 void TypeCheck::caseExprModulo(ASTExprModulo &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getFirstOperand()->forceConstant();
+		host.getSecondOperand()->forceConstant();
+	}
+	
     host.getFirstOperand()->execute(*this, param);
     host.getSecondOperand()->execute(*this, param);
     
@@ -905,6 +1010,11 @@ void TypeCheck::caseExprModulo(ASTExprModulo &host, void *param)
 }
 void TypeCheck::caseExprNot(ASTExprNot &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getOperand()->forceConstant();
+	}
+	
     host.getOperand()->execute(*this, param);
     
     if(failure)
@@ -931,6 +1041,11 @@ void TypeCheck::caseExprNot(ASTExprNot &host, void *param)
 
 void TypeCheck::caseExprNegate(ASTExprNegate &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getOperand()->forceConstant();
+	}
+
     host.getOperand()->execute(*this, param);
     
     if(failure)
@@ -952,6 +1067,11 @@ void TypeCheck::caseExprNegate(ASTExprNegate &host, void *param)
 }
 void TypeCheck::caseExprBitNot(ASTExprBitNot &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getOperand()->forceConstant();
+	}
+
     host.getOperand()->execute(*this, param);
     
     if(failure)
@@ -973,6 +1093,11 @@ void TypeCheck::caseExprBitNot(ASTExprBitNot &host, void *param)
 }
 void TypeCheck::caseExprIncrement(ASTExprIncrement &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getOperand()->forceConstant();
+	}
+	
     pair<SymbolTable *, int> *realp = (pair<SymbolTable *, int> *)param;
     int type;
     GLVT p = GLVT(pair<TypeCheck *, pair<SymbolTable *, int> *>(this,realp),&type);
@@ -1007,6 +1132,11 @@ void TypeCheck::caseExprIncrement(ASTExprIncrement &host, void *param)
 }
 void TypeCheck::caseExprPreIncrement(ASTExprPreIncrement &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getOperand()->forceConstant();
+	}
+	
     pair<SymbolTable *, int> *realp = (pair<SymbolTable *, int> *)param;
     int type;
     GLVT p = GLVT(pair<TypeCheck *, pair<SymbolTable *, int> *>(this,realp),&type);
@@ -1041,6 +1171,11 @@ void TypeCheck::caseExprPreIncrement(ASTExprPreIncrement &host, void *param)
 }
 void TypeCheck::caseExprDecrement(ASTExprDecrement &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getOperand()->forceConstant();
+	}
+
     pair<SymbolTable *, int> *realp = (pair<SymbolTable *, int> *)param;
     int type;
     GLVT p = GLVT(pair<TypeCheck *, pair<SymbolTable *, int> *>(this,realp),&type);
@@ -1075,6 +1210,11 @@ void TypeCheck::caseExprDecrement(ASTExprDecrement &host, void *param)
 }
 void TypeCheck::caseExprPreDecrement(ASTExprPreDecrement &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		host.getOperand()->forceConstant();
+	}
+
     pair<SymbolTable *, int> *realp = (pair<SymbolTable *, int> *)param;
     int type;
     GLVT p = GLVT(pair<TypeCheck *, pair<SymbolTable *, int> *>(this,realp),&type);
@@ -1124,6 +1264,13 @@ void TypeCheck::caseNumConstant(ASTNumConstant &host, void *)
 
 void TypeCheck::caseFuncCall(ASTFuncCall &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		printErrorMsg(&host, CONSTEXPRONLY);
+		failure = true;
+		return;
+	}
+	
     //yuck. Time to disambiguate these damn functions
     //build the param types
     list<ASTExpr *> params = host.getParams();
@@ -1383,9 +1530,19 @@ void TypeCheck::caseExprDot(ASTExprDot &host, void *param)
     SymbolTable *st = ((pair<SymbolTable *, int> *)param)->first;
     
     if(st->isConstant(host.getName()))
+	{
         host.setType(ScriptParser::TYPE_FLOAT);
+        host.setIntValue(st->getConstantVal(host.getName()));
+	}
     else
     {
+		if (host.isConstantOnly())
+		{
+			printErrorMsg(&host, CONSTEXPRONLY);
+			failure = true;
+			return;
+		}
+		
         int type  = st->getVarType(&host);
         host.setType(type);
     }
@@ -1393,6 +1550,13 @@ void TypeCheck::caseExprDot(ASTExprDot &host, void *param)
 
 void TypeCheck::caseExprArrow(ASTExprArrow &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		printErrorMsg(&host, CONSTEXPRONLY);
+		failure = true;
+		return;
+	}
+	
     SymbolTable *st = ((pair<SymbolTable *, int> *)param)->first;
     //annoyingly enough I have to treat arrowed variables as function calls
     //get the left-hand type
@@ -1499,6 +1663,13 @@ void TypeCheck::caseExprArrow(ASTExprArrow &host, void *param)
 
 void TypeCheck::caseExprArray(ASTExprArray &host, void *param)
 {
+	if (host.isConstantOnly())
+	{
+		printErrorMsg(&host, CONSTEXPRONLY);
+		failure = true;
+		return;
+	}
+	
     SymbolTable *st = ((pair<SymbolTable *, int> *)param)->first;
     
     int type  = st->getVarType(&host);

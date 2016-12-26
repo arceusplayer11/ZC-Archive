@@ -70,72 +70,50 @@ void BuildOpcodes::caseArrayDecl(ASTArrayDecl &host, void *param)
     //Check if the array is global or not
     int globalid = c->linktable->getGlobalID(c->symbols->getID(&host));
     int RAMtype = (globalid == -1) ? SCRIPTRAM: GLOBALRAM;
-    
-    //Size is an expression
-    if(host.isRegister())
-    {
-        //Push size
-        ((ASTExpr *) host.getSize())->execute(*this, param);
+
+	if (!host.getSize()->hasIntValue())
+	{
+		failure = true;
+		printErrorMsg(&host, CONSTEXPRONLY, "");
+        return;
+	}
+	
+	long size = host.getSize()->getIntValue();
+
+	if(size < 10000)
+	{
+		failure = true;
+		printErrorMsg(&host, ARRAYTOOSMALL, "");
+		return;
+	}
         
-        //Allocate
-        if(RAMtype == GLOBALRAM)
-        {
-            result.push_back(new OAllocateGlobalMemRegister(new VarArgument(EXP1), new VarArgument(EXP1)));
-            result.push_back(new OSetRegister(new GlobalArgument(globalid), new VarArgument(EXP1)));
-        }
-        else
-        {
-            result.push_back(new OAllocateMemRegister(new VarArgument(EXP1), new VarArgument(EXP1)));
-            int offset = c->stackframe->getOffset(c->symbols->getID(&host));
-            result.push_back(new OSetRegister(new VarArgument(SFTEMP), new VarArgument(SFRAME)));
-            result.push_back(new OAddImmediate(new VarArgument(SFTEMP), new LiteralArgument(offset)));
-            result.push_back(new OStoreIndirect(new VarArgument(EXP1), new VarArgument(SFTEMP)));
-        }
-    }
-    //Size is a number
-    else
-    {
-        //Get size
-        pair<long, bool> size = ScriptParser::parseLong(((ASTFloat *) host.getSize())->parseValue());
-        
-        if(!size.second)
-            printErrorMsg(&host, CONSTTRUNC, ((ASTFloat *) host.getSize())->getValue());
+	//Check if we've allocated enough memory for the initialiser
+	if(host.getList() != NULL && host.getList()->getList().size() >= size_t(size))
+	{
+		failure = true;
             
-        if(size.first < 10000)
-        {
-            failure = true;
-            printErrorMsg(&host, ARRAYTOOSMALL, "");
-            return;
-        }
-        
-        //Check if we've allocated enough memory for the initialiser
-        if(host.getList() != NULL && host.getList()->getList().size() >= size_t(size.first))
-        {
-            failure = true;
-            
-            if(host.getList()->isString())
-                printErrorMsg(&host, ARRAYLISTSTRINGTOOLARGE, "");
-            else
-                printErrorMsg(&host, ARRAYLISTTOOLARGE, "");
+		if(host.getList()->isString())
+			printErrorMsg(&host, ARRAYLISTSTRINGTOOLARGE, "");
+		else
+			printErrorMsg(&host, ARRAYLISTTOOLARGE, "");
                 
-            return;
-        }
+		return;
+	}
         
-        //Allocate
-        if(RAMtype == GLOBALRAM)
-        {
-            result.push_back(new OAllocateGlobalMemImmediate(new VarArgument(EXP1), new LiteralArgument(size.first)));
-            result.push_back(new OSetRegister(new GlobalArgument(globalid), new VarArgument(EXP1)));
-        }
-        else
-        {
-            result.push_back(new OAllocateMemImmediate(new VarArgument(EXP1), new LiteralArgument(size.first)));
-            int offset = c->stackframe->getOffset(c->symbols->getID(&host));
-            result.push_back(new OSetRegister(new VarArgument(SFTEMP), new VarArgument(SFRAME)));
-            result.push_back(new OAddImmediate(new VarArgument(SFTEMP), new LiteralArgument(offset)));
-            result.push_back(new OStoreIndirect(new VarArgument(EXP1), new VarArgument(SFTEMP)));
-        }
-    }
+	//Allocate
+	if(RAMtype == GLOBALRAM)
+	{
+		result.push_back(new OAllocateGlobalMemImmediate(new VarArgument(EXP1), new LiteralArgument(size)));
+		result.push_back(new OSetRegister(new GlobalArgument(globalid), new VarArgument(EXP1)));
+	}
+	else
+	{
+		result.push_back(new OAllocateMemImmediate(new VarArgument(EXP1), new LiteralArgument(size)));
+		int offset = c->stackframe->getOffset(c->symbols->getID(&host));
+		result.push_back(new OSetRegister(new VarArgument(SFTEMP), new VarArgument(SFRAME)));
+		result.push_back(new OAddImmediate(new VarArgument(SFTEMP), new LiteralArgument(offset)));
+		result.push_back(new OStoreIndirect(new VarArgument(EXP1), new VarArgument(SFTEMP)));
+	}
     
     //Initialise
     if(host.getList() != NULL)

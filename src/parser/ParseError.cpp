@@ -203,6 +203,10 @@ void printErrorMsg(AST *offender, int errorID, string param)
     case NONINTEGERARRAYSIZE:
         oss << "Error T38: Arrays can only be initialized to numerical values" ;
         
+    case CONSTEXPRONLY:
+        oss << "Error T46: Expression can only contain constants." ;
+				break;
+        
     default:
         oss << "FATAL FATAL ERROR I0: bad internal error code" ;
         assert(false);

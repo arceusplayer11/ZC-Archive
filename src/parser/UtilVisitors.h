@@ -125,8 +125,7 @@ public:
     {
         host.getType()->execute(*this,param);
         
-        if(host.isRegister())
-            ((ASTExpr *) host.getSize())->execute(*this, param);
+				((ASTExpr *) host.getSize())->execute(*this, param);
             
         if(host.getList() != NULL)
         {
@@ -514,4 +513,3 @@ public:
 };
 
 #endif
-

@@ -141,8 +141,7 @@ void BuildScriptSymbols::caseArrayDecl(ASTArrayDecl &host, void *param)
         printErrorMsg(&host, DEPRECATEDGLOBAL, name);
     }
     
-    if(host.isRegister())
-        ((ASTExpr *) host.getSize())->execute(*this, param);
+		((ASTExpr *) host.getSize())->execute(*this, param);
         
     if(host.getList() != NULL)
     {
@@ -292,8 +291,7 @@ void BuildFunctionSymbols::caseArrayDecl(ASTArrayDecl &host, void *param)
     p->table->putAST(&host, id);
     p->table->putVar(id, type);
     
-    if(host.isRegister())
-        ((ASTExpr *) host.getSize())->execute(*this, param);
+    ((ASTExpr *) host.getSize())->execute(*this, param);
         
     if(host.getList() != NULL)
     {

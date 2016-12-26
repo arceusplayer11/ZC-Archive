@@ -616,8 +616,8 @@ private:
 class ASTArrayDecl : public ASTDecl
 {
 public:
-    ASTArrayDecl(ASTType *Type, string Name, AST *Size, bool isReg, ASTArrayList *List, LocationData Loc) :
-        ASTDecl(Loc), name(Name), list(List), size(Size), type(Type), reg(isReg) { }
+    ASTArrayDecl(ASTType *Type, string Name, ASTExpr *Size, ASTArrayList *List, LocationData Loc) :
+        ASTDecl(Loc), name(Name), list(List), size(Size), type(Type) { }
     ~ASTArrayDecl();
     ASTType *getType()
     {
@@ -627,14 +627,9 @@ public:
     {
         return name;
     }
-    //If reg, size is an ASTExpr. If not, it's an ASTFloat
-    AST *getSize()
+    ASTExpr *getSize()
     {
         return size;
-    }
-    bool isRegister()
-    {
-        return reg;
     }
     ASTArrayList *getList()
     {
@@ -647,10 +642,8 @@ public:
 private:
     string name;
     ASTArrayList *list;
-    AST *size;
+    ASTExpr *size;
     ASTType *type;
-    
-    bool reg;
     
     //NOT IMPLEMENTED; DO NOT USE
     ASTArrayDecl(ASTArrayDecl &);
@@ -890,7 +883,7 @@ public:
 class ASTExpr : public ASTStmt
 {
 public:
-    ASTExpr(LocationData Loc) : ASTStmt(Loc), hasval(false), intval(0), type(-1) {}
+	  ASTExpr(LocationData Loc) : ASTStmt(Loc), hasval(false), constonly(false), intval(0), type(-1) {}
     virtual ~ASTExpr() {}
     long getIntValue()
     {
@@ -913,10 +906,19 @@ public:
     {
         type=t;
     }
+		void forceConstant()
+		{
+			  constonly = true;
+		}
+		bool isConstantOnly()
+		{
+		    return constonly;
+		}
 private:
     bool hasval;
     long intval;
     int type;
+		bool constonly;
     //NOT IMPLEMENTED; DO NOT USE
     ASTExpr(ASTExpr &);
     ASTExpr &operator=(ASTExpr &);

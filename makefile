@@ -123,7 +123,7 @@ default: all
 .PRECIOUS: .d/%.d
 
 # Load all the created dependency files.
--include $(patsubst %,.d/%.d,$(basename $(SOURCE_FILES)))
+-include $(patsubst %,.d/%.d,$(subst src,obj,$(basename $(SOURCE_FILES))))
 
 ################################################################
 # Configuration Interaction

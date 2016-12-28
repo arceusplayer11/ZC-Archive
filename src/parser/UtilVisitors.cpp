@@ -526,8 +526,6 @@ void RecursiveVisitor::caseFuncDecl(ASTFuncDecl &host, void *param)
 
 void RecursiveVisitor::caseVarDeclList(ASTVarDeclList &host, void *param)
 {
-		host.getType()->execute(*this, param);
-
 		list<ASTVarDecl *> l = host.getDeclarations();
 		for (list<ASTVarDecl *>::iterator it = l.begin(); it != l.end(); ++it)
 				(*it)->execute(*this, param);

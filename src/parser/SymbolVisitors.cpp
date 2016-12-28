@@ -7,11 +7,6 @@
 #include "ParseError.h"
 #include <assert.h>
 
-
-void BuildScriptSymbols::caseDefault(void *)
-{
-}
-
 void BuildScriptSymbols::caseScript(ASTScript &host,void *param)
 {
     list<ASTDecl *> ad = host.getScriptBlock()->getDeclarations();
@@ -20,142 +15,6 @@ void BuildScriptSymbols::caseScript(ASTScript &host,void *param)
     {
         (*it)->execute(*this,param);
     }
-}
-
-void BuildScriptSymbols::caseFuncDecl(ASTFuncDecl &host, void *param)
-{
-    pair<Scope *, SymbolTable *> *p = (pair<Scope *, SymbolTable *> *)param;
-    string name = host.getName();
-    vector<int> params;
-    list<ASTVarDecl *> vds = host.getParams();
-    
-    for(list<ASTVarDecl *>::iterator it = vds.begin(); it != vds.end(); it++)
-    {
-        int type;
-        ExtractType temp;
-        (*it)->getType()->execute(temp, &type);
-        params.push_back(type);
-        
-        if(type == ScriptParser::TYPE_VOID)
-        {
-            failure=true;
-            printErrorMsg(&host, FUNCTIONVOIDPARAM, name);
-        }
-    }
-    
-    int rettype;
-    ExtractType temp;
-    host.getReturnType()->execute(temp, &rettype);
-    int id = p->first->getFuncSymbols().addFunction(name,rettype,params);
-    
-    if(id == -1)
-    {
-        failure = true;
-        printErrorMsg(&host, FUNCTIONREDEF, name);
-        return;
-    }
-    
-    p->second->putAST(&host, id);
-    p->second->putFunc(id, rettype);
-    p->second->putFuncDecl(id, params);
-}
-
-void BuildScriptSymbols::caseVarDecl(ASTVarDecl &host, void *param)
-{
-    pair<Scope *, SymbolTable *> *p = (pair<Scope *, SymbolTable *> *)param;
-    string name = host.getName();
-    int type;
-    ExtractType temp;
-    host.getType()->execute(temp, &type);
-    
-    if(type == ScriptParser::TYPE_VOID)
-    {
-        failure = true;
-        printErrorMsg(&host, VOIDVAR, name);
-    }
-    
-    if(type == ScriptParser::TYPE_FFC || type == ScriptParser::TYPE_ITEM
-            || type == ScriptParser::TYPE_ITEMCLASS || type == ScriptParser::TYPE_NPC
-            || type == ScriptParser::TYPE_LWPN || type == ScriptParser::TYPE_EWPN)
-    {
-        failure = true;
-        printErrorMsg(&host, REFVAR, name);
-    }
-    
-    //var is always visible
-    int id = p->first->getVarSymbols().addVariable(name, type);
-    
-    if(id == -1)
-    {
-        failure = true;
-        printErrorMsg(&host, VARREDEF, name);
-        return;
-    }
-    
-    p->second->putAST(&host, id);
-    p->second->putVar(id, type);
-    
-    if(this->deprecateGlobals)
-    {
-        printErrorMsg(&host, DEPRECATEDGLOBAL, name);
-    }
-}
-
-void BuildScriptSymbols::caseArrayDecl(ASTArrayDecl &host, void *param)
-{
-    pair<Scope *, SymbolTable *> *p = (pair<Scope *, SymbolTable *> *)param;
-    string name = host.getName();
-    int type;
-    ExtractType temp;
-    host.getType()->execute(temp, &type);
-    
-    if(type == ScriptParser::TYPE_VOID)
-    {
-        failure = true;
-        printErrorMsg(&host, VOIDARR, name);
-    }
-    
-    if(type == ScriptParser::TYPE_FFC || type == ScriptParser::TYPE_ITEM
-            || type == ScriptParser::TYPE_ITEMCLASS || type == ScriptParser::TYPE_NPC
-            || type == ScriptParser::TYPE_LWPN || type == ScriptParser::TYPE_EWPN)
-    {
-        failure = true;
-        printErrorMsg(&host, REFARR, name);
-    }
-    
-    //var is always visible
-    int id = p->first->getVarSymbols().addVariable(name, type);
-    
-    if(id == -1)
-    {
-        failure = true;
-        printErrorMsg(&host, ARRREDEF, name);
-        return;
-    }
-    
-    p->second->putAST(&host, id);
-    p->second->putVar(id, type);
-    
-    if(this->deprecateGlobals)
-    {
-        printErrorMsg(&host, DEPRECATEDGLOBAL, name);
-    }
-    
-		((ASTExpr *) host.getSize())->execute(*this, param);
-        
-    if(host.getList() != NULL)
-    {
-        for(list<ASTExpr *>::iterator it = host.getList()->getList().begin(); it != host.getList()->getList().end(); it++)
-        {
-            (*it)->execute(*this,param);
-        }
-    }
-}
-
-void BuildScriptSymbols::caseVarDeclInitializer(ASTVarDeclInitializer &host, void *param)
-{
-    host.getInitializer()->execute(*this,param);
-    caseVarDecl(host, param);
 }
 
 void BuildScriptSymbols::caseExprDot(ASTExprDot &host, void *param)
@@ -198,109 +57,152 @@ void BuildScriptSymbols::caseFuncCall(ASTFuncCall &host, void *)
     failure=true;
 }
 
-//////////////////////////////////////////////////////////////
+////////////////
+// Function Declaration
 
-void BuildFunctionSymbols::caseFuncDecl(ASTFuncDecl &host, void *param)
+void BuildScriptSymbols::caseFuncDecl(ASTFuncDecl &host, void *param)
 {
-    BFSParam *p = (BFSParam *)param;
-    //push in the scope
-    Scope *subscope = new Scope(p->scope);
-    BFSParam newparam = {subscope,p->table,p->type};
-    //if it's a run method, add this
-    ExtractType et;
-    int rtype;
-    host.getReturnType()->execute(et, &rtype);
-    
-    if(host.getName() == "run" && rtype == ScriptParser::TYPE_VOID)
+    pair<Scope *, SymbolTable *> *p = (pair<Scope *, SymbolTable *> *)param;
+    string name = host.getName();
+    list<ASTFuncParam *> params = host.getParams();
+    vector<int> paramtypes;
+
+    for(list<ASTFuncParam *>::iterator it = params.begin(); it != params.end(); it++)
     {
-        int vid = subscope->getVarSymbols().addVariable("this", p->type);
-        newparam.table->putVar(vid, p->type);
-        thisvid=vid;
-    }
-    
-    //add the params
-    list<ASTVarDecl *> vars = host.getParams();
-    
-    for(list<ASTVarDecl *>::iterator it = vars.begin(); it != vars.end(); it++)
-    {
-        string name = (*it)->getName();
-        int type;
-        ExtractType temp;
-        (*it)->getType()->execute(temp, &type);
-        int id = subscope->getVarSymbols().addVariable(name,type);
-        
-        if(id == -1)
+				ASTType *type = (*it)->getType();
+				int simpleid = type->getSimpleId();
+				paramtypes.push_back(simpleid);
+        if(simpleid == ScriptParser::TYPE_VOID)
         {
-            printErrorMsg(*it, VARREDEF, name);
             failure = true;
-            delete subscope;
-            return;
+            printErrorMsg(&host, FUNCTIONVOIDPARAM, name);
         }
-        
-        p->table->putVar(id, type);
-        p->table->putAST(*it, id);
     }
-    
-    //shortcut the block
-    list<ASTStmt *> stmts = host.getBlock()->getStatements();
-    
-    for(list<ASTStmt *>::iterator it = stmts.begin(); it != stmts.end(); it++)
+
+    int rettypeid = host.getReturnType()->getSimpleId();
+    int id = p->first->getFuncSymbols().addFunction(name, rettypeid, paramtypes);
+
+    if (id == -1)
     {
-        (*it)->execute(*this, &newparam);
+        failure = true;
+        printErrorMsg(&host, FUNCTIONREDEF, name);
+        return;
     }
-    
-    delete subscope;
+
+    p->second->putAST(&host, id);
+    p->second->putFunc(id, rettypeid);
+    p->second->putFuncDecl(id, paramtypes);
 }
 
-void BuildFunctionSymbols::caseVarDecl(ASTVarDecl &host, void *param)
+////////////////
+// Variable Declaration
+
+void BuildScriptSymbols::caseVarDeclList(ASTVarDeclList &host, void *param)
 {
-    BFSParam *p = (BFSParam *)param;
+		list<ASTVarDecl *> decls = host.getDeclarations();
+		for (list<ASTVarDecl *>::iterator it = decls.begin(); it != decls.end(); ++it)
+		{
+				ASTVarDecl *decl = *it;
+				decl->execute(*this, param);
+		}
+}
+
+void BuildScriptSymbols::caseSingleVarDecl(ASTSingleVarDecl &host, void *param)
+{
+    pair<Scope *, SymbolTable *> *p = (pair<Scope *, SymbolTable *> *)param;
+		Scope *scope = p->first;
+		SymbolTable *symbols = p->second;
+
+		int type = host.getType()->getSimpleId();
     string name = host.getName();
-    int type;
-    ExtractType temp;
-    host.getType()->execute(temp, &type);
-    int id = p->scope->getVarSymbols().addVariable(name, type);
-    
+
+    if (type == ScriptParser::TYPE_VOID)
+    {
+        failure = true;
+        printErrorMsg(&host, VOIDVAR, name);
+    }
+
+    if (type == ScriptParser::TYPE_FFC || type == ScriptParser::TYPE_ITEM
+				|| type == ScriptParser::TYPE_ITEMCLASS || type == ScriptParser::TYPE_NPC
+				|| type == ScriptParser::TYPE_LWPN || type == ScriptParser::TYPE_EWPN)
+    {
+        failure = true;
+        printErrorMsg(&host, REFVAR, name);
+    }
+
+    // Var is always visible
+    int id = scope->getVarSymbols().addVariable(name, type);
+
     if(id == -1)
     {
+        failure = true;
         printErrorMsg(&host, VARREDEF, name);
-        failure = true;
         return;
     }
-    
-    p->table->putAST(&host, id);
-    p->table->putVar(id, type);
+
+    symbols->putAST(&host, id);
+    symbols->putVar(id, type);
+
+    if (this->deprecateGlobals)
+    {
+        printErrorMsg(&host, DEPRECATEDGLOBAL, name);
+    }
+
+		if (host.hasInitializer())
+		{
+				host.getInitializer()->execute(*this, param);
+		}
 }
 
-void BuildFunctionSymbols::caseArrayDecl(ASTArrayDecl &host, void *param)
+void BuildScriptSymbols::caseArrayDecl(ASTArrayDecl &host, void *param)
 {
-    BFSParam *p = (BFSParam *)param;
+    pair<Scope *, SymbolTable *> *p = (pair<Scope *, SymbolTable *> *)param;
+		Scope *scope = p->first;
+		SymbolTable *symbols = p->second;
+
+    int type = host.getType()->getSimpleId();
     string name = host.getName();
-    int type;
-    ExtractType temp;
-    host.getType()->execute(temp, &type);
-    int id = p->scope->getVarSymbols().addVariable(name, type);
-    
+
+    if (type == ScriptParser::TYPE_VOID)
+    {
+        failure = true;
+        printErrorMsg(&host, VOIDARR, name);
+    }
+
+    if(type == ScriptParser::TYPE_FFC || type == ScriptParser::TYPE_ITEM
+			 || type == ScriptParser::TYPE_ITEMCLASS || type == ScriptParser::TYPE_NPC
+			 || type == ScriptParser::TYPE_LWPN || type == ScriptParser::TYPE_EWPN)
+    {
+        failure = true;
+        printErrorMsg(&host, REFARR, name);
+    }
+
+    // Var is always visible
+    int id = scope->getVarSymbols().addVariable(name, type);
+
     if(id == -1)
     {
-        printErrorMsg(&host, ARRREDEF, name);
         failure = true;
+        printErrorMsg(&host, ARRREDEF, name);
         return;
     }
-    
-    p->table->putAST(&host, id);
-    p->table->putVar(id, type);
-    
-    ((ASTExpr *) host.getSize())->execute(*this, param);
-        
-    if(host.getList() != NULL)
+
+    symbols->putAST(&host, id);
+    symbols->putVar(id, type);
+
+    if (this->deprecateGlobals)
     {
-        for(list<ASTExpr *>::iterator it = host.getList()->getList().begin(); it != host.getList()->getList().end(); it++)
-        {
-            (*it)->execute(*this,param);
-        }
+        printErrorMsg(&host, DEPRECATEDGLOBAL, name);
     }
+
+		host.getSize()->execute(*this, param);
+		if (host.hasInitializer())
+		{
+				host.getInitializer()->execute(*this, param);
+		}
 }
+
+////////////////////////////////////////////////////////////////
 
 void BuildFunctionSymbols::caseBlock(ASTBlock &host, void *param)
 {
@@ -441,5 +343,116 @@ void BuildFunctionSymbols::caseExprArray(ASTExprArray &host, void *param)
     
     if(host.getIndex())
         host.getIndex()->execute(*this,param);
+}
+
+////////////////
+// Function Declaration
+
+void BuildFunctionSymbols::caseFuncDecl(ASTFuncDecl &host, void *param)
+{
+    BFSParam *p = (BFSParam *)param;
+
+    // Push in the scope
+    Scope *subscope = new Scope(p->scope);
+    BFSParam subparam = {subscope, p->table, p->type};
+
+    // If it's a run method, add this.
+		int type = host.getReturnType()->getSimpleId();
+    if (host.getName() == "run" && type == ScriptParser::TYPE_VOID)
+    {
+        thisvid = subscope->getVarSymbols().addVariable("this", p->type);
+        subparam.table->putVar(thisvid, p->type);
+    }
+
+    // Add the params.
+    list<ASTFuncParam *> params = host.getParams();
+    for (list<ASTFuncParam *>::iterator it = params.begin(); it != params.end(); it++)
+    {
+				ASTFuncParam *fp = *it;
+        int type = fp->getType()->getSimpleId();
+        string name = fp->getName();
+        int id = subscope->getVarSymbols().addVariable(name, type);
+
+        if(id == -1)
+        {
+            printErrorMsg(fp, VARREDEF, name);
+            failure = true;
+            delete subscope;
+            return;
+        }
+
+        p->table->putVar(id, type);
+        p->table->putAST(fp, id);
+    }
+
+    // Shortcut the block
+    list<ASTStmt *> stmts = host.getBlock()->getStatements();
+    for(list<ASTStmt *>::iterator it = stmts.begin(); it != stmts.end(); it++)
+    {
+        (*it)->execute(*this, &subparam);
+    }
+
+    delete subscope;
+}
+
+////////////////
+// Variable Declaration
+
+void BuildFunctionSymbols::caseVarDeclList(ASTVarDeclList &host, void *param)
+{
+		list<ASTVarDecl *> decls = host.getDeclarations();
+		for (list<ASTVarDecl *>::iterator it = decls.begin(); it != decls.end(); ++it)
+		{
+				ASTVarDecl *decl = *it;
+				decl->execute(*this, param);
+		}
+}
+
+void BuildFunctionSymbols::caseSingleVarDecl(ASTSingleVarDecl &host, void *param)
+{
+    BFSParam *p = (BFSParam *)param;
+    int type = host.getType()->getSimpleId();
+    string name = host.getName();
+    int id = p->scope->getVarSymbols().addVariable(name, type);
+
+    if(id == -1)
+    {
+        printErrorMsg(&host, VARREDEF, name);
+        failure = true;
+        return;
+    }
+
+    p->table->putAST(&host, id);
+    p->table->putVar(id, type);
+
+		if (host.hasInitializer())
+		{
+				host.getInitializer()->execute(*this, param);
+		}
+}
+
+void BuildFunctionSymbols::caseArrayDecl(ASTArrayDecl &host, void *param)
+{
+    BFSParam *p = (BFSParam *)param;
+    int type = host.getType()->getSimpleId();
+    string name = host.getName();
+    int id = p->scope->getVarSymbols().addVariable(name, type);
+
+    if(id == -1)
+    {
+        printErrorMsg(&host, ARRREDEF, name);
+        failure = true;
+        return;
+    }
+
+    p->table->putAST(&host, id);
+    p->table->putVar(id, type);
+
+    host.getSize()->execute(*this, param);
+
+		if (host.hasInitializer())
+		{
+				host.getInitializer()->execute(*this, param);
+		}
 }
 

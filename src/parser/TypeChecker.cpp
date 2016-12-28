@@ -333,62 +333,6 @@ void TypeCheck::caseDefault(void *)
 {
 }
 
-void TypeCheck::caseVarDecl(ASTVarDecl &, void *)
-{
-}
-
-void TypeCheck::caseVarDeclInitializer(ASTVarDeclInitializer &host, void *param)
-{
-    SymbolTable * st = ((pair<SymbolTable *, int> *)param)->first;
-    ASTExpr *init = host.getInitializer();
-    init->execute(*this, param);
-    
-    if(failure)
-        return;
-        
-    int type = init->getType();
-    int ltype = st->getVarType(&host);
-    
-    if(!standardCheck(ltype, type, &host))
-    {
-        failure = true;
-    }
-}
-
-void TypeCheck::caseArrayDecl(ASTArrayDecl &host, void *param)
-{
-	host.getSize()->execute(*this, param);
-        
-	if(host.getSize()->getType() != ScriptParser::TYPE_FLOAT)
-	{
-		printErrorMsg(&host, NONINTEGERARRAYSIZE, "");
-		failure = true;
-		return;
-	}
-    
-    SymbolTable * st = ((pair<SymbolTable *, int>*) param)->first;
-    int arraytype = st->getVarType(&host);
-    
-    if(host.getList() != NULL)
-    {
-        list<ASTExpr *> l = host.getList()->getList();
-        
-        for(list<ASTExpr *>::iterator it = l.begin(); it != l.end(); it++)
-        {
-            (*it)->execute(*this, param);
-            
-            if(failure)
-                return;
-                
-            if(!standardCheck(arraytype, (*it)->getType(), &host))
-            {
-                failure = true;
-                return;
-            }
-        }
-    }
-}
-
 void TypeCheck::caseExprAnd(ASTExprAnd &host, void *param)
 {
 	if (host.isConstantOnly())
@@ -1768,6 +1712,60 @@ void TypeCheck::caseStmtReturnVal(ASTStmtReturnVal &host, void *param)
     if(!standardCheck(rettype, type, &host))
     {
         failure = true;
+    }
+}
+
+////////////////////////////////////////////////////////////////
+// Variable Declaration
+
+void TypeCheck::caseSingleVarDecl(ASTSingleVarDecl &host, void *param)
+{
+	if (!host.hasInitializer()) return;
+
+    ASTExpr *init = host.getInitializer();
+    init->execute(*this, param);
+
+    if (failure) return;
+
+    SymbolTable * st = ((pair<SymbolTable *, int> *)param)->first;
+
+    int ltype = host.getType()->getSimpleId();
+	int rtype = init->getType();
+    if (!standardCheck(ltype, rtype, &host))
+    {
+        failure = true;
+    }
+}
+
+void TypeCheck::caseArrayDecl(ASTArrayDecl &host, void *param)
+{
+	// Recurse.
+	host.getSize()->execute(*this, param);
+	if (host.hasInitializer())
+		host.getInitializer()->execute(*this, param);
+	if (failure) return;
+
+	if (host.getSize()->getType() != ScriptParser::TYPE_FLOAT)
+	{
+		printErrorMsg(&host, NONINTEGERARRAYSIZE, "");
+		failure = true;
+		return;
+	}
+
+    SymbolTable * st = ((pair<SymbolTable *, int>*) param)->first;
+    int arraytype = host.getType()->getSimpleId();
+
+    if (host.hasInitializer())
+    {
+        list<ASTExpr *> l = host.getInitializer()->getElements();
+        for (list<ASTExpr *>::iterator it = l.begin(); it != l.end(); it++)
+        {
+            if (!standardCheck(arraytype, (*it)->getType(), &host))
+            {
+                failure = true;
+                return;
+            }
+        }
     }
 }
 

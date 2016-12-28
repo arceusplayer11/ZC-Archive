@@ -380,7 +380,7 @@ SymbolData *ScriptParser::buildSymbolTable(AST *theAST, map<string, long> *const
     SymbolTable *t = new SymbolTable(constants);
     Scope *globalScope = new Scope(NULL);
     bool failure = false;
-    
+
     //ADD LIBRARY FUNCTIONS TO THE GLOBAL SCOPE HERE
     GlobalSymbols::getInst().addSymbolsToScope(globalScope, t);
     FFCSymbols::getInst().addSymbolsToScope(globalScope,t);
@@ -392,71 +392,65 @@ SymbolData *ScriptParser::buildSymbolTable(AST *theAST, map<string, long> *const
     NPCSymbols::getInst().addSymbolsToScope(globalScope,t);
     LinkWeaponSymbols::getInst().addSymbolsToScope(globalScope,t);
     EnemyWeaponSymbols::getInst().addSymbolsToScope(globalScope,t);
-    
-    //strip the global functions from the AST
+
+    // strip the global functions from the AST
     GetGlobalFuncs gc;
     theAST->execute(gc, NULL);
     vector<ASTFuncDecl *> fds = gc.getResult();
-    
-    //add these functions to the global scope
+
+    // Add these functions to the global scope
     for(vector<ASTFuncDecl *>::iterator it = fds.begin(); it != fds.end(); it++)
     {
         vector<int> params;
-        
-        for(list<ASTVarDecl *>::iterator it2 = (*it)->getParams().begin();
-                it2 != (*it)->getParams().end(); it2++)
+
+				list<ASTFuncParam *> paramlist = (*it)->getParams();
+        for(list<ASTFuncParam *>::iterator it2 = paramlist.begin(); it2 != paramlist.end(); it2++)
         {
-            int type;
-            ExtractType temp;
-            (*it2)->getType()->execute(temp, &type);
-            
-            if(type == ScriptParser::TYPE_VOID)
+						int type = (*it2)->getType()->getSimpleId();
+            if (type == ScriptParser::TYPE_VOID)
             {
                 printErrorMsg(*it2, FUNCTIONVOIDPARAM, (*it2)->getName());
-                failure=true;
+                failure = true;
             }
-            
             params.push_back(type);
         }
-        
-        int rettype;
-        ExtractType temp;
-        (*it)->getReturnType()->execute(temp, &rettype);
+
+        int rettype = (*it)->getReturnType()->getSimpleId();
         int id = globalScope->getFuncSymbols().addFunction((*it)->getName(), rettype, params);
-        
+
         if(id == -1)
         {
             printErrorMsg(*it, FUNCTIONREDEF, (*it)->getName());
             failure=true;
         }
-        
+
         if(failure)
         {
             for(vector<ASTFuncDecl *>::iterator it2 = fds.begin(); it2 != fds.end(); it2++)
             {
                 delete *it2;
             }
-            
+
             delete globalScope;
             delete t;
             delete rval;
             delete theAST;
             return NULL;
         }
-        
+
         t->putAST(*it, id);
         t->putFunc(id, rettype);
         t->putFuncDecl(id, params);
-        
+
     }
-    
+
     rval->globalFuncs = fds;
-    
-    
-    
+
+
+
     //add global pointers
     int vid2;
-    
+
     //add a Link global variable
     vid2 = globalScope->getVarSymbols().addVariable("Link", ScriptParser::TYPE_LINK);
     t->putVar(vid2, ScriptParser::TYPE_LINK);
@@ -469,34 +463,34 @@ SymbolData *ScriptParser::buildSymbolTable(AST *theAST, map<string, long> *const
     vid2 = globalScope->getVarSymbols().addVariable("Game", ScriptParser::TYPE_GAME);
     t->putVar(vid2, ScriptParser::TYPE_GAME);
     t->addGlobalPointer(vid2);
-    
-    //strip the global variables from the AST
+
+    // Strip the global variables from the AST
     GetGlobalVars gv;
     theAST->execute(gv, NULL);
-    vector<ASTVarDecl *> gvs = gv.getResult();
-    vector<ASTArrayDecl *> gvas = gv.getResultA();
-    
+    vector<ASTSingleVarDecl *> gvs = gv.getVars();
+    vector<ASTArrayDecl *> gvas = gv.getArrays();
+
     //add the variables to the global scope
-    for(vector<ASTVarDecl *>::iterator it = gvs.begin(); it != gvs.end(); it++)
+    for(vector<ASTSingleVarDecl *>::iterator it = gvs.begin(); it != gvs.end(); it++)
     {
         BuildScriptSymbols bss;
         pair<Scope * ,SymbolTable *> param(globalScope, t);
         (*it)->execute(bss, &param);
-        
+
         if(!bss.isOK())
             failure = true;
     }
-    
+
     for(vector<ASTArrayDecl *>::iterator it = gvas.begin(); it != gvas.end(); it++)
     {
         BuildScriptSymbols bss;
         pair<Scope * , SymbolTable *> param(globalScope, t);
         (*it)->execute(bss, &param);
-        
+
         if(!bss.isOK())
             failure = true;
     }
-    
+
     vector<ASTScript *> scripts;
     
     if(!failure)
@@ -646,10 +640,10 @@ SymbolData *ScriptParser::buildSymbolTable(AST *theAST, map<string, long> *const
             delete *it2;
         }
         
-        for(vector<ASTVarDecl *>::iterator it2 = gvs.begin(); it2 != gvs.end(); it2++)
+        for (vector<ASTSingleVarDecl *>::iterator it2 = gvs.begin(); it2 != gvs.end(); it2++)
             delete *it2;
             
-        for(vector<ASTArrayDecl *>::iterator it2 = gvas.begin(); it2 != gvas.end(); it2++)
+        for (vector<ASTArrayDecl *>::iterator it2 = gvas.begin(); it2 != gvas.end(); it2++)
             delete *it2;
             
         delete globalScope;
@@ -719,7 +713,7 @@ FunctionData *ScriptParser::typeCheck(SymbolData *sdata)
             
             if(!isFunc && !IsArray)
             {
-                fd->globalVars.push_back((ASTVarDecl *)*it2);
+                fd->globalVars.push_back((ASTSingleVarDecl *)*it2);
             }
             
             it2 = stuff.erase(it2);
@@ -739,7 +733,7 @@ FunctionData *ScriptParser::typeCheck(SymbolData *sdata)
     if(failure)
     {
         //delete stuff
-        for(vector<ASTVarDecl *>::iterator it = fd->globalVars.begin(); it != fd->globalVars.end(); it++)
+        for(vector<ASTSingleVarDecl *>::iterator it = fd->globalVars.begin(); it != fd->globalVars.end(); it++)
         {
             delete *it;
         }
@@ -754,7 +748,7 @@ FunctionData *ScriptParser::typeCheck(SymbolData *sdata)
             delete *it;
         }
         
-        for(vector<ASTVarDecl *>::iterator it = fd->newGlobalVars.begin(); it != fd->newGlobalVars.end(); it++)
+        for(vector<ASTSingleVarDecl *>::iterator it = fd->newGlobalVars.begin(); it != fd->newGlobalVars.end(); it++)
             delete *it;
             
         for(vector<ASTArrayDecl *>::iterator it = fd->newGlobalArrays.begin(); it != fd->newGlobalArrays.end(); it++)
@@ -767,7 +761,7 @@ FunctionData *ScriptParser::typeCheck(SymbolData *sdata)
     
     //fd is now loaded with all the info
     //so run type-checker visitor
-    for(vector<ASTVarDecl *>::iterator it = fd->globalVars.begin(); it != fd->globalVars.end(); it++)
+    for(vector<ASTSingleVarDecl *>::iterator it = fd->globalVars.begin(); it != fd->globalVars.end(); it++)
     {
         pair<SymbolTable *, int> param = pair<SymbolTable *, int>(fd->symbols, -1);
         TypeCheck tc;
@@ -787,7 +781,7 @@ FunctionData *ScriptParser::typeCheck(SymbolData *sdata)
             failure = true;
     }
     
-    for(vector<ASTVarDecl *>::iterator it = fd->newGlobalVars.begin(); it != fd->newGlobalVars.end(); it++)
+    for(vector<ASTSingleVarDecl *>::iterator it = fd->newGlobalVars.begin(); it != fd->newGlobalVars.end(); it++)
     {
         pair<SymbolTable *, int> param = pair<SymbolTable *, int>(fd->symbols, -1);
         TypeCheck tc;
@@ -827,7 +821,7 @@ FunctionData *ScriptParser::typeCheck(SymbolData *sdata)
     if(failure)
     {
         //delete stuff
-        for(vector<ASTVarDecl *>::iterator it = fd->globalVars.begin(); it != fd->globalVars.end(); it++)
+        for(vector<ASTSingleVarDecl *>::iterator it = fd->globalVars.begin(); it != fd->globalVars.end(); it++)
         {
             delete *it;
         }
@@ -842,7 +836,7 @@ FunctionData *ScriptParser::typeCheck(SymbolData *sdata)
             delete *it;
         }
         
-        for(vector<ASTVarDecl *>::iterator it = fd->newGlobalVars.begin(); it != fd->newGlobalVars.end(); it++)
+        for(vector<ASTSingleVarDecl *>::iterator it = fd->newGlobalVars.begin(); it != fd->newGlobalVars.end(); it++)
             delete *it;
             
         for(vector<ASTArrayDecl *>::iterator it = fd->newGlobalArrays.begin(); it != fd->newGlobalArrays.end(); it++)
@@ -861,11 +855,11 @@ IntermediateData *ScriptParser::generateOCode(FunctionData *fdata)
     //Z_message("yes");
     bool failure = false;
     vector<ASTFuncDecl *> funcs = fdata->functions;
-    vector<ASTVarDecl *> globals = fdata->globalVars;
+    vector<ASTSingleVarDecl *> globals = fdata->globalVars;
     vector<ASTArrayDecl *> globalas = fdata->globalArrays;
     
     //we have no need of newglobals at this point anymore
-    for(vector<ASTVarDecl *>::iterator it = fdata->newGlobalVars.begin(); it != fdata->newGlobalVars.end(); it++)
+    for(vector<ASTSingleVarDecl *>::iterator it = fdata->newGlobalVars.begin(); it != fdata->newGlobalVars.end(); it++)
         globals.push_back(*it);
         
     for(vector<ASTArrayDecl *>::iterator it = fdata->newGlobalArrays.begin(); it != fdata->newGlobalArrays.end(); it++)
@@ -879,7 +873,7 @@ IntermediateData *ScriptParser::generateOCode(FunctionData *fdata)
     delete fdata;
     LinkTable lt;
     
-    for(vector<ASTVarDecl *>::iterator it = globals.begin(); it != globals.end(); it++)
+    for(vector<ASTSingleVarDecl *>::iterator it = globals.begin(); it != globals.end(); it++)
     {
         int vid2 = symbols->getID(*it);
         lt.addGlobalVar(vid2);
@@ -983,7 +977,7 @@ IntermediateData *ScriptParser::generateOCode(FunctionData *fdata)
     
     //Z_message("yes");
     
-    for(vector<ASTVarDecl *>::iterator it = globals.begin(); it != globals.end(); it++)
+    for(vector<ASTSingleVarDecl *>::iterator it = globals.begin(); it != globals.end(); it++)
     {
         OpcodeContext oc;
         oc.linktable = &lt;

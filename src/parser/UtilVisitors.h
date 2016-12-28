@@ -1,7 +1,9 @@
 #ifndef UTILVISITORS_H
 #define UTILVISITORS_H
 
+#include <assert.h>
 #include "AST.h"
+
 
 class Clone : public ASTVisitor
 {
@@ -13,20 +15,6 @@ public:
     virtual void caseDeclList(ASTDeclList &host, void *param);
     virtual void caseImportDecl(ASTImportDecl &host, void *param);
     virtual void caseConstDecl(ASTConstDecl &host, void *param);
-    virtual void caseFuncDecl(ASTFuncDecl &host, void *param);
-    virtual void caseTypeFloat(ASTTypeFloat &host, void *param);
-    virtual void caseTypeBool(ASTTypeBool &host, void *param);
-    virtual void caseTypeVoid(ASTTypeVoid &host, void *param);
-    virtual void caseTypeFFC(ASTTypeFFC &host, void *param);
-    virtual void caseTypeItem(ASTTypeItem &host, void *param);
-    virtual void caseTypeItemclass(ASTTypeItemclass &host, void *param);
-    virtual void caseTypeGlobal(ASTTypeGlobal &host, void *param);
-    virtual void caseTypeNPC(ASTTypeNPC &host, void *param);
-    virtual void caseTypeLWpn(ASTTypeLWpn &host, void *param);
-    virtual void caseTypeEWpn(ASTTypeEWpn &host, void *param);
-    virtual void caseVarDecl(ASTVarDecl &host, void *param);
-    virtual void caseArrayDecl(ASTArrayDecl &host, void *param);
-    virtual void caseVarDeclInitializer(ASTVarDeclInitializer &host, void *param);
     virtual void caseExprAnd(ASTExprAnd &host, void *param);
     virtual void caseExprOr(ASTExprOr &host, void *param);
     virtual void caseExprGT(ASTExprGT &host, void *param);
@@ -71,7 +59,26 @@ public:
     virtual void caseExprPreDecrement(ASTExprPreDecrement &host, void *param);
     virtual void caseStmtBreak(ASTStmtBreak &host, void *param);
     virtual void caseStmtContinue(ASTStmtContinue &host, void *param);
-    
+		// Types
+    void caseTypeVoid(ASTTypeVoid &host, void *) {result = new ASTTypeVoid(host);}
+    void caseTypeGlobal(ASTTypeGlobal &host, void *) {result = new ASTTypeGlobal(host);}
+    void caseTypeFloat(ASTTypeFloat &host, void *) {result = new ASTTypeFloat(host);}
+    void caseTypeBool(ASTTypeBool &host, void *) {result = new ASTTypeBool(host);}
+    void caseTypeFFC(ASTTypeFFC &host, void *) {result = new ASTTypeFFC(host);}
+    void caseTypeItem(ASTTypeItem &host, void *) {result = new ASTTypeItem(host);}
+    void caseTypeItemclass(ASTTypeItemclass &host, void *) {result = new ASTTypeItemclass(host);}
+    void caseTypeNPC(ASTTypeNPC &host, void *) {result = new ASTTypeNPC(host);}
+    void caseTypeLWpn(ASTTypeLWpn &host, void *) {result = new ASTTypeLWpn(host);}
+    void caseTypeEWpn(ASTTypeEWpn &host, void *) {result = new ASTTypeEWpn(host);}
+		// Function Declaration
+    void caseFuncDecl(ASTFuncDecl &host, void *) {result = new ASTFuncDecl(host);}
+    void caseFuncParam(ASTFuncParam &host, void *) {result = new ASTFuncParam(host);}
+		// Variable Declaration
+		void caseVarDeclList(ASTVarDeclList &host, void *) {result = new ASTVarDeclList(host);}
+    void caseSingleVarDecl(ASTSingleVarDecl &host, void *) {result = new ASTSingleVarDecl(host);}
+    void caseArrayDecl(ASTArrayDecl &host, void *) {result = new ASTArrayDecl(host);}
+    void caseArrayInitializer(ASTArrayInitializer &host, void *) {result = new ASTArrayInitializer(host);}
+
     AST *getResult()
     {
         return result;
@@ -83,10 +90,7 @@ private:
 class RecursiveVisitor : public ASTVisitor
 {
 public:
-    virtual void caseDefault(void *param)
-    {
-        param=param; /*these are here to bypass compiler warnings about unused arguments*/
-    }
+		virtual void caseDefault(void *) {}
     virtual void caseProgram(ASTProgram &host, void *param)
     {
         host.getDeclarations()->execute(*this,param);
@@ -98,41 +102,6 @@ public:
         for(list<ASTDecl *>::iterator it = l.begin(); it != l.end(); it++)
         {
             (*it)->execute(*this,param);
-        }
-    }
-    virtual void caseFuncDecl(ASTFuncDecl &host, void *param)
-    {
-        host.getReturnType()->execute(*this,param);
-        list<ASTVarDecl *> l = host.getParams();
-        
-        for(list<ASTVarDecl *>::iterator it = l.begin(); it != l.end(); it++)
-        {
-            (*it)->execute(*this,param);
-        }
-        
-        host.getBlock()->execute(*this,param);
-    }
-    virtual void caseVarDecl(ASTVarDecl &host, void *param)
-    {
-        host.getType()->execute(*this,param);
-    }
-    virtual void caseVarDeclInitializer(ASTVarDeclInitializer &host, void *param)
-    {
-        host.getType()->execute(*this,param);
-        host.getInitializer()->execute(*this,param);
-    }
-    virtual void caseArrayDecl(ASTArrayDecl &host, void *param)
-    {
-        host.getType()->execute(*this,param);
-        
-				((ASTExpr *) host.getSize())->execute(*this, param);
-            
-        if(host.getList() != NULL)
-        {
-            for(list<ASTExpr *>::iterator it = host.getList()->getList().begin(); it != host.getList()->getList().end(); it++)
-            {
-                (*it)->execute(*this,param);
-            }
         }
     }
     virtual void caseExprAnd(ASTExprAnd &host, void *param)
@@ -326,6 +295,13 @@ public:
         host.getStmt()->execute(*this,param);
         host.getCond()->execute(*this,param);
     }
+		// Function Declaration
+    virtual void caseFuncDecl(ASTFuncDecl &host, void *param);
+		// Variable Declaration
+		virtual void caseVarDeclList(ASTVarDeclList &host, void *param);
+    virtual void caseSingleVarDecl(ASTSingleVarDecl &host, void *param);
+    virtual void caseArrayDecl(ASTArrayDecl &host, void *param);
+    virtual void caseArrayInitializer(ASTArrayInitializer &host, void *param);
 };
 
 //removes all import declarations from a program
@@ -369,7 +345,7 @@ public:
     GetGlobalFuncs() : result() {}
     virtual void caseDefault(void *param);
     virtual void caseDeclList(ASTDeclList &host, void *param);
-    virtual void caseProgram(ASTProgram &host, void *param);
+    virtual void caseProgram(ASTProgram &host, void *param) {host.getDeclarations()->execute(*this, param);}
     virtual void caseFuncDecl(ASTFuncDecl &host, void *param);
     vector<ASTFuncDecl *> getResult()
     {
@@ -382,34 +358,29 @@ private:
 class GetGlobalVars : public ASTVisitor
 {
 public:
-    GetGlobalVars() : result() {}
-    virtual void caseDefault(void *param);
-    virtual void caseDeclList(ASTDeclList &host, void *param);
-    virtual void caseProgram(ASTProgram &host, void *param);
-    virtual void caseVarDecl(ASTVarDecl &host, void *param);
-    virtual void caseVarDeclInitializer(ASTVarDeclInitializer &host, void *param);
-    virtual void caseArrayDecl(ASTArrayDecl &host, void *param);
-    vector<ASTVarDecl *> getResult()
-    {
-        return result;
-    }
-    vector<ASTArrayDecl *> getResultA()
-    {
-        return resultA;
-    }
+    GetGlobalVars() : vars() {}
+    void caseDefault(void *) {var = false;}
+    void caseProgram(ASTProgram &host, void *) {host.getDeclarations()->execute(*this, NULL);}
+    void caseDeclList(ASTDeclList &host, void *param);
+		void caseVarDeclList(ASTVarDeclList &host, void *);
+    void caseSingleVarDecl(ASTSingleVarDecl &host, void *) {vars.push_back(&host); var = true;}
+    void caseArrayDecl(ASTArrayDecl &host, void *) {arrays.push_back(&host); var = true;}
+    vector<ASTSingleVarDecl *> getVars() {return vars;}
+    vector<ASTArrayDecl *> getArrays() {return arrays;}
 private:
-    vector<ASTVarDecl *> result;
-    vector<ASTArrayDecl *> resultA;
+		bool var;
+    vector<ASTSingleVarDecl *> vars;
+    vector<ASTArrayDecl *> arrays;
 };
 
 class GetScripts : public ASTVisitor
 {
 public:
     GetScripts() : result() {}
-    virtual void caseDefault(void *param);
-    virtual void caseScript(ASTScript &host, void *param);
-    virtual void caseProgram(ASTProgram &host, void *param);
+    virtual void caseDefault(void *) {assert(false);}
+    virtual void caseProgram(ASTProgram &host, void *) {host.getDeclarations()->execute(*this, NULL);}
     virtual void caseDeclList(ASTDeclList &host, void *param);
+    virtual void caseScript(ASTScript &, void *) {}
     vector<ASTScript *> getResult()
     {
         return result;
@@ -432,11 +403,8 @@ class CheckForExtraneousImports : public RecursiveVisitor
 {
 public:
     CheckForExtraneousImports() : ok(true) {}
-    bool isOK()
-    {
-        return ok;
-    }
-    virtual void caseDefault(void *param);
+    bool isOK() {return ok;}
+    virtual void caseDefault(void *param) {}
     virtual void caseImportDecl(ASTImportDecl &host, void *param);
 private:
     bool ok;

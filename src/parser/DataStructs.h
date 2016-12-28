@@ -120,7 +120,7 @@ struct SymbolData
 {
     SymbolTable *symbols;
     vector<ASTFuncDecl *> globalFuncs;
-    vector<ASTVarDecl *> globalVars;
+    vector<ASTSingleVarDecl *> globalVars;
     vector<ASTArrayDecl *> globalArrays;
     vector<ASTScript *> scripts;
     map<ASTScript *, int> runsymbols;
@@ -133,8 +133,8 @@ struct FunctionData
 {
     SymbolTable *symbols;
     vector<ASTFuncDecl *> functions;
-    vector<ASTVarDecl *> globalVars;
-    vector<ASTVarDecl *> newGlobalVars;
+    vector<ASTSingleVarDecl *> globalVars;
+    vector<ASTSingleVarDecl *> newGlobalVars;
     vector<ASTArrayDecl *> globalArrays;
     vector<ASTArrayDecl *> newGlobalArrays;
     map<string, int> scriptRunSymbols;

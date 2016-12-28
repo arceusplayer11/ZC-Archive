@@ -11,129 +11,6 @@ void BuildOpcodes::caseDefault(void *)
     assert(false);
 }
 
-void BuildOpcodes::caseFuncDecl(ASTFuncDecl &host, void *param)
-{
-    returnlabelid = ScriptParser::getUniqueLabelID();
-    host.getBlock()->execute(*this,param);
-}
-
-void BuildOpcodes::caseVarDecl(ASTVarDecl &host, void *param)
-{
-    //initialize to 0
-    OpcodeContext *c = (OpcodeContext *)param;
-    int globalid = c->linktable->getGlobalID(c->symbols->getID(&host));
-    
-    if(globalid != -1)
-    {
-        //it's a global var
-        //just set it to 0
-        result.push_back(new OSetImmediate(new GlobalArgument(globalid), new LiteralArgument(0)));
-        return;
-    }
-    
-    //it's a local var
-    //set it to 0 on the stack
-    int offset = c->stackframe->getOffset(c->symbols->getID(&host));
-    result.push_back(new OSetRegister(new VarArgument(SFTEMP), new VarArgument(SFRAME)));
-    result.push_back(new OAddImmediate(new VarArgument(SFTEMP), new LiteralArgument(offset)));
-    result.push_back(new OSetImmediate(new VarArgument(EXP1), new LiteralArgument(0)));
-    result.push_back(new OStoreIndirect(new VarArgument(EXP1), new VarArgument(SFTEMP)));
-}
-
-void BuildOpcodes::caseVarDeclInitializer(ASTVarDeclInitializer &host, void *param)
-{
-    OpcodeContext *c = (OpcodeContext *) param;
-    //compute the value of the initializer
-    host.getInitializer()->execute(*this,param);
-    //value of expr now stored in EXP1
-    int globalid = c->linktable->getGlobalID(c->symbols->getID(&host));
-    
-    if(globalid != -1)
-    {
-        //it's a global var
-        result.push_back(new OSetRegister(new GlobalArgument(globalid), new VarArgument(EXP1)));
-        return;
-    }
-    
-    //it's a local var
-    //set it on the stack
-    int offset = c->stackframe->getOffset(c->symbols->getID(&host));
-    result.push_back(new OSetRegister(new VarArgument(SFTEMP), new VarArgument(SFRAME)));
-    result.push_back(new OAddImmediate(new VarArgument(SFTEMP), new LiteralArgument(offset)));
-    result.push_back(new OStoreIndirect(new VarArgument(EXP1), new VarArgument(SFTEMP)));
-}
-
-void BuildOpcodes::caseArrayDecl(ASTArrayDecl &host, void *param)
-{
-    OpcodeContext *c = (OpcodeContext *) param;
-    
-    //Check if the array is global or not
-    int globalid = c->linktable->getGlobalID(c->symbols->getID(&host));
-    int RAMtype = (globalid == -1) ? SCRIPTRAM: GLOBALRAM;
-
-	if (!host.getSize()->hasIntValue())
-	{
-		failure = true;
-		printErrorMsg(&host, CONSTEXPRONLY, "");
-        return;
-	}
-	
-	long size = host.getSize()->getIntValue();
-
-	if(size < 10000)
-	{
-		failure = true;
-		printErrorMsg(&host, ARRAYTOOSMALL, "");
-		return;
-	}
-        
-	//Check if we've allocated enough memory for the initialiser
-	if(host.getList() != NULL && host.getList()->getList().size() >= size_t(size))
-	{
-		failure = true;
-            
-		if(host.getList()->isString())
-			printErrorMsg(&host, ARRAYLISTSTRINGTOOLARGE, "");
-		else
-			printErrorMsg(&host, ARRAYLISTTOOLARGE, "");
-                
-		return;
-	}
-        
-	//Allocate
-	if(RAMtype == GLOBALRAM)
-	{
-		result.push_back(new OAllocateGlobalMemImmediate(new VarArgument(EXP1), new LiteralArgument(size)));
-		result.push_back(new OSetRegister(new GlobalArgument(globalid), new VarArgument(EXP1)));
-	}
-	else
-	{
-		result.push_back(new OAllocateMemImmediate(new VarArgument(EXP1), new LiteralArgument(size)));
-		int offset = c->stackframe->getOffset(c->symbols->getID(&host));
-		result.push_back(new OSetRegister(new VarArgument(SFTEMP), new VarArgument(SFRAME)));
-		result.push_back(new OAddImmediate(new VarArgument(SFTEMP), new LiteralArgument(offset)));
-		result.push_back(new OStoreIndirect(new VarArgument(EXP1), new VarArgument(SFTEMP)));
-	}
-    
-    //Initialise
-    if(host.getList() != NULL)
-    {
-        result.push_back(new OSetRegister(new VarArgument(INDEX), new VarArgument(EXP1)));
-        
-        int i=0;
-        for(list<ASTExpr *>::iterator it = host.getList()->getList().begin();
-          it != host.getList()->getList().end();
-          it++, i+=10000)
-        {
-            result.push_back(new OPushRegister(new VarArgument(INDEX)));
-            (*it)->execute(*this, param);
-            result.push_back(new OPopRegister(new VarArgument(INDEX)));
-            result.push_back(new OSetImmediate(new VarArgument(INDEX2), new LiteralArgument(i)));
-            result.push_back(new OSetRegister(new VarArgument(RAMtype), new VarArgument(EXP1)));
-        }
-    }
-}
-
 void BuildOpcodes::castFromBool(vector<Opcode *> &res, int reg)
 {
     res.push_back(new OCompareImmediate(new VarArgument(reg), new LiteralArgument(0)));
@@ -1092,7 +969,121 @@ void BuildOpcodes::caseStmtContinue(ASTStmtContinue &host, void *)
     
     result.push_back(new OGotoImmediate(new LabelArgument(continuelabelid)));
 }
-/////////////////////////////////////////////////////////////////////////////////
+
+////////////////
+// Function Declaration
+
+void BuildOpcodes::caseFuncDecl(ASTFuncDecl &host, void *param)
+{
+    returnlabelid = ScriptParser::getUniqueLabelID();
+    host.getBlock()->execute(*this, param);
+}
+
+////////////////
+// Variable Declaration
+
+void BuildOpcodes::caseSingleVarDecl(ASTSingleVarDecl &host, void *param)
+{
+	// Add initializer opcodes if present.
+	if (host.hasInitializer())
+		host.getInitializer()->execute(*this, param);
+
+    OpcodeContext *c = (OpcodeContext *)param;
+	int varid = c->symbols->getID(&host);
+    int globalid = c->linktable->getGlobalID(varid);
+
+	// It's a global variable, so set directly.
+    if (globalid != -1)
+    {
+		if (host.hasInitializer())
+			result.push_back(new OSetRegister(new GlobalArgument(globalid), new VarArgument(EXP1)));
+		else
+			result.push_back(new OSetImmediate(new GlobalArgument(globalid), new LiteralArgument(0)));
+        return;
+    }
+
+    // It's a local var, set it on the stack.
+    int offset = c->stackframe->getOffset(varid);
+    result.push_back(new OSetRegister(new VarArgument(SFTEMP), new VarArgument(SFRAME)));
+    result.push_back(new OAddImmediate(new VarArgument(SFTEMP), new LiteralArgument(offset)));
+	if (!host.hasInitializer())
+		result.push_back(new OSetImmediate(new VarArgument(EXP1), new LiteralArgument(0)));
+    result.push_back(new OStoreIndirect(new VarArgument(EXP1), new VarArgument(SFTEMP)));
+}
+
+void BuildOpcodes::caseArrayDecl(ASTArrayDecl &host, void *param)
+{
+    OpcodeContext *c = (OpcodeContext *) param;
+
+    // Check if the array is global or not.
+	int varid = c->symbols->getID(&host);
+    int globalid = c->linktable->getGlobalID(varid);
+    int RAMtype = (globalid == -1) ? SCRIPTRAM: GLOBALRAM;
+
+	if (!host.getSize()->hasIntValue())
+	{
+		failure = true;
+		printErrorMsg(&host, CONSTEXPRONLY, "");
+        return;
+	}
+
+	long size = host.getSize()->getIntValue();
+
+	if (size < 10000)
+	{
+		failure = true;
+		printErrorMsg(&host, ARRAYTOOSMALL, "");
+		return;
+	}
+
+	// Check if we've allocated enough memory for the initialiser
+	if (host.hasInitializer() && host.getInitializer()->getSize() >= size_t(size))
+	{
+		failure = true;
+
+		if (host.getInitializer()->isString())
+			printErrorMsg(&host, ARRAYLISTSTRINGTOOLARGE, "");
+		else
+			printErrorMsg(&host, ARRAYLISTTOOLARGE, "");
+
+		return;
+	}
+
+	// Allocate
+	if(RAMtype == GLOBALRAM)
+	{
+		result.push_back(new OAllocateGlobalMemImmediate(new VarArgument(EXP1), new LiteralArgument(size)));
+		result.push_back(new OSetRegister(new GlobalArgument(globalid), new VarArgument(EXP1)));
+	}
+	else
+	{
+		result.push_back(new OAllocateMemImmediate(new VarArgument(EXP1), new LiteralArgument(size)));
+		int offset = c->stackframe->getOffset(c->symbols->getID(&host));
+		result.push_back(new OSetRegister(new VarArgument(SFTEMP), new VarArgument(SFRAME)));
+		result.push_back(new OAddImmediate(new VarArgument(SFTEMP), new LiteralArgument(offset)));
+		result.push_back(new OStoreIndirect(new VarArgument(EXP1), new VarArgument(SFTEMP)));
+	}
+
+    // Initialise
+    if (host.hasInitializer())
+    {
+        result.push_back(new OSetRegister(new VarArgument(INDEX), new VarArgument(EXP1)));
+
+        int i = 0;
+		list<ASTExpr *> l = host.getInitializer()->getElements();
+        for (list<ASTExpr *>::iterator it = l.begin(); it != l.end(); ++it, i += 10000)
+        {
+            result.push_back(new OPushRegister(new VarArgument(INDEX)));
+            (*it)->execute(*this, param);
+            result.push_back(new OPopRegister(new VarArgument(INDEX)));
+            result.push_back(new OSetImmediate(new VarArgument(INDEX2), new LiteralArgument(i)));
+            result.push_back(new OSetRegister(new VarArgument(RAMtype), new VarArgument(EXP1)));
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////
+
 void LValBOHelper::caseDefault(void *)
 {
     //Shouldn't happen
@@ -1220,9 +1211,9 @@ void LValBOHelper::caseExprArray(ASTExprArray &host, void *param)
     result.push_back(new OSetRegister(new VarArgument(RAMtype), new VarArgument(EXP2)));
 }
 
-void LValBOHelper::caseVarDecl(ASTVarDecl &host, void *param)
+void LValBOHelper::caseSingleVarDecl(ASTSingleVarDecl &host, void *param)
 {
-    //cannot be a global variable, so just stuff it in the stack
+    // Cannot be a global variable, so just stuff it in the stack.
     OpcodeContext *c = (OpcodeContext *)param;
     int vid = c->symbols->getID(&host);
     int offset = c->stackframe->getOffset(vid);

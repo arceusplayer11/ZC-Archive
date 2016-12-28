@@ -241,12 +241,15 @@ bin/romview$(EXECUTABLE_SUFFIX) : bin/$(SOUND_LIBRARY) $(ROMVIEW_DEPENDENCIES)
 .PHONY : all
 all : $(EXECUTABLE_FILES) $(addprefix bin/,$(SHARED_LIBRARIES))
 
-.PHONY : clean veryclean
+.PHONY : clean veryclean clean-parser
 clean :
 	-rm -rf obj/*
 veryclean : clean
 	-rm -rf .d
 	-rm -f $(EXECUTABLE_FILES) $(PARSER_FILES)
+clean-parser :
+	-rm -rf obj/parser/*
+	-rm -f $(PARSER_FILES)
 
 .PHONY : zc zelda zq zquest rv romview sound zcsound
 zc zelda : $(word 1, $(EXECUTABLE_FILES))

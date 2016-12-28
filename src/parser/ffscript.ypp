@@ -117,8 +117,7 @@ GlobalStmt : Script {$$ = $1;}
 	| Import {$$ = $1;}
 	| FuncDecl {$$ = $1;}
 	| ConstDecl {$$ = $1;}
-	| MultiVarDecl SEMICOLON {$$ = $1;}
-	| ArrayDecl SEMICOLON {$$ = $1;}
+	| VarDecl SEMICOLON {$$ = $1;}
 	;
 
 ConstDecl : CONST FLOAT IDENTIFIER ASSIGN NUMBER SEMICOLON {ASTString *name = (ASTString *)$3;
@@ -130,68 +129,6 @@ ConstDecl : CONST FLOAT IDENTIFIER ASSIGN NUMBER SEMICOLON {ASTString *name = (A
 																  val->set_negative(true);
 																  $$ = new ASTConstDecl(name->getValue(), val,@1);
 																  delete name;}
-
-ArrayDecl : Type IDENTIFIER LBRACKET ConstExpr RBRACKET {
-			ASTType *type = (ASTType *)$1;
-			ASTString *name = (ASTString *)$2;
-			ASTExpr *size = (ASTExpr *)$4;
-			$$ = new ASTArrayDecl(type, name->getValue(), size, NULL, @1);
-			delete name;}
-	| Type IDENTIFIER LBRACKET ConstExpr RBRACKET ASSIGN LBRACE ArrayList RBRACE {
-			ASTType *type = (ASTType *)$1;
- 			ASTString *name = (ASTString *)$2;
-			ASTExpr *size = (ASTExpr *)$4;
-		  ASTArrayList *list = (ASTArrayList *)$8;
-			$$ = new ASTArrayDecl(type, name->getValue(), size, list, @1);
-			delete name;}
- 	| Type IDENTIFIER LBRACKET RBRACKET ASSIGN LBRACE ArrayList RBRACE {
-			ASTType *type = (ASTType *)$1;
-			ASTString *name = (ASTString *)$2;
-			ASTArrayList *list = (ASTArrayList *)$7;
-			char val[15];
-			sprintf(val, "%d", list->getList().size());
-			ASTExpr *size = new ASTNumConstant(new ASTFloat(val, 0, @1), @1);
-		  $$ = new ASTArrayDecl(type, name->getValue(), size, list, @1);
-			delete name;}
-	| Type IDENTIFIER LBRACKET ConstExpr RBRACKET ASSIGN QUOTEDSTRING {
-			ASTType *type = (ASTType *)$1;
-			ASTString *name = (ASTString *)$2;
-			ASTExpr *size = (ASTExpr *)$4;
-			ASTArrayList *list = new ASTArrayList(@1);
-			list->makeString();
-			ASTString *string = (ASTString *)$7;
-
-			for (unsigned int i = 1; i < string->getValue().length() - 1; i++)
-				list->addParam(new ASTNumConstant(new ASTFloat(long((string->getValue())[i]), 0, @1), @1));
-
-			list->addParam(new ASTNumConstant(new ASTFloat(0L, 0, @1), @1));
-		  $$ = new ASTArrayDecl(type, name->getValue(), size, list, @1);
-			delete name;}
- 	| Type IDENTIFIER LBRACKET RBRACKET ASSIGN QUOTEDSTRING {
-			ASTType *type = (ASTType *)$1;
-			ASTString *name = (ASTString *)$2;
-			ASTArrayList *list = new ASTArrayList(@1);
-			list->makeString();
-			ASTString *string = (ASTString *)$6;
-			ASTExpr *size = new ASTNumConstant(new ASTFloat(string->getValue().length()-1, 0, @1), @1);
-
-			for(unsigned int i=1; i < string->getValue().length()-1; i++)
-				list->addParam(new ASTNumConstant(new ASTFloat(long((string->getValue())[i]), 0, @1), @1));
-
-			list->addParam(new ASTNumConstant(new ASTFloat(0L, 0, @1), @1));
-			$$ = new ASTArrayDecl(type, name->getValue(), size, list, @1);
-			delete name;}
-	;
-
-
-
-ArrayList : ArrayList COMMA Expr {	ASTArrayList *al = (ASTArrayList *)$1;
-									al->addParam((ASTExpr*)$3);
-									$$=al;}
-	| Expr {	ASTArrayList *al = new ASTArrayList(@1);
-				al->addParam((ASTExpr *)$1);
-				$$=al;}
-	;
 
 Script : ScriptType SCRIPT IDENTIFIER ScriptBlock {ASTType *type = (ASTType *)$1;
 												   int scripttype; //Itemdata pointer instead of item pointer
@@ -230,43 +167,8 @@ ScriptStmtList : ScriptStmt ScriptStmtList {ASTDeclList *dl = (ASTDeclList *)$2;
 					$$ = dl;}
 	;
 
-ScriptStmt : MultiVarDecl SEMICOLON {$$ = $1;}
-	| ArrayDecl SEMICOLON {$$ = $1;}
+ScriptStmt : VarDecl SEMICOLON {$$ = $1;}
 	| FuncDecl {$$ = $1;}
-	;
-
-MultiVarDecl : Type MultiVarDeclList {
-		  ASTType *type = (ASTType *)$1;
-			ASTVarDeclList *list = (ASTVarDeclList *)$2;
-			list->setType(type);
-		  delete type;
-			$$ = list;}
-  ;
-
-MultiVarDeclList : VarDeclMaybeInitializer COMMA MultiVarDeclList {
-			ASTDeclList *list = (ASTDeclList *)$3;
-			list->addDeclaration((ASTDecl *)$1);
-			$$ = list;}
-  | VarDeclMaybeInitializer {
-			ASTDeclList *list = new ASTDeclList(@1);
-			list->addDeclaration((ASTDecl *)$1);
-			$$ = list;}
-  ;
-
-VarDeclMaybeInitializer : IDENTIFIER ASSIGN Expr {
-      ASTString *name = (ASTString *)$1;
-			$$ = new ASTVarDeclInitializer(name->getValue(), (ASTExpr *)$3, @1);
-			delete name;}
-  | IDENTIFIER {
-			ASTString *name = (ASTString *)$1;
-		  $$ = new ASTVarDecl(name->getValue(), @1);
-		  delete name;}
-  ;
-
-VarDecl : Type IDENTIFIER {ASTType *type = (ASTType *)$1;
-				   ASTString *name = (ASTString *)$2;
-				   $$ = new ASTVarDecl(type, name->getValue(),@1);
-				   delete name;}
 	;
 
 Type : FLOAT {$$ = new ASTTypeFloat(@1);}
@@ -278,34 +180,6 @@ Type : FLOAT {$$ = new ASTTypeFloat(@1);}
 	| NPC		{$$ = new ASTTypeNPC(@1);}
 	| LWEAPON	{$$ = new ASTTypeLWpn(@1);}
 	| EWEAPON	{$$ = new ASTTypeEWpn(@1);}
-	;
-
-FuncDecl : Type IDENTIFIER LPAREN ParamList RPAREN Block {ASTFuncDecl *fd = (ASTFuncDecl *)$4;
-									    ASTType *rettype = (ASTType *)$1;
-									    ASTString *name = (ASTString *)$2;
-									    ASTBlock *block = (ASTBlock *)$6;
-									    fd->setName(name->getValue());
-									    delete name;
-									    fd->setReturnType(rettype);
-									    fd->setBlock(block);
-									    $$=fd;}
-	| Type IDENTIFIER LPAREN RPAREN Block {ASTFuncDecl *fd = new ASTFuncDecl(@1);
-							   ASTType *rettype = (ASTType *)$1;
-							   ASTString *name = (ASTString *)$2;
-							   ASTBlock *block = (ASTBlock *)$5;
-							   fd->setName(name->getValue());
-							   delete name;
-							   fd->setReturnType(rettype);
-							   fd->setBlock(block);
-							   $$=fd;}
-	;
-
-ParamList : VarDecl COMMA ParamList {ASTFuncDecl *fd = (ASTFuncDecl *)$3;
-						 fd->addParam((ASTVarDecl *)$1);
-						 $$=fd;}
-	| VarDecl {ASTFuncDecl *fd = new ASTFuncDecl(@1);
-		     fd->addParam((ASTVarDecl *)$1);
-		     $$=fd;}
 	;
 
 Block : LBRACE StmtList RBRACE  {$$=$2;}
@@ -322,8 +196,7 @@ StmtList : StmtList Stmt {ASTBlock *block = (ASTBlock *)$1;
 		  $$ = block;}
 	;
 
-Stmt : MultiVarDecl SEMICOLON {$$ = $1;}
-	| ArrayDecl SEMICOLON {$$ = $1;}
+Stmt : VarDecl SEMICOLON {$$ = $1;}
 	| AssignStmt SEMICOLON {$$ = $1;}
 	| ShortcutAssignStmt SEMICOLON {$$=$1;}
 	| ForStmt {$$ = $1;}
@@ -338,8 +211,7 @@ Stmt : MultiVarDecl SEMICOLON {$$ = $1;}
 	| CONTINUE SEMICOLON {$$ = new ASTStmtContinue(@1);}
 	;
 
-StmtNoSemi : MultiVarDecl {$$ = $1;}
-	| ArrayDecl {$$ = $1;}
+StmtNoSemi : VarDecl {$$ = $1;}
 	| AssignStmt {$$ = $1;}
 	| ShortcutAssignStmt {$$=$1;}
 	| ForStmt {$$ = $1;}
@@ -355,25 +227,20 @@ StmtNoSemi : MultiVarDecl {$$ = $1;}
 	;
 
 ShortcutAssignStmt : DotExpr PLUSASSIGN Expr {SHORTCUT(ASTExprPlus,$1,$3,$$,@1,@2) }
-				   | DotExpr MINUSASSIGN Expr {SHORTCUT(ASTExprMinus,$1,$3,$$,@1,@2) }
-				   | DotExpr TIMESASSIGN Expr {SHORTCUT(ASTExprTimes,$1,$3,$$,@1,@2) }
-				   | DotExpr DIVIDEASSIGN Expr {SHORTCUT(ASTExprDivide,$1,$3,$$,@1,@2) }
-				   | DotExpr ANDASSIGN Expr {SHORTCUT(ASTExprAnd,$1,$3,$$,@1,@2) }
-				   | DotExpr ORASSIGN Expr {SHORTCUT(ASTExprOr,$1,$3,$$,@1,@2) }
-				   | DotExpr BITANDASSIGN Expr {SHORTCUT(ASTExprBitAnd,$1,$3,$$,@1,@2) }
-				   | DotExpr BITORASSIGN Expr {SHORTCUT(ASTExprBitOr,$1,$3,$$,@1,@2) }
-				   | DotExpr BITXORASSIGN Expr {SHORTCUT(ASTExprBitXor,$1,$3,$$,@1,@2) }
-				   | DotExpr LSHIFTASSIGN Expr {SHORTCUT(ASTExprLShift,$1,$3,$$,@1,@2) }
-				   | DotExpr RSHIFTASSIGN Expr {SHORTCUT(ASTExprRShift,$1,$3,$$,@1,@2) }
-				   | DotExpr MODULOASSIGN Expr {SHORTCUT(ASTExprModulo,$1,$3,$$,@1,@2) }
-				   ;
-
-
-AssignStmt : LVal ASSIGN Expr {$$ = new ASTStmtAssign((ASTStmt *)$1, (ASTExpr *)$3,@1);}
+	| DotExpr MINUSASSIGN Expr {SHORTCUT(ASTExprMinus,$1,$3,$$,@1,@2) }
+	| DotExpr TIMESASSIGN Expr {SHORTCUT(ASTExprTimes,$1,$3,$$,@1,@2) }
+	| DotExpr DIVIDEASSIGN Expr {SHORTCUT(ASTExprDivide,$1,$3,$$,@1,@2) }
+	| DotExpr ANDASSIGN Expr {SHORTCUT(ASTExprAnd,$1,$3,$$,@1,@2) }
+	| DotExpr ORASSIGN Expr {SHORTCUT(ASTExprOr,$1,$3,$$,@1,@2) }
+	| DotExpr BITANDASSIGN Expr {SHORTCUT(ASTExprBitAnd,$1,$3,$$,@1,@2) }
+	| DotExpr BITORASSIGN Expr {SHORTCUT(ASTExprBitOr,$1,$3,$$,@1,@2) }
+ 	| DotExpr BITXORASSIGN Expr {SHORTCUT(ASTExprBitXor,$1,$3,$$,@1,@2) }
+	| DotExpr LSHIFTASSIGN Expr {SHORTCUT(ASTExprLShift,$1,$3,$$,@1,@2) }
+	| DotExpr RSHIFTASSIGN Expr {SHORTCUT(ASTExprRShift,$1,$3,$$,@1,@2) }
+	| DotExpr MODULOASSIGN Expr {SHORTCUT(ASTExprModulo,$1,$3,$$,@1,@2) }
 	;
 
-LVal : DotExpr {$$ = $1;}
-	;
+AssignStmt : DotExpr ASSIGN Expr {$$ = new ASTStmtAssign((ASTStmt *)$1, (ASTExpr *)$3,@1);};
 
 DotExpr : IDENTIFIER DOT IDENTIFIER {ASTString *lval = (ASTString *)$1;
 						 ASTString *rval = (ASTString *)$3;
@@ -609,6 +476,136 @@ IfStmt : IF LPAREN Expr RPAREN Stmt {ASTExpr *cond = (ASTExpr *)$3;
 
 ReturnStmt : RETURN Expr {$$ = new ASTStmtReturnVal((ASTExpr *)$2,@1);}
 	| RETURN {$$ = new ASTStmtReturn(@1);}
+	;
+
+
+////////////////////////////////////////////////////////////////
+// Function Declaration
+
+FuncDecl : Type IDENTIFIER LPAREN FuncParamList RPAREN Block {
+			ASTFuncDecl *fd = new ASTFuncDecl(@1);
+
+			ASTType *type = (ASTType *)$1;
+	    ASTString *name = (ASTString *)$2;
+			ASTList *list = (ASTList *)$4;
+			ASTBlock *block = (ASTBlock *)$6;
+
+			fd->setReturnType(type);
+			fd->setName(name->getValue());
+			fd->copyParamList(list);
+			fd->setBlock(block);
+			$$ = fd;
+
+ 			delete name;
+			delete list;}
+	;
+
+FuncParamList : {$$ = new ASTList(noloc);}
+	|	FuncParamList1 {$$ = $1;}
+	;
+FuncParamList1 : FuncParam {
+			ASTList *list = new ASTList(@1);
+			ASTFuncParam *param = (ASTFuncParam *)$1;
+			list->addAST(param);
+			$$ = list;}
+	|	FuncParamList1 COMMA FuncParam {
+			ASTList *list = (ASTList *)$1;
+			ASTFuncParam *param = (ASTFuncParam *)$3;
+			list->addAST(param);
+			$$ = list;}
+	;
+
+FuncParam : Type IDENTIFIER {
+			ASTType *type = (ASTType *)$1;
+			ASTString *name = (ASTString *)$2;
+			$$ = new ASTFuncParam(type, name->getValue(), @1);
+			delete name;}
+	;
+
+////////////////////////////////////////////////////////////////
+// Variable Declaration
+
+VarDecl :
+		Type VarDeclList {
+			ASTType *type = (ASTType *)$1;
+			ASTVarDeclList *list = (ASTVarDeclList *)$2;
+			list->copyType(type);
+			delete type;
+			$$ = list;}
+	;
+
+VarDeclList :
+		VarDeclElement {
+			ASTVarDeclList *list = new ASTVarDeclList(@1);
+			list->addVarDecl((ASTVarDecl *)$1);
+			$$ = list;}
+	| VarDeclList COMMA VarDeclElement {
+			ASTVarDeclList *list = (ASTVarDeclList *)$1;
+			list->addVarDecl((ASTVarDecl *)$3);
+			$$ = list;}
+	;
+
+VarDeclElement :
+  // var
+	  IDENTIFIER {
+			ASTString *name = (ASTString *)$1;
+			$$ = new ASTSingleVarDecl(name->getValue(), @1);
+			delete name;}
+  // var = 10
+  |	IDENTIFIER ASSIGN Expr {
+			ASTString *name = (ASTString *)$1;
+			ASTExpr *init = (ASTExpr *)$3;
+			$$ = new ASTSingleVarDecl(name->getValue(), init, @1);
+			delete name;}
+  // var[10]
+	| IDENTIFIER LBRACKET ConstExpr RBRACKET {
+			ASTString *name = (ASTString *)$1;
+			ASTExpr *size = (ASTExpr *)$3;
+			$$ = new ASTArrayDecl(name->getValue(), size, @1);
+			delete name;}
+  // var[] = {1, 2, 3}
+ 	| IDENTIFIER LBRACKET RBRACKET ASSIGN LBRACE ArrayInitializer RBRACE {
+			ASTString *name = (ASTString *)$1;
+			ASTArrayInitializer *init = (ASTArrayInitializer *)$6;
+		  $$ = new ASTArrayDecl(name->getValue(), init, @1);
+			delete name;}
+  // var[10] = {1, 2, 3}
+	| IDENTIFIER LBRACKET ConstExpr RBRACKET ASSIGN LBRACE ArrayInitializer RBRACE {
+ 			ASTString *name = (ASTString *)$1;
+			ASTExpr *size = (ASTExpr *)$3;
+		  ASTArrayInitializer *init = (ASTArrayInitializer *)$7;
+			$$ = new ASTArrayDecl(name->getValue(), size, init, @1);
+			delete name;}
+	// var[] = "abc"
+ 	| IDENTIFIER LBRACKET RBRACKET ASSIGN QUOTEDSTRING {
+			ASTString *name = (ASTString *)$1;
+			ASTString *string = (ASTString *)$5;
+			ASTArrayInitializer *init = new ASTArrayInitializer(string, @1);
+			$$ = new ASTArrayDecl(name->getValue(), init, @1);
+			delete name;
+			delete string;}
+	// var[10] = "abc"
+	| IDENTIFIER LBRACKET ConstExpr RBRACKET ASSIGN QUOTEDSTRING {
+			ASTString *name = (ASTString *)$1;
+			ASTExpr *size = (ASTExpr *)$3;
+			ASTString *string = (ASTString *)$6;
+			ASTArrayInitializer *init = new ASTArrayInitializer(string, @1);
+		  $$ = new ASTArrayDecl(name->getValue(), size, init, @1);
+			delete name;
+		  delete string;}
+  ;
+
+ArrayInitializer :
+		Expr {
+			ASTArrayInitializer *init = new ASTArrayInitializer(@1);
+			ASTExpr *element = (ASTExpr *)$1;
+			init->addElement(element);
+			$$ = init;}
+	|	Expr COMMA ArrayInitializer {
+			ASTArrayInitializer *init = (ASTArrayInitializer *)$3;
+			ASTExpr *element = (ASTExpr *)$1;
+		 	init->addElement(element);
+			$$ = init;}	
 	;
 
 %%

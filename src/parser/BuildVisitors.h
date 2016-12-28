@@ -9,10 +9,6 @@ class BuildOpcodes : public RecursiveVisitor
 {
 public:
     virtual void caseDefault(void *param);
-    virtual void caseFuncDecl(ASTFuncDecl &host, void *param);
-    virtual void caseVarDecl(ASTVarDecl &host, void *param);
-    virtual void caseVarDeclInitializer(ASTVarDeclInitializer &host, void *param);
-    virtual void caseArrayDecl(ASTArrayDecl &host, void *param);
     virtual void caseBlock(ASTBlock &host, void *param);
     virtual void caseExprAnd(ASTExprAnd &host, void *param);
     virtual void caseExprOr(ASTExprOr &host, void *param);
@@ -56,23 +52,17 @@ public:
     virtual void caseExprPreDecrement(ASTExprPreDecrement &host, void *param);
     virtual void caseStmtBreak(ASTStmtBreak &host, void *param);
     virtual void caseStmtContinue(ASTStmtContinue &host, void *param);
-    vector<Opcode *> getResult()
-    {
-        return result;
-    }
-    int getReturnLabelID()
-    {
-        return returnlabelid;
-    }
-    list<long> *getArrayRefs()
-    {
-        return &arrayRefs;
-    }
+		// Function Declaration
+    virtual void caseFuncDecl(ASTFuncDecl &host, void *param);
+    // Variable Declaration
+    virtual void caseSingleVarDecl(ASTSingleVarDecl &host, void *param);
+    virtual void caseArrayDecl(ASTArrayDecl &host, void *param);
+
+    vector<Opcode *> getResult() {return result;}
+    int getReturnLabelID() {return returnlabelid;}
+    list<long> *getArrayRefs() {return &arrayRefs;}
     BuildOpcodes() : continuelabelid(-1), breaklabelid(-1), failure(false) {}
-    bool isOK()
-    {
-        return !failure;
-    }
+    bool isOK() {return !failure;}
     void castFromBool(vector<Opcode *> &result, int reg);
 private:
     vector<Opcode *> result;
@@ -87,22 +77,18 @@ private:
 class CountStackSymbols : public RecursiveVisitor
 {
 public:
-    virtual void caseDefault(void *) { }
-    virtual void caseVarDecl(ASTVarDecl &host, void *param)
+    void caseDefault(void *) {}
+    void caseSingleVarDecl(ASTSingleVarDecl &host, void *param)
     {
         pair<vector<int> *, SymbolTable *> *p = (pair<vector<int> *, SymbolTable *> *)param;
         int vid = p->second->getID(&host);
         p->first->push_back(vid);
     }
-    virtual void caseArrayDecl(ASTArrayDecl &host, void *param)
+    void caseArrayDecl(ASTArrayDecl &host, void *param)
     {
         pair<vector<int> *, SymbolTable *> *p = (pair<vector<int> *, SymbolTable *> *)param;
         int vid = p->second->getID(&host);
         p->first->push_back(vid);
-    }
-    virtual void caseVarDeclInitializer(ASTVarDeclInitializer &host, void *param)
-    {
-        caseVarDecl(host, param);
     }
 };
 
@@ -113,11 +99,8 @@ public:
     virtual void caseExprDot(ASTExprDot &host, void *param);
     virtual void caseExprArrow(ASTExprArrow &host, void *param);
     virtual void caseExprArray(ASTExprArray &host, void *param);
-    virtual void caseVarDecl(ASTVarDecl &host, void *param);
-    vector<Opcode *> getResult()
-    {
-        return result;
-    }
+    virtual void caseSingleVarDecl(ASTSingleVarDecl &host, void *param);
+    vector<Opcode *> getResult() {return result;}
 private:
     vector<Opcode *> result;
 };

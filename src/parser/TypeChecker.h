@@ -8,9 +8,6 @@ class TypeCheck : public RecursiveVisitor
 public:
     TypeCheck() : failure(false) {}
     virtual void caseDefault(void *param);
-    virtual void caseVarDeclInitializer(ASTVarDeclInitializer &host, void *param);
-    virtual void caseVarDecl(ASTVarDecl &host, void *param);
-    virtual void caseArrayDecl(ASTArrayDecl &host, void *param);
     virtual void caseExprAnd(ASTExprAnd &host, void *param);
     virtual void caseExprOr(ASTExprOr &host, void *param);
     virtual void caseExprGT(ASTExprGT &host, void *param);
@@ -49,14 +46,12 @@ public:
     virtual void caseExprPreIncrement(ASTExprPreIncrement &host, void *param);
     virtual void caseExprDecrement(ASTExprDecrement &host, void *param);
     virtual void caseExprPreDecrement(ASTExprPreDecrement &host, void *param);
-    bool isOK()
-    {
-        return !failure;
-    }
-    void fail()
-    {
-        failure = true;
-    }
+		// Variable Declaration
+    void caseSingleVarDecl(ASTSingleVarDecl &host, void *param);
+    void caseArrayDecl(ASTArrayDecl &host, void *param);
+
+    bool isOK() {return !failure;}
+    void fail() {failure = true;}
     friend class GetLValType;
 private:
     bool failure;

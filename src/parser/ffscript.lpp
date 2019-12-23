@@ -38,7 +38,7 @@ if				  { doLines();return IF; }
 else				  { doLines();return ELSE; }
 return			  { doLines();return RETURN; }
 import			  { doLines(); BEGIN( IMPORTING ); return IMPORT; }
-"#include"			  { doLines(); BEGIN( IMPORTING ); return IMPORT; }
+"#include"			  { doLines(); BEGIN( INCLUDING ); return INCLUDE; }
 true				  { doLines();return ZTRUE; }
 false				  { doLines();return ZFALSE; }
 while				{doLines(); return WHILE;}
@@ -704,6 +704,30 @@ or_equal		{ doLines(); return  BITORASSIGN; }
 	qstr << yytext;
 }
 <IMPORTING>{
+	<<EOF>>		{
+		char temp[512];
+		sprintf(temp, "ERROR: Import/include without string. LINE %d", yylineno);
+		box_eol();box_out(temp); box_eol();
+		box_eol();
+		BEGIN( INITIAL ); //Don't stay in IMPORTING on next compile!
+		return 0;
+	}
+	[^\"\n]*\n		{
+		char temp[512];
+		sprintf(temp, "ERROR: Import/include without string. LINE %d", yylineno);
+		box_eol();box_out(temp); box_eol();
+		box_eol();
+		BEGIN( INITIAL ); //Don't stay in IMPORTING on next compile!
+		return 0;
+	} 
+	\" {
+		BEGIN( IMPORTSTR );
+		qstr.str(""); /* Clear qstr */
+		qstr << yytext;
+	}
+}
+
+<INCLUDING>{
 	<<EOF>>		{
 		char temp[512];
 		sprintf(temp, "ERROR: Import/include without string. LINE %d", yylineno);

@@ -51,6 +51,7 @@ extern YYLTYPE noloc;
 %token ELSE
 %token RETURN
 %token IMPORT
+%token INCLUDE
 %token ZTRUE
 %token ZFALSE
 %token WHILE
@@ -119,6 +120,7 @@ Prog : Prog GlobalStmt {ASTDeclList *list = (ASTDeclList *)$1;
 
 GlobalStmt : Script {$$ = $1;}
 	| Import {$$ = $1;}
+	| Include {$$ = $1;}
 	| FuncDecl {$$ = $1;}
 	| ConstDecl {$$ = $1;}
 	| VarDecl SEMICOLON {$$ = $1;}
@@ -222,6 +224,11 @@ ScriptType : Type {$$ = $1;}
 
 Import : IMPORT QUOTEDSTRING	{ASTString *str = (ASTString *)$2;
 								 $$ = new ASTImportDecl(str->getValue(),@1);
+								 delete str;}
+	;
+	
+Include : INCLUDE QUOTEDSTRING	{ASTString *str = (ASTString *)$2;
+								 $$ = new ASTIncludeDecl(str->getValue(),@1);
 								 delete str;}
 	;
 

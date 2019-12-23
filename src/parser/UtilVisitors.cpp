@@ -644,6 +644,12 @@ void GetImports::caseImportDecl(ASTImportDecl &, void *param)
         *(bool *)param = true;
 }
 
+void GetImports::caseIncludeDecl(ASTIncludeDecl &, void *param)
+{
+    if(param != NULL)
+        *(bool *)param = true;
+}
+
 void GetImports::caseDeclList(ASTDeclList &host, void *)
 {
     list<ASTDecl *> &l = host.getDeclarations();

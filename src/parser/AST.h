@@ -281,6 +281,7 @@ namespace ZScript
 		void addDeclaration(ASTDecl* declaration);
 		bool hasDeclarations() const;
 
+		//current ram use 40K/comp
 		std::vector<ASTSetOption*> options;
 		std::vector<ASTImportDecl*> imports;
 		std::vector<ASTDataDeclList*> variables;

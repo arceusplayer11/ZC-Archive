@@ -24525,6 +24525,7 @@ int onCompileScript()
 	
 	if(is_large)
 		large_dialog(compile_dlg);
+	ZScript::ScriptsData *result = NULL;
 		
 	for(;;) //while(true)
 	{
@@ -24610,6 +24611,7 @@ int onCompileScript()
 		
 		case 5:
 			//Compile!
+			
 			FILE *tempfile = fopen("tmp","w");
 			
 			if(!tempfile)
@@ -24622,7 +24624,7 @@ int onCompileScript()
 			fclose(tempfile);
 			box_start(1, "Compile Progress", lfont, sfont,true);
 			gotoless_not_equal = (0 != get_bit(quest_rules, qr_GOTOLESSNOTEQUAL)); // Used by BuildVisitors.cpp
-			ZScript::ScriptsData *result = ZScript::compile("tmp");
+			result = ZScript::compile("tmp");
 			unlink("tmp");
 		if ( result )
 		{
@@ -24818,6 +24820,7 @@ int onCompileScript()
 			{
 				//fail
 			}
+			//delete result; //can't do this, it crashes
 			return D_O_K;
 		}
 	}

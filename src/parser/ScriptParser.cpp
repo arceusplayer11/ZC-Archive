@@ -49,10 +49,11 @@ void ScriptParser::initialize()
 ScriptsData* ZScript::compile(string const& filename)
 {
     ScriptParser::initialize();
+	//ASTFile.reset(new ASTFile);
 
 	box_out("Pass 1: Parsing");
 	box_eol();
-
+	
 	auto_ptr<ASTFile> root(parseFile(filename));
 	if (!root.get())
 	{
@@ -104,12 +105,15 @@ ScriptsData* ZScript::compile(string const& filename)
 
 	ScriptParser::assemble(id.get());
 
-	ScriptsData* result = new ScriptsData(program);
+	//This is likely our memory leak. Every tim that the compiler runs, a new full instance
+	//of 'program' is allocated to the heap, but it is never deallocated.
+	if(compileresult != NULL) delete compileresult;
+	compileresult = new ScriptsData(program);
     
 	box_out("Success!");
 	box_eol();
 
-	return result;
+	return compileresult;
 }
 
 int ScriptParser::vid = 0;

@@ -281,17 +281,18 @@ namespace ZScript
 		void addDeclaration(ASTDecl* declaration);
 		bool hasDeclarations() const;
 
-		owning_vector<ASTSetOption> options;
-		owning_vector<ASTImportDecl> imports;
-		owning_vector<ASTDataDeclList> variables;
-		owning_vector<ASTFuncDecl> functions;
-		owning_vector<ASTDataTypeDef> dataTypes;
-		owning_vector<ASTScriptTypeDef> scriptTypes;
-		owning_vector<ASTScript> scripts;
-		owning_vector<ASTNamespace> namespaces;
-		owning_vector<ASTUsingDecl> use;
+		std::vector<ASTSetOption*> options;
+		std::vector<ASTImportDecl*> imports;
+		std::vector<ASTDataDeclList*> variables;
+		std::vector<ASTFuncDecl*> functions;
+		std::vector<ASTDataTypeDef*> dataTypes;
+		std::vector<ASTScriptTypeDef*> scriptTypes;
+		std::vector<ASTScript*> scripts;
+		std::vector<ASTNamespace*> namespaces;
+		std::vector<ASTUsingDecl*> use;
 		
 		FileScope* scope;
+		virtual ~ASTFile() {}
 	};
 
 	class ASTFloat : public AST

@@ -24820,7 +24820,7 @@ int onCompileScript()
 			{
 				//fail
 			}
-			//delete result; //can't do this, it crashes
+			//delete[] result; //can't do this, it crashes
 			return D_O_K;
 		}
 	}

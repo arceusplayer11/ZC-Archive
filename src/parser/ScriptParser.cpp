@@ -27,6 +27,7 @@ extern char ZQincludePaths[MAX_INCLUDE_PATHS][512];
 //#define PARSER_DEBUG
 
 ScriptsData* compile(string const& filename);
+ScriptsData* compileresult = NULL;
 
 #if PARSER_DEBUG < 0
 int main(int argc, char *argv[])

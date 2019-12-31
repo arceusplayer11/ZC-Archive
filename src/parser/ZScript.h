@@ -12,7 +12,7 @@
 
 namespace ZScript
 {
-	ScriptsData* compileresult = NULL;
+	
 	class CompileErrorHandler;
 
 	class TypeStore;

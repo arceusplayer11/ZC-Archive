@@ -1029,6 +1029,64 @@ void BuildOpcodes::caseStmtIfElse(ASTStmtIfElse &host, void *param)
     result.push_back(next);
 }
 
+//constant if/elseif
+
+void BuildOpcodes::caseStmtIfConst(ASTStmtIfConst &host, void *param)
+{
+	//char prm[10];
+	//char* chrptr = NULL;
+	//chrptr = _itoa(&param, prm, 10);
+	//host.getValue()->execute(*this,param);
+	
+	
+	box_out("!!caseStmtIfConst"); box_eol(); //box_out(host.getName().c_str()); box_eol();
+	//if condition is constant:
+	//SymbolTable *st = ((pair<SymbolTable *, int> *)param)->first;
+	//if(st->isConstant(host.getName()))
+	//{
+	//	box_out("const if"); box_eol();
+		
+	//}
+	//Do we need AstConstExpr for this to be possible?
+	//Aye. Bison needs to examine te full expr, not just determine if the expr USES a const.
+	//otherwise
+	
+    //run the test
+    host.getCondition()->execute(*this,param);
+    int endif = ScriptParser::getUniqueLabelID();
+    result.push_back(new OCompareImmediate(new VarArgument(EXP1), new LiteralArgument(0)));
+    result.push_back(new OGotoTrueImmediate(new LabelArgument(endif)));
+    //run the block
+//if(param)
+	host.getStmt()->execute(*this,param);
+    //nop
+    Opcode *next = new OSetImmediate(new VarArgument(EXP1), new LiteralArgument(0));
+    next->setLabel(endif);
+    result.push_back(next);
+}
+
+void BuildOpcodes::caseStmtIfElseConst(ASTStmtIfElseConst &host, void *param)
+{
+    //run the test
+	box_out("!!caseStmtIfElseConst"); box_eol();
+    //host.getCondition()->execute(*this,param);
+    //int elseif = ScriptParser::getUniqueLabelID();
+    //int endif = ScriptParser::getUniqueLabelID();
+    //result.push_back(new OCompareImmediate(new VarArgument(EXP1), new LiteralArgument(0)));
+    //result.push_back(new OGotoTrueImmediate(new LabelArgument(elseif)));
+    //run if blocl
+    if(param)
+	host.getStmt()->execute(*this,param);
+    //result.push_back(new OGotoImmediate(new LabelArgument(endif)));
+    //Opcode *next = new OSetImmediate(new VarArgument(EXP2), new LiteralArgument(0));
+    //next->setLabel(elseif);
+    //result.push_back(next);
+    else host.getElseStmt()->execute(*this,param);
+    //next = new OSetImmediate(new VarArgument(EXP2), new LiteralArgument(0));
+    //next->setLabel(endif);
+    //result.push_back(next);
+}
+
 void BuildOpcodes::caseStmtReturn(ASTStmtReturn &host, void *param)
 {
     //these are here to bypass compiler warnings about unused arguments

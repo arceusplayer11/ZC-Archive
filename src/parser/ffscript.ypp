@@ -40,7 +40,7 @@ extern YYLTYPE noloc;
 					rhs->setSecondOperand((ASTExpr *)d3); \
 					dd = new ASTStmtAssign(lval, rhs, l1);
 %}
-%expect 1
+%expect 2
 %error-verbose
 %start Init
 
@@ -314,6 +314,7 @@ Stmt : VarDecl SEMICOLON {$$ = $1;}
 	| ShortcutAssignStmt SEMICOLON {$$=$1;}
 	| ForStmt {$$ = $1;}
 	| IfStmt {$$ = $1;}
+	| IfStmtConst {$$ = $1;}
 	| Block {$$ = $1;}
 	| ReturnStmt SEMICOLON {$$ = $1;}
 	| WhileStmt {$$ = $1;}
@@ -330,6 +331,7 @@ StmtNoSemi : VarDecl {$$ = $1;}
 	| ShortcutAssignStmt {$$=$1;}
 	| ForStmt {$$ = $1;}
 	| IfStmt {$$ = $1;}
+	| IfStmtConst {$$ = $1;}
 	| Block {$$ = $1;}
 	| ReturnStmt {$$ = $1;}
 	| WhileStmt {$$ = $1;}
@@ -578,29 +580,20 @@ WhileStmt : WHILE LPAREN Expr RPAREN Stmt {ASTExpr *cond = (ASTExpr *)$3;
 DoStmt : DO Stmt WHILE LPAREN Expr RPAREN {ASTExpr *cond = (ASTExpr *)$5;
 										   ASTStmt *stmt = (ASTStmt *)$2;
 										   $$ = new ASTStmtDo(cond,stmt,@1);}
-
+	;
+IfStmtConst : IF LPAREN ZCONST Expr RPAREN Stmt {ASTExpr *cond = (ASTExpr *)$4;
+							  ASTStmt *stmt = (ASTStmt *)$6;
+							  $$ = new ASTStmtIfConst(cond,stmt,@1);}
+	| IF LPAREN ZCONST Expr RPAREN Stmt ELSE Stmt {ASTExpr *cond = (ASTExpr *)$4;
+										ASTStmt *ifstmt = (ASTStmt *)$6;
+										ASTStmt *elsestmt = (ASTStmt *)$8;
+										$$ = new ASTStmtIfElseConst(cond,ifstmt,elsestmt,@1);}
+	;
+							  
 IfStmt : IF LPAREN Expr RPAREN Stmt {ASTExpr *cond = (ASTExpr *)$3;
 							  ASTStmt *stmt = (ASTStmt *)$5;
 							  $$ = new ASTStmtIf(cond,stmt,@1);}
 	| IF LPAREN Expr RPAREN Stmt ELSE Stmt {ASTExpr *cond = (ASTExpr *)$3;
-										ASTStmt *ifstmt = (ASTStmt *)$5;
-										ASTStmt *elsestmt = (ASTStmt *)$7;
-										$$ = new ASTStmtIfElse(cond,ifstmt,elsestmt,@1);}
-	;
-	
-IfStmtConst : IF LPAREN NUMBER RPAREN Stmt {ASTExpr *cond = (ASTExpr *)$3;
-							  ASTStmt *stmt = (ASTStmt *)$5;
-							  $$ = new ASTStmtIf(cond,stmt,@1);}
-							  
-	|	IF LPAREN ZCONST RPAREN Stmt {ASTExpr *cond = (ASTExpr *)$3;
-							  ASTStmt *stmt = (ASTStmt *)$5;
-							  $$ = new ASTStmtIf(cond,stmt,@1);}
-	| IF LPAREN NUMBER RPAREN Stmt ELSE Stmt {ASTExpr *cond = (ASTExpr *)$3;
-										ASTStmt *ifstmt = (ASTStmt *)$5;
-										ASTStmt *elsestmt = (ASTStmt *)$7;
-										$$ = new ASTStmtIfElse(cond,ifstmt,elsestmt,@1);}
-										
-	| IF LPAREN ZCONST RPAREN Stmt ELSE Stmt {ASTExpr *cond = (ASTExpr *)$3;
 										ASTStmt *ifstmt = (ASTStmt *)$5;
 										ASTStmt *elsestmt = (ASTStmt *)$7;
 										$$ = new ASTStmtIfElse(cond,ifstmt,elsestmt,@1);}

@@ -84,7 +84,9 @@ class ASTStmtAssign;
 class ASTExprDot;
 class ASTStmtFor;
 class ASTStmtIf;
+class ASTStmtIfConst;
 class ASTStmtIfElse;
+class ASTStmtIfElseConst;
 class ASTStmtReturn;
 class ASTStmtReturnVal;
 class ASTStmtEmpty;
@@ -286,6 +288,14 @@ public:
         caseDefault(param);
     }
     virtual void caseStmtIfElse(ASTStmtIfElse &, void *param)
+    {
+        caseDefault(param);
+    }
+    virtual void caseStmtIfConst(ASTStmtIfConst &, void *param)
+    {
+        caseDefault(param);
+    }
+    virtual void caseStmtIfElseConst(ASTStmtIfElseConst &, void *param)
     {
         caseDefault(param);
     }
@@ -1623,6 +1633,60 @@ private:
     ASTStmtIfElse(ASTStmtIfElse &);
     ASTStmtIfElse &operator=(ASTStmtIfElse &);
 };
+
+class ASTStmtIfConst : public ASTStmt
+{
+public:
+    ASTStmtIfConst(ASTExpr *Cond, ASTStmt *Stmt, LocationData Loc) : ASTStmt(Loc), cond(Cond), stmt(Stmt) {}
+    ASTExpr *getCondition()
+    {
+        return cond;
+    }
+    ASTStmt *getStmt()
+    {
+        return stmt;
+    }
+    virtual ~ASTStmtIfConst()
+    {
+        delete cond;
+        delete stmt;
+    }
+    void execute(ASTVisitor &visitor, void *param)
+    {
+        return visitor.caseStmtIfConst(*this,param);
+    }
+private:
+    ASTExpr *cond;
+    ASTStmt *stmt;
+    //NOT IMPLEMENTED; DO NOT USE
+    ASTStmtIfConst(ASTStmtIfConst &);
+    ASTStmtIfConst &operator=(ASTStmtIfConst &);
+};
+
+class ASTStmtIfElseConst : public ASTStmtIf
+{
+public:
+    ASTStmtIfElseConst(ASTExpr *Cond, ASTStmt *Ifstmt, ASTStmt *Elsestmt, LocationData Loc) :
+        ASTStmtIf(Cond,Ifstmt,Loc), elsestmt(Elsestmt) {}
+    ~ASTStmtIfElseConst()
+    {
+        delete elsestmt;
+    }
+    ASTStmt *getElseStmt()
+    {
+        return elsestmt;
+    }
+    void execute(ASTVisitor &visitor, void *param)
+    {
+        visitor.caseStmtIfElseConst(*this, param);
+    }
+private:
+    ASTStmt *elsestmt;
+    //NOT IMPLEMENTED; DO NOT USE
+    ASTStmtIfElseConst(ASTStmtIfElseConst &);
+    ASTStmtIfElseConst &operator=(ASTStmtIfElseConst &);
+};
+
 
 class ASTStmtReturn : public ASTStmt
 {

@@ -580,11 +580,11 @@ WhileStmt : WHILE LPAREN Expr RPAREN Stmt {ASTExpr *cond = (ASTExpr *)$3;
 DoStmt : DO Stmt WHILE LPAREN Expr RPAREN {ASTExpr *cond = (ASTExpr *)$5;
 										   ASTStmt *stmt = (ASTStmt *)$2;
 										   $$ = new ASTStmtDo(cond,stmt,@1);}
-	;
-IfStmtConst : IF LPAREN ZCONST Expr RPAREN Stmt {ASTExpr *cond = (ASTExpr *)$4;
+
+IfStmtConst : ZCONST IF LPAREN Expr RPAREN Stmt {ASTExpr *cond = (ASTExpr *)$4;
 							  ASTStmt *stmt = (ASTStmt *)$6;
 							  $$ = new ASTStmtIfConst(cond,stmt,@1);}
-	| IF LPAREN ZCONST Expr RPAREN Stmt ELSE Stmt {ASTExpr *cond = (ASTExpr *)$4;
+	| ZCONST IF LPAREN Expr RPAREN Stmt ELSE Stmt {ASTExpr *cond = (ASTExpr *)$4;
 										ASTStmt *ifstmt = (ASTStmt *)$6;
 										ASTStmt *elsestmt = (ASTStmt *)$8;
 										$$ = new ASTStmtIfElseConst(cond,ifstmt,elsestmt,@1);}

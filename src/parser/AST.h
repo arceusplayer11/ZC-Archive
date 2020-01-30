@@ -1610,6 +1610,35 @@ private:
     ASTStmtIf &operator=(ASTStmtIf &);
 };
 
+class ASTStmtIfConst : public ASTStmt
+{
+public:
+    ASTStmtIfConst(ASTExpr *Cond, ASTStmt *Stmt, LocationData Loc) : ASTStmt(Loc), condConst(Cond), stmtConst(Stmt) {}
+    ASTExpr *getCondition()
+    {
+        return condConst;
+    }
+    ASTStmt *getStmt()
+    {
+        return stmtConst;
+    }
+    virtual ~ASTStmtIfConst()
+    {
+        delete condConst;
+        delete stmtConst;
+    }
+    void execute(ASTVisitor &visitor, void *param)
+    {
+        return visitor.caseStmtIfConst(*this,param);
+    }
+private:
+    ASTExpr *condConst;
+    ASTStmt *stmtConst;
+    //NOT IMPLEMENTED; DO NOT USE
+    ASTStmtIfConst(ASTStmtIfConst &);
+    ASTStmtIfConst &operator=(ASTStmtIfConst &);
+};
+
 class ASTStmtIfElse : public ASTStmtIf
 {
 public:
@@ -1634,34 +1663,6 @@ private:
     ASTStmtIfElse &operator=(ASTStmtIfElse &);
 };
 
-class ASTStmtIfConst : public ASTStmt
-{
-public:
-    ASTStmtIfConst(ASTExpr *Cond, ASTStmt *Stmt, LocationData Loc) : ASTStmt(Loc), cond(Cond), stmt(Stmt) {}
-    ASTExpr *getCondition()
-    {
-        return cond;
-    }
-    ASTStmt *getStmt()
-    {
-        return stmt;
-    }
-    virtual ~ASTStmtIfConst()
-    {
-        delete cond;
-        delete stmt;
-    }
-    void execute(ASTVisitor &visitor, void *param)
-    {
-        return visitor.caseStmtIfConst(*this,param);
-    }
-private:
-    ASTExpr *cond;
-    ASTStmt *stmt;
-    //NOT IMPLEMENTED; DO NOT USE
-    ASTStmtIfConst(ASTStmtIfConst &);
-    ASTStmtIfConst &operator=(ASTStmtIfConst &);
-};
 
 class ASTStmtIfElseConst : public ASTStmtIf
 {

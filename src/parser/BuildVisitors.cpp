@@ -912,6 +912,17 @@ void BuildOpcodes::caseStmtFor(ASTStmtFor &host, void *param)
 
 void BuildOpcodes::caseStmtIf(ASTStmtIf &host, void *param)
 {
+	//if condition is constant:
+	//SymbolTable *st = ((pair<SymbolTable *, int> *)param)->first;
+	//if(st->isConstant(host.getName()))
+	//{
+	//	box_out("const if"); box_eol();
+		
+	//}
+	//Do we need AstConstExpr for this to be possible?
+	//Aye. Bison needs to examine te full expr, not just determine if the expr USES a const.
+	//otherwise
+	
     //run the test
     host.getCondition()->execute(*this,param);
     int endif = ScriptParser::getUniqueLabelID();

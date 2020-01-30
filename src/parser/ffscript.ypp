@@ -587,6 +587,24 @@ IfStmt : IF LPAREN Expr RPAREN Stmt {ASTExpr *cond = (ASTExpr *)$3;
 										ASTStmt *elsestmt = (ASTStmt *)$7;
 										$$ = new ASTStmtIfElse(cond,ifstmt,elsestmt,@1);}
 	;
+	
+IfStmtConst : IF LPAREN NUMBER RPAREN Stmt {ASTExpr *cond = (ASTExpr *)$3;
+							  ASTStmt *stmt = (ASTStmt *)$5;
+							  $$ = new ASTStmtIf(cond,stmt,@1);}
+							  
+	|	IF LPAREN ZCONST RPAREN Stmt {ASTExpr *cond = (ASTExpr *)$3;
+							  ASTStmt *stmt = (ASTStmt *)$5;
+							  $$ = new ASTStmtIf(cond,stmt,@1);}
+	| IF LPAREN NUMBER RPAREN Stmt ELSE Stmt {ASTExpr *cond = (ASTExpr *)$3;
+										ASTStmt *ifstmt = (ASTStmt *)$5;
+										ASTStmt *elsestmt = (ASTStmt *)$7;
+										$$ = new ASTStmtIfElse(cond,ifstmt,elsestmt,@1);}
+										
+	| IF LPAREN ZCONST RPAREN Stmt ELSE Stmt {ASTExpr *cond = (ASTExpr *)$3;
+										ASTStmt *ifstmt = (ASTStmt *)$5;
+										ASTStmt *elsestmt = (ASTStmt *)$7;
+										$$ = new ASTStmtIfElse(cond,ifstmt,elsestmt,@1);}
+	;
 
 ReturnStmt : RETURN Expr {$$ = new ASTStmtReturnVal((ASTExpr *)$2,@1);}
 	| RETURN {$$ = new ASTStmtReturn(@1);}

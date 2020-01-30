@@ -570,6 +570,23 @@ void Clone::caseStmtIfElse(ASTStmtIfElse &host, void *param)
     result = new ASTStmtIfElse(cond, block, (ASTBlock *)result,host.getLocation());
 }
 
+void Clone::caseStmtIfConst(ASTStmtIfConst &host, void *param)
+{
+    host.getCondition()->execute(*this,param);
+    ASTExpr *cond = (ASTExpr *)result;
+    host.getStmt()->execute(*this,param);
+    result = new ASTStmtIfConst(cond, (ASTBlock *)result,host.getLocation());
+}
+void Clone::caseStmtIfElseConst(ASTStmtIfElseConst &host, void *param)
+{
+    host.getCondition()->execute(*this,param);
+    ASTExpr *cond = (ASTExpr *)result;
+    host.getStmt()->execute(*this,param);
+    ASTBlock *block =(ASTBlock *)result;
+    host.getElseStmt()->execute(*this,param);
+    result = new ASTStmtIfElseConst(cond, block, (ASTBlock *)result,host.getLocation());
+}
+
 void Clone::caseStmtReturn(ASTStmtReturn &host, void *param)
 {
     //these are here to bypass compiler warnings about unused arguments

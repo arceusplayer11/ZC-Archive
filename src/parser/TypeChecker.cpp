@@ -1551,6 +1551,22 @@ void TypeCheck::caseStmtIf(ASTStmtIf &host, void *param)
     }
 }
 
+void TypeCheck::caseStmtIfConst(ASTStmtIfConst &host, void *param)
+{
+    RecursiveVisitor::caseStmtIfConst(host, param);
+    
+    //if(failure)
+    //    return;
+        
+    int type = host.getCondition()->getType();
+    
+    if(!standardCheck(ScriptParser::TYPE_BOOL, type, &host))
+    {
+        //failure = true;
+        return;
+    }
+}
+
 void TypeCheck::caseStmtWhile(ASTStmtWhile &host, void *param)
 {
     RecursiveVisitor::caseStmtWhile(host, param);
@@ -1571,6 +1587,12 @@ void TypeCheck::caseStmtIfElse(ASTStmtIfElse &host, void *param)
 {
     caseStmtIf(host, param);
     host.getElseStmt()->execute(*this,param);
+}
+
+void TypeCheck::caseStmtIfElseConst(ASTStmtIfElseConst &host, void *param)
+{
+    //caseStmtIfConst(host, param);
+    //host.getElseStmt()->execute(*this,param);
 }
 
 void TypeCheck::caseStmtReturn(ASTStmtReturn &host, void *param)

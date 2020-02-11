@@ -44,6 +44,7 @@
 extern FFScript FFCore;
 extern ZModule zcm;
 extern zcmodule moduledata;
+extern int ruleset;
 extern sprite_list  guys, items, Ewpns, Lwpns, Sitems, chainlinks, decorations, particles;
 //FFSCript   FFEngine;
 
@@ -3036,7 +3037,7 @@ int readrules(PACKFILE *f, zquestheader *Header, bool keepdata)
 	
 	//always set
 	set_bit(quest_rules,qr_ANIMATECUSTOMWEAPONS,0);
-	
+	RulesetDialog = 0;
     if(keepdata==true)
     {
         memcpy(Header, &tempheader, sizeof(tempheader));
@@ -16719,6 +16720,7 @@ int loadquest(const char *filename, zquestheader *Header, miscQdata *Misc, zctun
     combosread=false;
     mapsread=false;
     fixffcs=false;
+    ruleset = 0;
     
     if(get_debug()&&(key[KEY_LSHIFT]||key[KEY_RSHIFT]))
     {

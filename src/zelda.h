@@ -257,7 +257,7 @@ void initZScriptGlobalScript(int ID);
 
 extern ZCMUSIC *zcmusic;
 
-extern int colordepth;
+extern int colordepth, ruleset;
 extern int db;
 extern int detail_int[10];                                  //temporary holder for things you want to detail
 extern zinitdata  zinit;

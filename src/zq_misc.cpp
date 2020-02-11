@@ -1305,6 +1305,7 @@ int onMiscRules();
 int onCompatRules();
 int onRules2();
 int onCheats();
+int PickRuleset();
 int onStrings();
 int onDmaps();
 int onTiles();

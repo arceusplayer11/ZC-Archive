@@ -64,7 +64,7 @@ extern byte itemscriptInitialised[256];
 extern char runningItemScripts[256];
 extern char modulepath[2048];
 
-
+int RulesetDialog = 0;
 extern byte dmapscriptInitialised;
 
 extern char zc_builddate[80];
@@ -112,6 +112,7 @@ char save_file_name[1024] = "zc.sav";
 char *SAVE_FILE = NULL;
 int previous_DMap = -1;
 CScriptDrawingCommands script_drawing_commands;
+int ruleset = 0;
 
 using std::string;
 using std::pair;

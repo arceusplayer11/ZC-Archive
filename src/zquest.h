@@ -67,7 +67,7 @@ void update_freeform_combos();
 bool layers_valid(mapscr *tempscr);
 void fix_layers(mapscr *tempscr, bool showwarning);
 
-extern int coord_timer, coord_frame;
+extern int coord_timer, coord_frame, ruleset;
 extern int blackout_color, zq_screen_w, zq_screen_h;
 extern int jwin_pal[jcMAX];
 
@@ -1064,6 +1064,7 @@ int onHeader();
 
 //static ZCHEATS tmpcheats;
 int onCheats();
+int PickRuleset();
 int RulesPage_1();
 int RulesPage_2();
 int RulesPage_3();

@@ -677,6 +677,7 @@ int zq_scale_small, zq_scale_large, zq_scale;
 bool halt=false;
 bool show_sprites=true;
 bool show_hitboxes = false;
+int ruleset = 0;
 
 byte compile_tune = 0;
 byte compile_success_sample = 0;
@@ -1352,6 +1353,7 @@ static MENU quest_menu[] =
 {
     { (char *)"&Header",                    onHeader,                  NULL,                     0,            NULL   },
     { (char *)"&Rules\t ",                  NULL,                      rules_menu,               0,            NULL   },
+    { (char *)"&Pick Ruleset\t ",           PickRuleset,               NULL,               0,            NULL   },
     { (char *)"Ma&p Count",                 onMapCount,                NULL,                     0,            NULL   },
     { (char *)"Ch&eats",                    onCheats,                  NULL,                     0,            NULL   },
     { (char *)"&Items",                     onCustomItems,             NULL,                     0,            NULL   },
@@ -30504,12 +30506,22 @@ int main(int argc,char **argv)
 #endif
             }
         }
+	else if(OpenLastQuest && (filepath[0]==0 || !exists(filepath)) && !first_save)
+	{
+		
+		al_trace("Loading blank quest from prior session.\n");
+		init_quest(NULL);
+		filepath[0]=temppath[0]=0;
+		first_save=false;
+		PickRuleset();
+	}
         else
         {
+		al_trace("OpenLastQuest is:%d\n", OpenLastQuest);
             init_quest(NULL);
             
-            if(RulesetDialog)
-                PickRuleset();
+            //if(RulesetDialog)
+            //    PickRuleset();
                 
             //otherwise the blank quest gets the name of the last loaded quest... not good! -DD
             filepath[0]=temppath[0]=0;

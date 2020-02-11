@@ -406,7 +406,7 @@ int NewQuestFile(int template_slot)
     return D_O_K;
 }
 
-static int ruleset=0;
+
 int d_ruleset_radio_proc(int msg,DIALOG *d,int c);
 int d_rulesettext_proc(int msg, DIALOG *d, int c);
 
@@ -608,7 +608,9 @@ int PickRuleset()
     if(is_large)
         large_dialog(ruleset_dlg);
         
-    int ret = zc_popup_dialog(ruleset_dlg,1);
+    int ret = zc_popup_dialog(ruleset_dlg,0);
+    for(int i=0; i<qr_MAX; i++)
+                set_bit(quest_rules,i,0);
     //List of all NES Fixes as one set.
     int fixesrules[] =
             {
@@ -889,9 +891,7 @@ int onNew()
     */
     int ret=0;
     NewQuestFile(ret);
-    
-    if(RulesetDialog > 0)
-        PickRuleset();
+    PickRuleset();
         
     return D_O_K;
 }
@@ -1103,8 +1103,8 @@ int onRevert()
     {
         NewQuestFile(0);
         
-        if(RulesetDialog > 0)
-            PickRuleset();
+        //if(RulesetDialog > 0)
+        //    PickRuleset();
     }
     
     onDrawingModeNormal();

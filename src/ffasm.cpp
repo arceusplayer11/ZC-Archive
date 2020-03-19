@@ -17,6 +17,8 @@
 //#include "ffasm.h"
 #include "zquest.h"
 #include "zsys.h"
+#include "util.h"
+using namespace util;
 
 #include <sstream>
 
@@ -2067,6 +2069,14 @@ script_variable variable_list[]=
 	{ "COMBODACLK",		COMBODACLK,        0,             0 },
 	{ "PC",                PC,                   0,             0 },
 	{ "GAMESCROLLING", GAMESCROLLING, 0, 0 },
+	{ "MESSAGEDATAMARGINS", MESSAGEDATAMARGINS, 0, 0 },
+	{ "MESSAGEDATAPORTTILE", MESSAGEDATAPORTTILE, 0, 0 },
+	{ "MESSAGEDATAPORTCSET", MESSAGEDATAPORTCSET, 0, 0 },
+	{ "MESSAGEDATAPORTX", MESSAGEDATAPORTX, 0, 0 },
+	{ "MESSAGEDATAPORTY", MESSAGEDATAPORTY, 0, 0 },
+	{ "MESSAGEDATAPORTWID", MESSAGEDATAPORTWID, 0, 0 },
+	{ "MESSAGEDATAPORTHEI", MESSAGEDATAPORTHEI, 0, 0 },
+	{ "MESSAGEDATAFLAGSARR", MESSAGEDATAFLAGSARR, 0, 0 },
 	{ " ",                       -1,             0,             0 }
 };
 
@@ -2251,12 +2261,6 @@ string get_meta(zasm_meta const& meta)
 		<< "\n#PARAM_NAME_8 = " << meta.run_idens[7]
 		<< "\n";
 	return oss.str();
-}
-
-void upperstr(string& str)
-{
-	for(int q = str.size() - 1; q >= 0; --q)
-		str[q] = toupper(str[q]);
 }
 
 //Parse a single line of metadata

@@ -16906,7 +16906,7 @@ bool parsemsgcode()
     {
     case MSGC_NEWLINE:
         cursor_y += text_height(msgfont) + MsgStrings[msgstr].vspace;
-        cursor_x=0;
+        cursor_x=(get_bit(quest_rules,qr_OLD_STRING_EDITOR_MARGINS)!=0 ? 0 : msg_margins[left]);
         return true;
         
     case MSGC_COLOUR:
@@ -17268,6 +17268,7 @@ bool atend(char *str)
 
 void putmsg()
 {
+	bool oldmargin = get_bit(quest_rules,qr_OLD_STRING_EDITOR_MARGINS)!=0;
     if(!msgorig) msgorig=msgstr;
     
     if(linkedmsgclk>0)
@@ -17299,7 +17300,7 @@ void putmsg()
         }
     }
     
-    if(!msgstr || msgpos>=10000 || msgptr>=MSGSIZE || cursor_y >= msg_h)
+    if(!msgstr || msgpos>=10000 || msgptr>=MSGSIZE || cursor_y >= msg_h-(oldmargin?0:msg_margins[down]))
     {
         if(!msgstr)
             msgorig=0;
@@ -17323,7 +17324,7 @@ void putmsg()
                 goto breakout; // break out if message speed was changed to non-zero
             else if(!parsemsgcode())
             {
-                if(cursor_y >= msg_h)
+                if(cursor_y >= msg_h-(oldmargin?0:msg_margins[down]))
                     break;
                     
                 wrapmsgstr(s3);
@@ -17332,13 +17333,15 @@ void putmsg()
                 {
                     tlength = msgfont->vtable->char_length(msgfont, MsgStrings[msgstr].s[msgptr]) + MsgStrings[msgstr].hspace;
                     
-                    if(cursor_x+tlength > msg_w && ((cursor_x > msg_w || !(MsgStrings[msgstr].stringflags & STRINGFLAG_WRAP)) ? true : strcmp(s3," ")!=0))
+                    if(cursor_x+tlength > (msg_w-(oldmargin ? 0 : msg_margins[right]))
+					   && ((cursor_x > (msg_w-(oldmargin ? 0 : msg_margins[right])) || !(MsgStrings[msgstr].stringflags & STRINGFLAG_WRAP))
+					        ? true : strcmp(s3," ")!=0))
                     {
                         cursor_y += text_height(msgfont) + MsgStrings[msgstr].vspace;
-                        cursor_x=0;
+                        cursor_x=oldmargin ? 0 : msg_margins[left];
                     }
                     
-                    textprintf_ex(msg_txt_bmp_buf,msgfont,cursor_x+8,cursor_y+8,msgcolour,-1,
+                    textprintf_ex(msg_txt_bmp_buf,msgfont,cursor_x+(oldmargin?8:0),cursor_y+(oldmargin?8:0),msgcolour,-1,
                                   "%c",MsgStrings[msgstr].s[msgptr]);
                     cursor_x+=tlength;
                 }
@@ -17346,14 +17349,16 @@ void putmsg()
                 {
                     tlength = text_length(msgfont, s3) + ((int)strlen(s3)*MsgStrings[msgstr].hspace);
                     
-                    if(cursor_x+tlength > msg_w && ((cursor_x > msg_w || !(MsgStrings[msgstr].stringflags & STRINGFLAG_WRAP)) ? true : strcmp(s3," ")!=0))
+                    if(cursor_x+tlength > (msg_w-(oldmargin ? 0 : msg_margins[right]))
+					   && ((cursor_x > (msg_w-(oldmargin ? 0 : msg_margins[right])) || !(MsgStrings[msgstr].stringflags & STRINGFLAG_WRAP))
+					        ? true : strcmp(s3," ")!=0))
                     {
                         cursor_y += text_height(msgfont) + MsgStrings[msgstr].vspace;
-                        cursor_x=0;
+                        cursor_x=oldmargin ? 0 : msg_margins[left];
                     }
                     
                     sfx(MsgStrings[msgstr].sfx);
-                    textprintf_ex(msg_txt_bmp_buf,msgfont,cursor_x+8,cursor_y+8,msgcolour,-1,
+                    textprintf_ex(msg_txt_bmp_buf,msgfont,cursor_x+(oldmargin?8:0),cursor_y+(oldmargin?8:0),msgcolour,-1,
                                   "%c",MsgStrings[msgstr].s[msgptr]);
                     cursor_x += msgfont->vtable->char_length(msgfont, MsgStrings[msgstr].s[msgptr]);
                     cursor_x += MsgStrings[msgstr].hspace;
@@ -17396,10 +17401,12 @@ breakout:
         {
             tlength = msgfont->vtable->char_length(msgfont, MsgStrings[msgstr].s[msgptr]) + MsgStrings[msgstr].hspace;
             
-            if(cursor_x+tlength > msg_w && ((cursor_x > msg_w || !(MsgStrings[msgstr].stringflags & STRINGFLAG_WRAP)) ? 1 : strcmp(s3," ")!=0))
-            {
+            if(cursor_x+tlength > (msg_w-(oldmargin ? 0 : msg_margins[right]))
+			   && ((cursor_x > (msg_w-(oldmargin ? 0 : msg_margins[right])) || !(MsgStrings[msgstr].stringflags & STRINGFLAG_WRAP))
+			        ? 1 : strcmp(s3," ")!=0))
+			{
                 cursor_y += text_height(msgfont) + MsgStrings[msgstr].vspace;
-                cursor_x=0;
+                cursor_x=oldmargin ? 0 : msg_margins[left];
             }
             
             cursor_x+=tlength;
@@ -17423,7 +17430,7 @@ breakout:
     }
     
     // Continue printing the string!
-    if(!atend(MsgStrings[msgstr].s+msgptr) && cursor_y < msg_h)
+    if(!atend(MsgStrings[msgstr].s+msgptr) && cursor_y < msg_h-(oldmargin?0:msg_margins[down]))
     {
         if(!parsemsgcode())
         {
@@ -17431,15 +17438,17 @@ breakout:
             
             tlength = text_length(msgfont, s3) + ((int)strlen(s3)*MsgStrings[msgstr].hspace);
             
-            if(cursor_x+tlength > msg_w && ((cursor_x > msg_w || !(MsgStrings[msgstr].stringflags & STRINGFLAG_WRAP)) ? true : strcmp(s3," ")!=0))
+            if(cursor_x+tlength > (msg_w-(oldmargin ? 0 : msg_margins[right]))
+			   && ((cursor_x > (msg_w-(oldmargin ? 0 : msg_margins[right])) || !(MsgStrings[msgstr].stringflags & STRINGFLAG_WRAP))
+			        ? true : strcmp(s3," ")!=0))
             {
                 cursor_y += text_height(msgfont) + MsgStrings[msgstr].vspace;
-                cursor_x=0;
+                cursor_x=oldmargin ? 0 : msg_margins[left];
                 //if(space) s3[0]=0;
             }
             
             sfx(MsgStrings[msgstr].sfx);
-            textprintf_ex(msg_txt_bmp_buf,msgfont,cursor_x+8,cursor_y+8,msgcolour,-1,
+            textprintf_ex(msg_txt_bmp_buf,msgfont,cursor_x+(oldmargin?8:0),cursor_y+(oldmargin?8:0),msgcolour,-1,
                           "%c",MsgStrings[msgstr].s[msgptr]);
             cursor_x += msgfont->vtable->char_length(msgfont, MsgStrings[msgstr].s[msgptr]);
             cursor_x += MsgStrings[msgstr].hspace;
@@ -17466,10 +17475,12 @@ breakout:
             {
                 tlength = msgfont->vtable->char_length(msgfont, MsgStrings[msgstr].s[msgptr]) + MsgStrings[msgstr].hspace;
                 
-                if(cursor_x+tlength > msg_w && ((cursor_x > msg_w || !(MsgStrings[msgstr].stringflags & STRINGFLAG_WRAP)) ? true : strcmp(s3," ")!=0))
+                if(cursor_x+tlength > (msg_w-(oldmargin ? 0 : msg_margins[right]))
+				   && ((cursor_x > (msg_w-(oldmargin ? 0 : msg_margins[right])) || !(MsgStrings[msgstr].stringflags & STRINGFLAG_WRAP))
+				        ? true : strcmp(s3," ")!=0))
                 {
                     cursor_y += text_height(msgfont) + MsgStrings[msgstr].vspace;
-                    cursor_x=0;
+                    cursor_x=oldmargin ? 0 : msg_margins[left];
                 }
                 
                 cursor_x+=tlength;
@@ -17492,7 +17503,7 @@ breakout:
     }
     
     // Done printing the string
-    if((msgpos>=10000 || msgptr>=MSGSIZE || cursor_y >= msg_h || atend(MsgStrings[msgstr].s+msgptr)) && !linkedmsgclk)
+    if((msgpos>=10000 || msgptr>=MSGSIZE || cursor_y >= msg_h-(oldmargin?0:msg_margins[down]) || atend(MsgStrings[msgstr].s+msgptr)) && !linkedmsgclk)
     {
         while(parsemsgcode()) // Finish remaining control codes
             ;

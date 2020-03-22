@@ -1887,7 +1887,8 @@ void _jwin_draw_scrollable_frame(DIALOG *d, int listsize, int offset, int height
 /* _jwin_draw_listbox:
   *  Helper function to draw a listbox object.
   */
-void _jwin_draw_listbox(DIALOG *d)
+
+void _jwin_draw_listbox(DIALOG *d, char isabc = 0)
 {
     int height, listsize, i, len, bar, x, y, w;
     int fg_color, bg_color, fg, bg;
@@ -1908,7 +1909,7 @@ void _jwin_draw_listbox(DIALOG *d)
     _allegro_vline(screen, d->x+w+1, d->y+4, d->y+d->h-3, bg_color);
     _allegro_vline(screen, d->x+w+2, d->y+4, d->y+d->h-3, bg_color);
 	//al_trace("Drawing %s\n", abc_keypresses);
-	if(abc_patternmatch)
+	if(isabc)
 	{
 		rectfill(screen, d->x+1,  d->y+d->h+2, d->x+d->w-2, d->y+d->h+9, bg_color);
 		textout_ex(screen, font, abc_keypresses, d->x+1, d->y+d->h+2,fg_color, bg_color);
@@ -1969,6 +1970,11 @@ void _jwin_draw_listbox(DIALOG *d)
     _jwin_draw_scrollable_frame(d, listsize, d->d2, height, (d->flags&D_USER)?1:0);
 }
 
+void _jwin_draw_listbox(DIALOG *d)
+{
+	_jwin_draw_listbox(d,0);
+}
+
 /* jwin_list_proc:
   *  A list box object. The dp field points to a ListData struct containing
   *  a function which it will call
@@ -1984,7 +1990,7 @@ void _jwin_draw_listbox(DIALOG *d)
   *  close the dialog. The index of the selected item is held in the d1
   *  field, and d2 is used to store how far it has scrolled through the list.
   */
-int jwin_list_proc(int msg, DIALOG *d, int c)
+int jwin_list_proc(int msg, DIALOG *d, int c, char isabc)
 {
     ListData *data = (ListData *)d->dp;
     int listsize, i, bottom, height, bar, orig;
@@ -2000,7 +2006,7 @@ int jwin_list_proc(int msg, DIALOG *d, int c)
         break;
         
     case MSG_DRAW:
-        _jwin_draw_listbox(d);
+        _jwin_draw_listbox(d, isabc);
         break;
         
     case MSG_CLICK:
@@ -2216,6 +2222,11 @@ int jwin_list_proc(int msg, DIALOG *d, int c)
     }
     
     return D_O_K;
+}
+
+int jwin_list_proc(int msg, DIALOG *d, int c)
+{
+	return jwin_list_proc(msg, d, c, 0);
 }
 
 /* _jwin_draw_textbox:
@@ -4045,7 +4056,7 @@ int jwin_abclist_proc(int msg,DIALOG *d,int c)
 				
 gotit_match:
 			scare_mouse();
-			jwin_list_proc(MSG_DRAW,d,0);
+			jwin_list_proc(MSG_DRAW,d,0); 
 			unscare_mouse();
 			if ( gui_mouse_b() ) { wipe_abc_keypresses();} // al_trace("keypresses: %s\n", abc_keypresses); }
 			//wipe_abc_keypresses();
@@ -4061,7 +4072,7 @@ gotit_match:
 				}
 			}
 			//al_trace("keypresses: %s\n", abc_keypresses);
-			jwin_list_proc(MSG_DRAW,d,0);
+			jwin_list_proc(MSG_DRAW,d,0,1);
 			return D_USED_CHAR;
 		}
 		if ( gui_mouse_b() ) { wipe_abc_keypresses(); } //al_trace("keypresses: %s\n", abc_keypresses); }
@@ -4092,12 +4103,12 @@ gotit_match:
 			
 gotit_nomatch:
 			scare_mouse();
-			jwin_list_proc(MSG_DRAW,d,0);
+			jwin_list_proc(MSG_DRAW,d,0,0);
 			unscare_mouse();
 			return D_USED_CHAR;
 		}
 	}
-	return jwin_list_proc(msg,d,c);
+	return jwin_list_proc(msg,d,c,1);
 }
 
 int jwin_checkfont_proc(int msg, DIALOG *d, int c)

@@ -208,6 +208,7 @@ extern YYLTYPE noloc;
 %token HASH
 %token ENDLINE
 %token NEWLINE
+%token CARRETURN
 %token OPTION
 %token INHERIT
 

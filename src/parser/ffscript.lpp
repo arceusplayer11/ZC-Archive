@@ -281,6 +281,7 @@ appx_equal	TOKEN( APPXEQUAL );
 	\\\n			NEWLINE;
 	\n			NEWLINE; BEGIN( INITIAL ); TOKEN ( NEWLINE ); 
 	\r\n 			TOKEN( ENDLINE );
+	\r 			TOKEN( CARRETURN );
 	"option"		TOKEN( OPTION );
 	"ignore error"		TOKEN( EXPECTERROR );
 	"IGNORE ERROR"		TOKEN( EXPECTERROR );

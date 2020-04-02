@@ -6350,13 +6350,49 @@ void LinkClass::addsparkle(int wpn)
             if(w->misc==1 && w->clk2>256 && w->clk2<272)
                 direction=oppositeDir[direction];
         }
-        
-        Lwpns.add(new weapon((fix)(w->x+(itemtype==itype_cbyrna ? 2 : rand()%4)+(h*4)),
-                             (fix)(w->y+(itemtype==itype_cbyrna ? 2 : rand()%4)+(v*4)),
+	
+	if(itemtype==itype_cbyrna)
+	{
+		Lwpns.add(new weapon((fix)(w->x+2+(h*4)),(fix)(w->y+2+(v*4)),
                              w->z,sparkle_type==wpn3 ? wFSparkle : wSSparkle,sparkle_type,0,direction,itemid,getUID(),false,false,true));
-	weapon *w = (weapon*)(Lwpns.spr(Lwpns.Count()-1));
-		    w->linked_parent = sparkle_type;
+		weapon *w = (weapon*)(Lwpns.spr(Lwpns.Count()-1));
+		w->linked_parent = sparkle_type;
 	}
+        
+	else
+	{
+		int spr = 0;
+		if(wpn2&&wpn3)
+		{
+			spr = (rand()&1) ? wpn3 : wpn2;
+			
+		}
+		else if ( wpn2 && !wpn3 ) 
+		{
+			spr = wpn2;
+		}
+		else if ( wpn3 && !wpn2 ) 
+		{
+			spr = wpn3;
+		}
+		else
+		{
+			spr = (rand()&1) ? wFSparkle : wSSparkle;
+			
+		}
+		
+		zprint2("Adding a sparkle. spritex is: %d\n", spr);
+		
+		
+		
+		Lwpns.add(new weapon((fix)(w->x+(rand()%4)+(h*4)),
+                             (fix)(w->y+(rand()%4)+(v*4)),
+                             //w->z,sparkle_type==wpn3 ? wFSparkle : wSSparkle,sparkle_type,0,direction,itemid,getUID(),false,false,true));
+                             w->z,sparkle_type==wpn3 ? wFSparkle : wSSparkle,spr,0,direction,itemid,getUID(),false,false,true));
+		weapon *w = (weapon*)(Lwpns.spr(Lwpns.Count()-1));
+		w->linked_parent = sparkle_type;
+	}
+    }
 }
 
 // For wPhantoms

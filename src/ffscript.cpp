@@ -18308,7 +18308,10 @@ void do_createlweapon(const bool v)
 		//Lwpns.spr(Lwpns.Count() - 1)->ScriptGenerated = 1;
 		//Lwpns.spr(Lwpns.Count() - 1)->isLWeapon = 1;
 		weapon *w = (weapon*)Lwpns.spr(Lwpns.Count()-1); //last created
-		w->LOADGFX(FFCore.getDefWeaponSprite(ID));
+		if ( ID != wSSparkle && ID != wFSparkle )
+		{
+			w->LOADGFX(FFCore.getDefWeaponSprite(ID));
+		}
 		w->ScriptGenerated = 1;
 		w->isLWeapon = 1;
 		Z_eventlog("Script created lweapon %ld with UID = %ld\n", ID, ri->lwpn);
@@ -18362,7 +18365,10 @@ void do_createeweapon(const bool v)
 		if( ID > wEnemyWeapons || ( ID >= wScript1 && ID <= wScript10) )
 		{
 			weapon *w = (weapon*)Ewpns.spr(Ewpns.Count()-1); //last created
-			w->LOADGFX(FFCore.getDefWeaponSprite(ID));
+			if ( ID != wSSparkle && ID != wFSparkle )
+			{
+				w->LOADGFX(FFCore.getDefWeaponSprite(ID));
+			}
 			w->ScriptGenerated = 1;
 			w->isLWeapon = 0;
 			ri->ewpn = Ewpns.spr(Ewpns.Count() - 1)->getUID();

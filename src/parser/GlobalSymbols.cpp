@@ -4263,7 +4263,7 @@ static AccessorTable gameTable[] =
 	{ "LoadShopData",                  ZVARTYPEID_SHOPDATA,      FUNCTION,     0,                    1,              FUNCFLAG_INLINE,                      2,           {  ZVARTYPEID_GAME,          ZVARTYPEID_FLOAT,        -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1                           } },
 	{ "LoadInfoShopData",              ZVARTYPEID_SHOPDATA,      FUNCTION,     0,                    1,              FUNCFLAG_INLINE,                      2,           {  ZVARTYPEID_GAME,          ZVARTYPEID_FLOAT,        -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1                           } },
 //	{ "LoadScreenData",                ZVARTYPEID_ITEMCLASS,     FUNCTION,     0,                    1,              0,                                    2,           {  ZVARTYPEID_GAME,          ZVARTYPEID_FLOAT,        -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1                           } },
-	{ "LoadBitmapID",                  ZVARTYPEID_BITMAP,        FUNCTION,     0,                    1,              FUNCFLAG_INLINE,                      2,           {  ZVARTYPEID_GAME,          ZVARTYPEID_FLOAT,        -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1                           } },
+	{ "LoadBitmapID",                  ZVARTYPEID_BITMAP,        FUNCTION,     0,                    1,              0,                      2,           {  ZVARTYPEID_GAME,          ZVARTYPEID_FLOAT,        -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1                           } },
 	{ "LoadMessageData",               ZVARTYPEID_ZMESSAGE,      FUNCTION,     0,                    1,              FUNCFLAG_INLINE,                      2,           {  ZVARTYPEID_GAME,          ZVARTYPEID_FLOAT,        -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1                           } },
 	{ "LoadDMapData",                  ZVARTYPEID_DMAPDATA,      FUNCTION,     0,                    1,              FUNCFLAG_INLINE,                      2,           {  ZVARTYPEID_GAME,          ZVARTYPEID_FLOAT,        -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1                           } },
 	{ "LoadDropset",                   ZVARTYPEID_DROPSET,       FUNCTION,     0,                    1,              FUNCFLAG_INLINE,                      2,           {  ZVARTYPEID_GAME,          ZVARTYPEID_FLOAT,        -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1                           } },
@@ -4520,13 +4520,14 @@ void GameSymbols::generateCode()
         int label = function->getLabel();
         vector<Opcode *> code;
         //pop off the param
-        code.push_back(new OPopRegister(new VarArgument(EXP1)));
-        LABELBACK(label);
+        Opcode *first = new OPopRegister(new VarArgument(EXP1));
+        first->setLabel(label);
+        code.push_back(first);
         //pop pointer, and ignore it
-        POPREF();
+        code.push_back(new OPopRegister(new VarArgument(NUL)));
         code.push_back(new OLoadBitmapDataRegister(new VarArgument(EXP1)));
         code.push_back(new OSetRegister(new VarArgument(EXP1), new VarArgument(REFBITMAP)));
-        RETURN();
+        //code.push_back(new OReturn());
         function->giveCode(code);   
     }
     
@@ -8198,7 +8199,6 @@ static AccessorTable GraphicsTable[] =
 	{ "NumDraws",        ZVARTYPEID_FLOAT,   GETTER,      NUMDRAWS,   1,             0,                                    1,           {  ZVARTYPEID_GRAPHICS,          -1,                               -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1                           } },
 	{ "MaxDraws",        ZVARTYPEID_FLOAT,   GETTER,      MAXDRAWS,   1,             0,                                    1,           {  ZVARTYPEID_GRAPHICS,          -1,                               -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1                           } },
 	{ "GetPixel",        ZVARTYPEID_FLOAT,   FUNCTION,    0,          1,             0,                                    4,           {  ZVARTYPEID_GRAPHICS,          ZVARTYPEID_UNTYPED,         ZVARTYPEID_FLOAT,    ZVARTYPEID_FLOAT,     -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1,                           -1                           } },
-	
 	{ "",                -1,                 -1,          -1,         -1,            0,                                    0,           { -1,            -1,            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 } }
 };
 
@@ -8230,14 +8230,15 @@ void GraphicsSymbols::generateCode()
 		int label = function->getLabel();
 		vector<Opcode *> code;
 		//pop off the params
-		code.push_back(new OPopRegister(new VarArgument(INDEX)));
-		LABELBACK(label);
+		Opcode *first = new OPopRegister(new VarArgument(INDEX));
+		first->setLabel(label);
+		code.push_back(first);
 		code.push_back(new OPopRegister(new VarArgument(INDEX2)));
 		code.push_back(new OPopRegister(new VarArgument(EXP1)));
 		//pop pointer, and ignore it
-		POPREF();
+		code.push_back(new OPopRegister(new VarArgument(NUL)));
 		code.push_back(new OGraphicsGetpixel(new VarArgument(EXP1)));
-		RETURN();
+		code.push_back(new OReturn());
 		function->giveCode(code);
 	}
 	{

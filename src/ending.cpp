@@ -19,6 +19,7 @@
 
 #include "ending.h"
 #include "zelda.h"
+extern unsigned char script_incremented;
 extern zcmodule moduledata;
 extern ZModule zcm;
 #include "zsys.h"
@@ -574,7 +575,7 @@ void ending()
     }
     while(!rSbtn());
     
-    if(game->get_quest()>0 && game->get_quest()<=5)
+    if(game->get_quest()>0 && game->get_quest()<=9)
     {
         inc_quest();
         removeItemsOfFamily(game, itemsbuf, itype_ring);
@@ -617,8 +618,85 @@ void ending()
     save_savedgames();
 }
 
+
+void ending_scripted()
+{
+    
+    
+    //get rid off all sprites but Link and Zelda
+    items.clear();
+    Ewpns.clear();
+    Lwpns.clear();
+    Sitems.clear();
+    chainlinks.clear();
+    decorations.clear();
+    
+    music_stop();
+    kill_sfx();
+    
+    game->set_cheat(game->get_cheat() | (cheat>1)?1:0);
+    
+    
+    draw_screen_clip_rect_x1=0;
+    draw_screen_clip_rect_x2=255;
+    draw_screen_clip_rect_y1=0;
+    draw_screen_clip_rect_y2=223;
+    //draw_screen_clip_rect_show_link=true;
+    //draw_screen_clip_rect_show_guys=false;
+    
+    clear_bitmap(msgdisplaybuf);
+    draw_screen(tmpscr);
+    advanceframe(true);
+    
+    draw_screen_clip_rect_x1=0;
+    draw_screen_clip_rect_x2=255;
+    //draw_screen_clip_rect_show_guys=false;
+    
+    clear_bitmap(scrollbuf);
+    blit(framebuf,scrollbuf,0,0,0,0,256,224);
+    endingpal();
+    
+        inc_quest();
+        removeItemsOfFamily(game, itemsbuf, itype_ring);
+        int maxring = getHighestLevelOfFamily(&zinit,itemsbuf,itype_ring);
+        
+        if(maxring != -1)
+        {
+            getitem(maxring,true);
+        }
+        
+        ringcolor(false);
+    
+    
+    
+    stop_midi();
+    
+    if(zcmusic != NULL)
+    {
+        zcmusic_stop(zcmusic);
+        zcmusic_unload_file(zcmusic);
+        zcmusic = NULL;
+    }
+    
+//  setPackfilePassword(datapwd);
+    load_quest(game);
+    strcpy(game->title,QHeader.title);
+//  setPackfilePassword(NULL);
+    saves[currgame] = *game;
+    load_game_icon_to_buffer(false,currgame);
+    load_game_icon(game,false,currgame);
+    
+    game->set_continue_dmap(zinit.start_dmap);
+    game->set_continue_scrn(0xFF);
+    game->set_cont_hearts(zinit.cont_heart);
+    game->set_hasplayed(false);
+    show_saving(scrollbuf);
+    save_savedgames();
+}
+
 void inc_quest()
 {
+	zprint2("Running inc_quest()\n");
 	char name[9];
 	strcpy(name,game->get_name());
 	// Go to quest 3 if you got some heart containers,
@@ -627,11 +705,16 @@ void inc_quest()
 	
 	int linear = get_config_int("zeldadx","linear_quest_progression",1);
 	
-	if ( linear_quest_loading )
+	if ( linear_quest_loading || game->get_quest() >= 5 )
 	{
 		int curquest = game->get_quest();
-		switch(curquest)
+		if ( curquest == 255 ) //255 is a custom quest. We set it to 0 to roll over to 1, later. 
 		{
+			curquest = 0;
+		}
+		/*switch(curquest)
+		{
+			
 			case 1: quest = 2; break;
 			case 2: quest = 3; break;
 			case 3: quest = 4; break;
@@ -646,6 +729,12 @@ void inc_quest()
 				break;
 			}
 		}
+		*/
+		if ( curquest + 1 < 11 ) 
+		{
+			quest = curquest + 1;
+		}
+		game->Clear();
 	}
 	else
 	{
@@ -715,7 +804,8 @@ void inc_quest()
 	game->set_maxlife(3*HP_PER_HEART);
 	game->set_life(3*HP_PER_HEART);
 	game->set_maxbombs(8);
-	game->set_hasplayed(true);
+	if ( !script_incremented ) game->set_hasplayed(true);
+	else game->set_hasplayed(false);
 	
 	//now bound to modules
 	game->set_continue_dmap(moduledata.startingdmap[quest-1]);

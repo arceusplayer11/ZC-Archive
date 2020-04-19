@@ -19,6 +19,7 @@
 
 #include "ending.h"
 #include "zelda.h"
+extern unsigned char script_incremented;
 extern zcmodule moduledata;
 extern ZModule zcm;
 #include "zsys.h"
@@ -619,6 +620,7 @@ void ending()
 
 void inc_quest()
 {
+	zprint2("Running inc_quest()\n");
 	char name[9];
 	strcpy(name,game->get_name());
 	// Go to quest 3 if you got some heart containers,
@@ -627,11 +629,16 @@ void inc_quest()
 	
 	int linear = get_config_int("zeldadx","linear_quest_progression",1);
 	
-	if ( linear_quest_loading )
+	if ( linear_quest_loading || game->get_quest() >= 5 )
 	{
 		int curquest = game->get_quest();
-		switch(curquest)
+		if ( curquest == 255 ) //255 is a custom quest. We set it to 0 to roll over to 1, later. 
 		{
+			curquest = 0;
+		}
+		/*switch(curquest)
+		{
+			
 			case 1: quest = 2; break;
 			case 2: quest = 3; break;
 			case 3: quest = 4; break;
@@ -645,6 +652,11 @@ void inc_quest()
 				else quest = 5;
 				break;
 			}
+		}
+		*/
+		if ( curquest + 1 < 11 ) 
+		{
+			quest = curquest + 1;
 		}
 	}
 	else
@@ -715,7 +727,8 @@ void inc_quest()
 	game->set_maxlife(3*HP_PER_HEART);
 	game->set_life(3*HP_PER_HEART);
 	game->set_maxbombs(8);
-	game->set_hasplayed(true);
+	if ( !script_incremented ) game->set_hasplayed(true);
+	else game->set_hasplayed(false);
 	
 	//now bound to modules
 	game->set_continue_dmap(moduledata.startingdmap[quest-1]);

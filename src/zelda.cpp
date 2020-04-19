@@ -133,6 +133,7 @@ extern byte emulation_patches[emuLAST];
 extern int hangcount;
 bool is_large=false;
 char __isZQuest = 0; //Shared functionscan reference this. -Z
+unsigned char script_incremented = 0;
 
 bool standalone_mode=false;
 char *standalone_quest=NULL;
@@ -1306,7 +1307,12 @@ int load_quest(gamedata *g, bool report)
     }
     else
     {
-        if(!ret && strcmp(g->title,QHeader.title))
+	if ( !ret && script_incremented )
+	{
+		zprint2("matched incremented qst\n");
+		ret = qe_match;
+	}
+        else if(!ret && strcmp(g->title,QHeader.title))
         {
             ret = qe_match;
         }
@@ -1318,7 +1324,12 @@ int load_quest(gamedata *g, bool report)
             ret = qe_minver;
     }
     
-    if(ret && report)
+    if ( script_incremented )
+    {
+	ret = 0;
+	zprint2("skipping err\n");
+    }
+    else if(ret && report)
     {
         system_pal();
         char buf1[80],buf2[80];

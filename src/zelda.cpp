@@ -133,6 +133,7 @@ extern byte emulation_patches[emuLAST];
 extern int hangcount;
 bool is_large=false;
 char __isZQuest = 0; //Shared functionscan reference this. -Z
+unsigned char script_incremented = 0;
 
 bool standalone_mode=false;
 char *standalone_quest=NULL;
@@ -1306,7 +1307,12 @@ int load_quest(gamedata *g, bool report)
     }
     else
     {
-        if(!ret && strcmp(g->title,QHeader.title))
+	if ( !ret && script_incremented )
+	{
+		zprint2("matched incremented qst\n");
+		ret = qe_match;
+	}
+        else if(!ret && strcmp(g->title,QHeader.title))
         {
             ret = qe_match;
         }
@@ -1318,8 +1324,14 @@ int load_quest(gamedata *g, bool report)
             ret = qe_minver;
     }
     
-    if(ret && report)
+    //if ( script_incremented )
+    //{
+//	ret = 0;
+//	zprint2("skipping err\n");
+  //  }
+    /*else*/ if(ret && report)
     {
+	zprint2("load quest ret: %d\n", ret);
         system_pal();
         char buf1[80],buf2[80];
         sprintf(buf1,"Error loading %s:",get_filename(qstpath));
@@ -1333,7 +1345,7 @@ int load_quest(gamedata *g, bool report)
         
         game_pal();
     }
-    
+    zprint2("load quest ret: %d\n", ret);
     return ret;
 }
 
@@ -4095,6 +4107,22 @@ int main(int argc, char* argv[])
             initZScriptGlobalRAM();
             ZScriptVersion::RunScript(SCRIPT_GLOBAL, GLOBAL_SCRIPT_END);
             ending();
+        }
+        break;
+	
+	case qINCQST:
+        {
+            Link.setDontDraw(true);
+		//Link.setCharging(0);//don't have the sword out during the ending. 
+		//Link.setSwordClk(0);
+            show_subscreen_dmap_dots=true;
+            show_subscreen_numbers=true;
+            show_subscreen_items=true;
+            show_subscreen_life=true;
+            
+            initZScriptGlobalRAM();
+            ZScriptVersion::RunScript(SCRIPT_GLOBAL, GLOBAL_SCRIPT_END);
+            ending_scripted();
         }
         break;
         

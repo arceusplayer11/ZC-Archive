@@ -19165,7 +19165,7 @@ bool canfall(int id)
 
 int enemy::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -19192,52 +19192,52 @@ int enemy::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -19255,22 +19255,22 @@ int enemy::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -19298,7 +19298,7 @@ int enemy::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -19318,7 +19318,7 @@ int enemy::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -19326,34 +19326,44 @@ int enemy::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -19368,7 +19378,7 @@ int enemy::changetype(int newtype)
 
 int eFire::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -19395,52 +19405,52 @@ int eFire::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -19458,22 +19468,22 @@ int eFire::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -19501,7 +19511,7 @@ int eFire::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -19521,7 +19531,7 @@ int eFire::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -19529,34 +19539,44 @@ int eFire::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -19567,7 +19587,7 @@ int eFire::changetype(int newtype)
 
 int eOther::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -19594,52 +19614,52 @@ int eOther::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -19657,22 +19677,22 @@ int eOther::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -19700,7 +19720,7 @@ int eOther::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -19720,7 +19740,7 @@ int eOther::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -19728,34 +19748,44 @@ int eOther::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -19766,7 +19796,7 @@ int eOther::changetype(int newtype)
 
 int eScript::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -19793,52 +19823,52 @@ int eScript::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -19856,22 +19886,22 @@ int eScript::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -19899,7 +19929,7 @@ int eScript::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -19919,7 +19949,7 @@ int eScript::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -19927,34 +19957,44 @@ int eScript::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -19965,7 +20005,7 @@ int eScript::changetype(int newtype)
 
 int eFriendly::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -19992,52 +20032,52 @@ int eFriendly::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -20055,22 +20095,22 @@ int eFriendly::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -20098,7 +20138,7 @@ int eFriendly::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -20118,7 +20158,7 @@ int eFriendly::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -20126,34 +20166,45 @@ int eFriendly::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
+			
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -20164,7 +20215,7 @@ int eFriendly::changetype(int newtype)
 
 int eGhini::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -20191,52 +20242,52 @@ int eGhini::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -20254,22 +20305,22 @@ int eGhini::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -20297,7 +20348,7 @@ int eGhini::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -20317,7 +20368,7 @@ int eGhini::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -20325,34 +20376,44 @@ int eGhini::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -20363,7 +20424,7 @@ int eGhini::changetype(int newtype)
 
 int eTektite::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -20390,52 +20451,52 @@ int eTektite::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -20453,22 +20514,22 @@ int eTektite::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -20496,7 +20557,7 @@ int eTektite::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -20516,7 +20577,7 @@ int eTektite::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -20524,34 +20585,44 @@ int eTektite::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -20562,7 +20633,7 @@ int eTektite::changetype(int newtype)
 
 int eItemFairy::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -20589,52 +20660,52 @@ int eItemFairy::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -20652,22 +20723,22 @@ int eItemFairy::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -20695,7 +20766,7 @@ int eItemFairy::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -20715,7 +20786,7 @@ int eItemFairy::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -20723,34 +20794,44 @@ int eItemFairy::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -20761,7 +20842,7 @@ int eItemFairy::changetype(int newtype)
 
 int ePeahat::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -20788,52 +20869,52 @@ int ePeahat::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -20851,22 +20932,22 @@ int ePeahat::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -20894,7 +20975,7 @@ int ePeahat::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -20914,7 +20995,7 @@ int ePeahat::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -20922,34 +21003,44 @@ int ePeahat::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -20960,7 +21051,7 @@ int ePeahat::changetype(int newtype)
 
 int eLeever::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -20987,52 +21078,52 @@ int eLeever::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -21050,22 +21141,22 @@ int eLeever::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -21093,7 +21184,7 @@ int eLeever::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -21113,7 +21204,7 @@ int eLeever::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -21121,34 +21212,44 @@ int eLeever::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -21159,7 +21260,7 @@ int eLeever::changetype(int newtype)
 
 int eWallM::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -21186,52 +21287,52 @@ int eWallM::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -21249,22 +21350,22 @@ int eWallM::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -21292,7 +21393,7 @@ int eWallM::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -21312,7 +21413,7 @@ int eWallM::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -21320,34 +21421,44 @@ int eWallM::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -21358,7 +21469,7 @@ int eWallM::changetype(int newtype)
 
 int eTrap::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -21385,52 +21496,52 @@ int eTrap::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -21448,22 +21559,22 @@ int eTrap::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -21491,7 +21602,7 @@ int eTrap::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -21511,7 +21622,7 @@ int eTrap::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -21519,34 +21630,44 @@ int eTrap::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -21557,7 +21678,7 @@ int eTrap::changetype(int newtype)
 
 int eRock::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -21584,52 +21705,52 @@ int eRock::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -21647,22 +21768,22 @@ int eRock::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -21690,7 +21811,7 @@ int eRock::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -21710,7 +21831,7 @@ int eRock::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -21718,34 +21839,44 @@ int eRock::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -21756,7 +21887,7 @@ int eRock::changetype(int newtype)
 
 int eBoulder::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -21783,52 +21914,52 @@ int eBoulder::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -21846,22 +21977,22 @@ int eBoulder::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -21889,7 +22020,7 @@ int eBoulder::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -21909,7 +22040,7 @@ int eBoulder::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -21917,34 +22048,44 @@ int eBoulder::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -22052,7 +22193,7 @@ int eBaseLanmola::changetype(int newtype)
 
 int eProjectile::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -22079,52 +22220,52 @@ int eProjectile::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -22142,22 +22283,22 @@ int eProjectile::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -22185,7 +22326,7 @@ int eProjectile::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -22205,7 +22346,7 @@ int eProjectile::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -22213,34 +22354,44 @@ int eProjectile::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -22251,7 +22402,7 @@ int eProjectile::changetype(int newtype)
 
 int eSpinTile::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -22278,52 +22429,52 @@ int eSpinTile::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -22341,22 +22492,22 @@ int eSpinTile::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -22384,7 +22535,7 @@ int eSpinTile::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -22404,7 +22555,7 @@ int eSpinTile::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -22412,34 +22563,44 @@ int eSpinTile::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -22450,7 +22611,7 @@ int eSpinTile::changetype(int newtype)
 
 int eZora::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -22477,52 +22638,52 @@ int eZora::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -22540,22 +22701,22 @@ int eZora::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -22583,7 +22744,7 @@ int eZora::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -22603,7 +22764,7 @@ int eZora::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -22611,34 +22772,44 @@ int eZora::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -22649,7 +22820,7 @@ int eZora::changetype(int newtype)
 
 int eStalfos::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -22676,52 +22847,52 @@ int eStalfos::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -22739,22 +22910,22 @@ int eStalfos::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -22782,7 +22953,7 @@ int eStalfos::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -22802,7 +22973,7 @@ int eStalfos::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -22810,34 +22981,44 @@ int eStalfos::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -22848,7 +23029,7 @@ int eStalfos::changetype(int newtype)
 
 int eKeese::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -22875,52 +23056,52 @@ int eKeese::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -22938,22 +23119,22 @@ int eKeese::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -22981,7 +23162,7 @@ int eKeese::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -23001,7 +23182,7 @@ int eKeese::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -23009,34 +23190,44 @@ int eKeese::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -23047,7 +23238,7 @@ int eKeese::changetype(int newtype)
 
 int eWizzrobe::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -23074,52 +23265,52 @@ int eWizzrobe::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -23137,22 +23328,22 @@ int eWizzrobe::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -23180,7 +23371,7 @@ int eWizzrobe::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -23200,7 +23391,7 @@ int eWizzrobe::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -23208,34 +23399,44 @@ int eWizzrobe::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -23246,7 +23447,7 @@ int eWizzrobe::changetype(int newtype)
 
 int eDodongo::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -23273,52 +23474,52 @@ int eDodongo::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -23336,22 +23537,22 @@ int eDodongo::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -23379,7 +23580,7 @@ int eDodongo::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -23399,7 +23600,7 @@ int eDodongo::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -23407,34 +23608,45 @@ int eDodongo::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
+			del = true;
+			break;
 		  
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}
@@ -23445,7 +23657,7 @@ int eDodongo::changetype(int newtype)
 
 int eDodongo2::changetype(int newtype)
 {
-	bool canchange = true;
+	bool canchange = true, del = false;
 	switch(family)
 	{
 		case eeAQUA:
@@ -23472,52 +23684,52 @@ int eDodongo2::changetype(int newtype)
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
 			e = new eStalfos(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeLEV:
 			e = new eLeever(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeTEK:
 			e = new eTektite(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePEAHAT:
 			e = new ePeahat(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeZORA:
 			e = new eZora(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeGHINI:
 			e = new eGhini(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeKEESE:
 			e = new eKeese(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWIZZ:
 			e = new eWizzrobe(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eePROJECTILE:
 			e = new eProjectile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeWALLM:
 			e = new eWallM(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeAQUA:
@@ -23535,22 +23747,22 @@ int eDodongo2::changetype(int newtype)
 			case eeGUY:
 			//e = new eNPC(*this, false, false);
 			zprint2("Cannot change an enemy type into a guy.\n");
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFAIRY:
 			e = new eItemFairy(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeFIRE:
 			e = new eFire(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeOTHER: 
 			e = new eOther(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 	    
@@ -23578,7 +23790,7 @@ int eDodongo2::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eScript(*this, false, false);
-					//delete original here
+					del = true;
 					
 				//}
 				break;
@@ -23598,7 +23810,7 @@ int eDodongo2::changetype(int newtype)
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
 					e = new eFriendly(*this, false, false);
-				//delete original here
+				del = true;
 				//}
 				break;
 						
@@ -23606,34 +23818,54 @@ int eDodongo2::changetype(int newtype)
 		
 			case eeSPINTILE:
 			e = new eSpinTile(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
 			e = new eRock(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 			
 			case eeTRAP:
 			e = new eTrap(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 	    
 			case eeDONGO:
 			e = new eDodongo(*this, false, false);
-			//delete original here
+			del = true;
 			break;
 		
 			case eeNONE:
 			e = new eTrigger(*this, false, false);
-			//delete original here
-		  
+			del = true;
+			break;
 		}
 		if(e!=NULL)
 		{
 			if(guys.add(e))
 			{
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
+				if(del)
+				{
+					for(word w = 0; w < guys.Count(); ++w)
+					{
+						if(guys.spr(w)->getUID() == this->getUID())
+						{
+							guys.del(w);
+						}
+					}
+				}
 				return 1;
 			}
 		}

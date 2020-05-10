@@ -263,8 +263,26 @@ eFire::eFire(enemy const & other, bool new_script_uid, bool clear_parent_script_
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
     clk4(clk4),
-    shield(shield)
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 
 {
 	
@@ -311,8 +329,26 @@ eOther::eOther(enemy const & other, bool new_script_uid, bool clear_parent_scrip
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
     clk4(clk4),
-    shield(shield)
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 
 {
 	
@@ -362,9 +398,26 @@ eScript::eScript(enemy const & other, bool new_script_uid, bool clear_parent_scr
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
     clk4(clk4),
-    shield(shield)
-
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -410,8 +463,26 @@ eFriendly::eFriendly(enemy const & other, bool new_script_uid, bool clear_parent
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
     clk4(clk4),
-    shield(shield)
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 
 {
 	
@@ -458,10 +529,26 @@ eGhini::eGhini(enemy const & other, bool new_script_uid, bool clear_parent_scrip
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
-    clk4(clk4),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
     ox(ox),
     oy(oy),
-    c(c)
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 
 {
 	
@@ -508,10 +595,26 @@ eTektite::eTektite(enemy const & other, bool new_script_uid, bool clear_parent_s
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
     old_y(old_y),
     clk2start(clk2start),
     cstart(cstart),
-    c(c)
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 
 {
 	
@@ -557,7 +660,27 @@ eTektite::eTektite(enemy const & other, bool new_script_uid, bool clear_parent_s
 eItemFairy::eItemFairy(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
      //Struct Element			Type		Purpose
     //sprite(other),
-    enemy(other)
+    enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -603,9 +726,26 @@ ePeahat::ePeahat(enemy const & other, bool new_script_uid, bool clear_parent_scr
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
     ox(ox),
     oy(oy),
-    c(c)
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -651,7 +791,26 @@ eLeever::eLeever(enemy const & other, bool new_script_uid, bool clear_parent_scr
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
-    temprule(temprule)
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -697,7 +856,26 @@ eWallM::eWallM(enemy const & other, bool new_script_uid, bool clear_parent_scrip
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
-    haslink(haslink)
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -743,13 +921,24 @@ eStalfos::eStalfos(enemy const & other, bool new_script_uid, bool clear_parent_s
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
     clk4(clk4),
     clk5(clk5),
     fired(fired),
-    shield(shield),
     dashing(dashing),
-    haslink(haslink),
     multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
     fy(fy),
     shadowdistance(shadowdistance)
 {
@@ -796,7 +985,27 @@ eStalfos::eStalfos(enemy const & other, bool new_script_uid, bool clear_parent_s
 eZora::eZora(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
      //Struct Element			Type		Purpose
     //sprite(other),
-    enemy(other)
+    enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -841,7 +1050,27 @@ eZora::eZora(enemy const & other, bool new_script_uid, bool clear_parent_script_
 eSpinTile::eSpinTile(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
      //Struct Element			Type		Purpose
     //sprite(other),
-    enemy(other)
+    enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -886,7 +1115,27 @@ eSpinTile::eSpinTile(enemy const & other, bool new_script_uid, bool clear_parent
 eNPC::eNPC(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
      //Struct Element			Type		Purpose
     //sprite(other),
-    enemy(other)
+    enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    haslink(haslink),
+    multishot(multishot),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -977,6 +1226,26 @@ eProjectile::eProjectile(enemy const & other, bool new_script_uid, bool clear_pa
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance),
     minRange(minRange)
 {
 	
@@ -1022,7 +1291,27 @@ eProjectile::eProjectile(enemy const & other, bool new_script_uid, bool clear_pa
 eBoulder::eBoulder(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
      //Struct Element			Type		Purpose
     //sprite(other),
-    enemy(other)
+    enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -1067,7 +1356,27 @@ eBoulder::eBoulder(enemy const & other, bool new_script_uid, bool clear_parent_s
 eRock::eRock(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
      //Struct Element			Type		Purpose
     //sprite(other),
-    enemy(other)
+    enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    haslink(haslink),
+    multishot(multishot),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -1158,8 +1467,26 @@ eTrap::eTrap(enemy const & other, bool new_script_uid, bool clear_parent_script_
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
     ox(ox),
-    oy(oy)
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -1208,10 +1535,26 @@ eKeese::eKeese(enemy const & other, bool new_script_uid, bool clear_parent_scrip
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
     ox(ox),
+    oy(oy),
     c(c),
     clk4(clk4),
-    oy(oy)
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    haslink(haslink),
+    multishot(multishot),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -1259,7 +1602,24 @@ eWizzrobe::eWizzrobe(enemy const & other, bool new_script_uid, bool clear_parent
     enemy(other),
     charging(charging),
     firing(firing),
-    fclk(fclk)
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    haslink(haslink),
+    multishot(multishot),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -1304,7 +1664,27 @@ eWizzrobe::eWizzrobe(enemy const & other, bool new_script_uid, bool clear_parent
 eDodongo::eDodongo(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
      //Struct Element			Type		Purpose
     //sprite(other),
-    enemy(other)
+    enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    haslink(haslink),
+    multishot(multishot),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -1350,7 +1730,26 @@ eDodongo2::eDodongo2(enemy const & other, bool new_script_uid, bool clear_parent
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
-    previous_dir(previous_dir)
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
 {
 	
 	//arrays
@@ -8991,6 +9390,32 @@ void guy::draw(BITMAP *dest)
 
 eFire::eFire(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
     clk4=0;
     shield= (flags&(inv_left | inv_right | inv_back |inv_front)) != 0;
     obeys_gravity = 0; //used for enemy type 'Other (Floating)' in 2.50, and these ignore gravity. Used by ghost.zh. -Z 23rd June, 2019
@@ -9082,6 +9507,34 @@ void eFire::break_shield()
 
 eOther::eOther(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+	
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     //zprint2("npct other::other\n");
     clk4=0;
     obeys_gravity = 1; //used for enemy type 'Other' in 2.50, and these obey gravity. Used by ghost.zh. -Z 23rd June, 2019
@@ -9177,6 +9630,34 @@ void eOther::break_shield()
 
 eScript::eScript(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+	
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     clk4=0;
     obeys_gravity = 1; //used for enemy type 'Other' in 2.50, and these obey gravity. Used by ghost.zh. -Z 23rd June, 2019
     shield= (flags&(inv_left | inv_right | inv_back |inv_front)) != 0;
@@ -9270,6 +9751,34 @@ void eScript::break_shield()
 
 eFriendly::eFriendly(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+	
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     clk4=0;
     hyofs = -32768; //No hitbox initially.
     obeys_gravity = 1; //used for enemy type 'Other' in 2.50, and these obey gravity. Used by ghost.zh. -Z 23rd June, 2019
@@ -9407,6 +9916,34 @@ void enemy::removearmos(int ax,int ay)
 
 eGhini::eGhini(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     fading=fade_flicker;
     count_enemy=false;
     dir=12;
@@ -9460,6 +9997,34 @@ void eGhini::kickbucket()
 
 eTektite::eTektite(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+	
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     old_y=y;
     dir=down;
     misc=1;
@@ -9711,6 +10276,32 @@ void eTektite::draw(BITMAP *dest)
 
 eItemFairy::eItemFairy(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
     step=zslongToFix(guysbuf[id&0xFFF].step*100);
     superman=1;
     dir=8;
@@ -9748,6 +10339,33 @@ void eItemFairy::draw(BITMAP *dest)
 
 ePeahat::ePeahat(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     //floater_walk(int rate,int newclk,zfix ms,zfix ss,int s,int p, int g)
     floater_walk(misc?rate:0,      hrate, zslongToFix(dstep*100),zslongToFix(dstep*10), 10, dmisc16,dmisc17); // 80, 16);
     dir=8;
@@ -9864,6 +10482,33 @@ void ePeahat::kickbucket()
 
 eLeever::eLeever(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
 //  if(d->misc1==0) { misc=-1; clk-=16; } //Line of Sight leevers
     if(dmisc1==0)
     {
@@ -10109,6 +10754,33 @@ void eLeever::draw(BITMAP *dest)
 
 eWallM::eWallM(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     //zprint2("eWallM::eWallM\n");
     haslink=false;
     //nets+1000;
@@ -10327,6 +10999,34 @@ bool eWallM::isSubmerged()
 
 eTrap::eTrap(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+	
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     ox=x;                                                     //original x
     oy=y;                                                     //original y
     obeys_gravity = 0;
@@ -10781,6 +11481,34 @@ int eTrap2::takehit(weapon*)
 
 eRock::eRock(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+	
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     //do not show "enemy appering" anim -DD
     clk=0;
     mainguy=false;
@@ -10918,6 +11646,33 @@ int eRock::takehit(weapon*)
 
 eBoulder::eBoulder(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     clk=0;
     obeys_gravity = 0;
     mainguy=false;
@@ -11075,6 +11830,34 @@ eProjectile::eProjectile(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk),
     /* fixing
       hp=1;
       */
+	
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     mainguy=false;
     count_enemy=false;
     hclk=clk;                                                 // the "no fire" range
@@ -11195,6 +11978,33 @@ void eTrigger::death_sfx()
 
 eNPC::eNPC(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     o_tile+=wpnsbuf[iwNPCs].newtile;
     count_enemy=false;
     obeys_gravity = 0;
@@ -11268,6 +12078,33 @@ int eNPC::takehit(weapon*)
 
 eSpinTile::eSpinTile(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     if(clk>0)  // clk>0 when created by a Spinning Tile combo
     {
         o_tile=clk;
@@ -11381,6 +12218,34 @@ void eSpinTile::drawshadow(BITMAP *dest, bool translucent)
 
 eZora::eZora(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,0)
 {
+
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     //these are here to bypass compiler warnings about unused arguments
     Clk=Clk;
     obeys_gravity = 0;
@@ -11536,6 +12401,33 @@ bool eZora::isSubmerged()
 
 eStalfos::eStalfos(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/	
+	
     multishot= timer = fired = dashing = 0;
     haslink = false;
     dummy_bool[0]=false;
@@ -12507,6 +13399,33 @@ void eStalfos::break_shield()
 
 eKeese::eKeese(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/	
+	
     dir=(rand()&7)+8;
     step=0;
     movestatus=1;
@@ -12629,6 +13548,34 @@ void eKeese::draw(BITMAP *dest)
 
 eWizzrobe::eWizzrobe(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+	
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
 //  switch(d->misc1)
     switch(dmisc1)
     {
@@ -13165,6 +14112,34 @@ void eWizzrobe::draw(BITMAP *dest)
 
 eDodongo::eDodongo(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+	
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
+    
     fading=fade_flash_die;
     //nets+5120;
     obeys_gravity = 1;
@@ -13177,6 +14152,10 @@ eDodongo::eDodongo(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
     {
         dir=left;
     }
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+
 }
 
 bool eDodongo::animate(int index)
@@ -13292,10 +14271,38 @@ int eDodongo::takehit(weapon *w)
 
 eDodongo2::eDodongo2(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 {
+    /*BASE INIT */
+    fading = 0;
+    previous_dir=-1;
+    obeys_gravity = 1;
+    charging = 0;
+	
+    firing = 0;
+    fclk = 0;
+    ox = 0;
+    oy = 0;
+    c = 0;
+    clk4 = 0;
+    clk5 = 0;
+    fired = 0;
+    dashing = 0;
+    haslink = 0;
+    multishot = 0;
+    temprule = 0;
+    old_y = 0;
+    clk2start = 0;
+    cstart = 0;
+    shield = 0;
+    fy = 0;
+    shadowdistance = 0;
+    
+    /*FULL INIT*/
     fading=fade_flash_die;
     //nets+5180;
     previous_dir=-1;
     obeys_gravity = 1;
+    charging = 0;
+	
     if(dir==down&&y>=128)
     {
         dir=up;

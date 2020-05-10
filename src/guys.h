@@ -303,8 +303,23 @@ public:
 class eFire : public enemy
 {
 public:
-    int clk4;
-    bool shield;
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eFire(zfix X,zfix Y,int Id,int Clk);                      // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
@@ -316,8 +331,24 @@ public:
 class eOther : public enemy
 {
 public:
-    int clk4;
-    bool shield;
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eOther(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eOther(zfix X,zfix Y,int Id,int Clk);                      // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -329,8 +360,24 @@ public:
 class eScript : public enemy
 {
 public:
-    int clk4;
-    bool shield;
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eScript(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eScript(zfix X,zfix Y,int Id,int Clk);                      // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -342,8 +389,24 @@ public:
 class eFriendly : public enemy
 {
 public:
-    int clk4;
-    bool shield;
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eFriendly(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eFriendly(zfix X,zfix Y,int Id,int Clk);                      // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -357,7 +420,24 @@ void removearmos(int ax,int ay);
 class eGhini : public enemy
 {
 public:
-    int clk4, ox, oy, c;
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eGhini(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eGhini(zfix X,zfix Y,int Id,int Clk);                     // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -369,9 +449,23 @@ class eTektite : public enemy
 {
     zfix old_y; // a kludge used to check for ZScript modification of Y
 public:
-    int c;
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+    bool temprule;
     int clk2start;
     int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eTektite(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
 
     eTektite(zfix X,zfix Y,int Id,int Clk);                   // : enemy(X,Y,Id,Clk)
@@ -383,6 +477,25 @@ public:
 class eItemFairy : public enemy
 {
 public:
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+   
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eItemFairy(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eItemFairy(zfix X,zfix Y,int Id,int Clk);                 // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -392,7 +505,25 @@ public:
 class ePeahat : public enemy
 {
 public:
+    bool charging;
+    bool firing;
+    int fclk;
     int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+   
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     ePeahat(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     ePeahat(zfix X,zfix Y,int Id,int Clk);                    // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -405,7 +536,25 @@ public:
 class eLeever : public enemy
 {
 public:
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+    
     bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eLeever(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eLeever(zfix X,zfix Y,int Id,int Clk);                    // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -417,7 +566,25 @@ public:
 class eWallM : public enemy
 {
 public:
-    bool haslink;
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+  
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eWallM(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eWallM(zfix X,zfix Y,int Id,int Clk);                     // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -430,7 +597,24 @@ public:
 class eTrap : public enemy
 {
 public:
-    int  ox, oy;
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+    
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eTrap(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eTrap(zfix X,zfix Y,int Id,int Clk);                      // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -455,6 +639,25 @@ public:
 class eRock : public enemy
 {
 public:
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+ 
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eRock(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eRock(zfix X,zfix Y,int Id,int Clk);                      // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -466,6 +669,25 @@ public:
 class eBoulder : public enemy
 {
 public:
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+  
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eBoulder(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eBoulder(zfix X,zfix Y,int Id,int Clk);                      // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -480,6 +702,25 @@ public:
 class eProjectile : public enemy
 {
 public:
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+   
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eProjectile(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eProjectile(zfix X,zfix Y,int Id,int Clk);                     // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -500,6 +741,25 @@ public:
 class eNPC : public enemy
 {
 public:
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+   
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eNPC(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eNPC(zfix X,zfix Y,int Id,int Clk);                       // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -510,6 +770,25 @@ public:
 class eSpinTile : public enemy
 {
 public:
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+    
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eSpinTile(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eSpinTile(zfix X,zfix Y,int Id,int Clk);                       // : enemy(X,Y,Id,Clk)
     virtual void facelink();
@@ -521,6 +800,25 @@ public:
 class eZora : public enemy
 {
 public:
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+    
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eZora(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eZora(zfix X,zfix Y,int Id,int Clk);                      // : enemy(X,Y,Id,0)
     virtual void facelink();
@@ -532,6 +830,10 @@ public:
 class eStalfos : public enemy
 {
 public:
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
     int clk4, //Tribble clock
         clk5; // Like Like clock
     bool fired; // Darknut5, Bombchu
@@ -539,6 +841,13 @@ public:
     bool dashing; // Rope
     bool haslink; // Like Like
     int multishot; // Shoot twice/thrice/n times in one halt
+   
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
     zfix fy, shadowdistance; // Pols Voice
     eStalfos(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eStalfos(zfix X,zfix Y,int Id,int Clk);                   // : enemy(X,Y,Id,Clk)
@@ -557,8 +866,25 @@ public:
 class eKeese : public enemy
 {
 public:
+    bool charging;
+    bool firing;
+    int fclk;
     int ox, oy, c;
-    int clk4;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+    
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eKeese(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eKeese(zfix X,zfix Y,int Id,int Clk);                     // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -572,6 +898,22 @@ public:
     bool charging;
     bool firing;
     int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+    
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eWizzrobe(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eWizzrobe(zfix X,zfix Y,int Id,int Clk);                  // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -588,6 +930,25 @@ public:
 class eDodongo : public enemy
 {
 public:
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+  
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
+    
+    int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eDodongo(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eDodongo(zfix X,zfix Y,int Id,int Clk);                   // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
@@ -598,7 +959,24 @@ public:
 class eDodongo2 : public enemy
 {
 public:
+    bool charging;
+    bool firing;
+    int fclk;
+    int ox, oy, c;
+    int clk4, //Tribble clock
+        clk5; // Like Like clock
+    bool fired; // Darknut5, Bombchu
+    bool shield; // Darknut
+    bool dashing; // Rope
+    bool haslink; // Like Like
+    int multishot; // Shoot twice/thrice/n times in one halt
+   
+    bool temprule;
+    zfix old_y; // a kludge used to check for ZScript modification of Y
+    int clk2start;
+    int cstart;
     int previous_dir;
+    zfix fy, shadowdistance; // Pols Voice
     eDodongo2(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eDodongo2(zfix X,zfix Y,int Id,int Clk);                  // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);

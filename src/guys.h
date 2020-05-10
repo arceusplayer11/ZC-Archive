@@ -126,6 +126,7 @@ public:
     
     enemy(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     enemy(zfix X,zfix Y,int Id,int Clk);                      // : sprite()
+    int changetype(int newtype);
     virtual ~enemy();
     
     // Supplemental animation code that all derived classes should call
@@ -325,6 +326,7 @@ public:
     virtual void draw(BITMAP *dest);
     virtual int takehit(weapon *w);
     virtual void break_shield();
+    virtual int changetype(int newtype);
     eFire::eFire(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
 };
 
@@ -354,6 +356,7 @@ public:
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
     virtual int takehit(weapon *w);
+    virtual int changetype(int newtype);
     virtual void break_shield();
 };
 
@@ -383,6 +386,7 @@ public:
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
     virtual int takehit(weapon *w);
+    virtual int changetype(int newtype);
     virtual void break_shield();
 };
 
@@ -412,6 +416,7 @@ public:
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
     virtual int takehit(weapon *w);
+    virtual int changetype(int newtype);
     virtual void break_shield();
 };
 
@@ -442,6 +447,7 @@ public:
     eGhini(zfix X,zfix Y,int Id,int Clk);                     // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     virtual void kickbucket();
 };
 
@@ -471,6 +477,7 @@ public:
     eTektite(zfix X,zfix Y,int Id,int Clk);                   // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
     virtual void drawshadow(BITMAP *dest,bool translucent);
+    virtual int changetype(int newtype);
     virtual void draw(BITMAP *dest);
 };
 
@@ -499,6 +506,7 @@ public:
     eItemFairy(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eItemFairy(zfix X,zfix Y,int Id,int Clk);                 // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
+    virtual int changetype(int newtype);
     virtual void draw(BITMAP *dest);
 };
 
@@ -530,6 +538,7 @@ public:
     virtual void drawshadow(BITMAP *dest, bool translucent);
     virtual void draw(BITMAP *dest);
     virtual int takehit(weapon *w);
+    virtual int changetype(int newtype);
     virtual void kickbucket();
 };
 
@@ -560,6 +569,7 @@ public:
     virtual bool animate(int index);
     bool canplace(int d);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     virtual bool isSubmerged();
 };
 
@@ -591,6 +601,7 @@ public:
     void wallm_crawl();
     void grablink();
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     virtual bool isSubmerged();
 };
 
@@ -621,6 +632,7 @@ public:
     bool trapmove(int ndir);
     bool clip();
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     virtual int takehit(weapon* w);
 };
 
@@ -633,6 +645,7 @@ public:
     bool trapmove(int ndir);
     bool clip();
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     virtual int takehit(weapon *w);
 };
 
@@ -663,6 +676,7 @@ public:
     virtual bool animate(int index);
     virtual void drawshadow(BITMAP *dest, bool translucent);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     virtual int takehit(weapon *w);
 };
 
@@ -693,6 +707,7 @@ public:
     virtual bool animate(int index);
     virtual void drawshadow(BITMAP *dest, bool translucent);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     virtual int takehit(weapon *w);
 };
 
@@ -725,6 +740,7 @@ public:
     eProjectile(zfix X,zfix Y,int Id,int Clk);                     // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     
     const int minRange;
 };
@@ -736,6 +752,7 @@ public:
     eTrigger(zfix X,zfix Y,int Id,int Clk);                   // : enemy(X,Y,Id,Clk)
     virtual void draw(BITMAP *dest);
     virtual void death_sfx();
+    virtual int changetype(int newtype);
 };
 
 class eNPC : public enemy
@@ -764,6 +781,7 @@ public:
     eNPC(zfix X,zfix Y,int Id,int Clk);                       // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     virtual int takehit(weapon *w);
 };
 
@@ -794,6 +812,7 @@ public:
     virtual void facelink();
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     virtual void drawshadow(BITMAP *dest, bool translucent);
 };
 
@@ -824,6 +843,7 @@ public:
     virtual void facelink();
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     virtual bool isSubmerged();
 };
 
@@ -858,6 +878,7 @@ public:
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
     virtual int takehit(weapon *w);
+    virtual int changetype(int newtype);
     void vire_hop();
     virtual void drawshadow(BITMAP *dest, bool translucent);
     virtual void break_shield();
@@ -889,6 +910,7 @@ public:
     eKeese(zfix X,zfix Y,int Id,int Clk);                     // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
     virtual void drawshadow(BITMAP *dest, bool translucent);
+    virtual int changetype(int newtype);
     virtual void draw(BITMAP *dest);
 };
 
@@ -920,6 +942,7 @@ public:
     void wizzrobe_attack();
     void wizzrobe_attack_for_real();
     void wizzrobe_newdir(int homing);
+    virtual int changetype(int newtype);
     virtual void draw(BITMAP *dest);
 };
 
@@ -952,6 +975,7 @@ public:
     eDodongo(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eDodongo(zfix X,zfix Y,int Id,int Clk);                   // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
+    virtual int changetype(int newtype);
     virtual void draw(BITMAP *dest);
     virtual int takehit(weapon *w);
 };
@@ -981,6 +1005,7 @@ public:
     eDodongo2(zfix X,zfix Y,int Id,int Clk);                  // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     virtual int takehit(weapon *w);
 };
 
@@ -992,6 +1017,7 @@ public:
     eAquamentus(zfix X,zfix Y,int Id,int Clk); // : enemy((zfix)176,(zfix)64,Id,Clk)
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     virtual bool hit(weapon *w);
 };
 
@@ -1003,6 +1029,7 @@ public:
     eGohma(zfix X,zfix Y,int Id,int Clk);                     // : enemy((zfix)128,(zfix)48,Id,0)
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     virtual int takehit(weapon *w);
 };
 
@@ -1012,6 +1039,7 @@ public:
     eLilDig(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eLilDig(zfix X,zfix Y,int Id,int Clk);                    // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
+    virtual int changetype(int newtype);
     virtual void draw(BITMAP *dest);
 };
 
@@ -1022,6 +1050,7 @@ public:
     eBigDig(zfix X,zfix Y,int Id,int Clk);                    // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     virtual int takehit(weapon *w);
 };
 
@@ -1032,6 +1061,7 @@ public:
     eGanon(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eGanon(zfix X,zfix Y,int Id,int Clk);                     // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
+    virtual int changetype(int newtype);
     virtual int takehit(weapon *w);
     virtual void draw(BITMAP *dest);
     void draw_guts(BITMAP *dest);
@@ -1054,6 +1084,7 @@ public:
     eMoldorm(enemy const & other, bool new_script_uid, bool clear_parent_script_UID);
     eMoldorm(zfix X,zfix Y,int Id,int Clk);                   // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
+    virtual int changetype(int newtype);
 };
 
 // segment class
@@ -1065,6 +1096,7 @@ public:
     virtual bool animate(int index);
     virtual int takehit(weapon *w);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
     int parentclk; //because of custom step speed, clk is not sufficient to keep track
     //of when to check the parent Moldorm's direction, since the frequency
     //of the parent's checking might not divide the Moldorm segment's
@@ -1076,6 +1108,7 @@ class eBaseLanmola : public enemy
 public:
     eBaseLanmola(zfix X, zfix Y, int Id, int Clk) : enemy(X, Y, Id, Clk) {}
     std::list<std::pair< std::pair<zfix, zfix>, int> > prevState;
+    virtual int changetype(int newtype);
 };
 
 // segment manager
@@ -1109,6 +1142,7 @@ public:
     virtual bool animate(int index);
     virtual int takehit(weapon *w);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
 };
 
 class esManhandla : public enemy
@@ -1119,6 +1153,7 @@ public:
     esManhandla(zfix X,zfix Y,int Id,int Clk);                // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
 };
 
 class eGleeok : public enemy
@@ -1132,6 +1167,7 @@ public:
     virtual int takehit(weapon *w);
     virtual void draw(BITMAP *dest);
     virtual void draw2(BITMAP *dest);
+    virtual int changetype(int newtype);
 };
 
 // head class
@@ -1151,6 +1187,7 @@ public:
     virtual int takehit(weapon *w);
     virtual void draw(BITMAP *dest);
     virtual void draw2(BITMAP *dest);
+    virtual int changetype(int newtype);
 };
 
 class ePatra : public enemy
@@ -1166,6 +1203,7 @@ public:
     virtual void draw(BITMAP *dest);
     virtual int defend(int wpnId, int *power, int edef);
     virtual int defendNew(int wpnId, int *power, int edef);
+    virtual int changetype(int newtype);
 };
 
 // segment class
@@ -1176,6 +1214,7 @@ public:
     esPatra(zfix X,zfix Y,int Id,int Clk);                    // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
 };
 
 class ePatraBS : public enemy
@@ -1190,6 +1229,7 @@ public:
     virtual void draw(BITMAP *dest);
     virtual int defend(int wpnId, int *power, int edef);
     virtual int defendNew(int wpnId, int *power, int edef);
+    virtual int changetype(int newtype);
 };
 
 // segment class
@@ -1200,6 +1240,7 @@ public:
     esPatraBS(zfix X,zfix Y,int Id,int Clk);                  // : enemy(X,Y,Id,Clk)
     virtual bool animate(int index);
     virtual void draw(BITMAP *dest);
+    virtual int changetype(int newtype);
 };
 
 /**********************************/

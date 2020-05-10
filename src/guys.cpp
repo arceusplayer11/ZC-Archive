@@ -19163,6 +19163,4487 @@ bool canfall(int id)
     return !never_in_air(id) && !isflier(id) && !isjumper(id);
 }
 
+int enemy::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+   
+    
+    
+
+
+int eFire::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eOther::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eScript::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eFriendly::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eGhini::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eTektite::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eItemFairy::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int ePeahat::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eLeever::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eWallM::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eTrap::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eRock::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eBoulder::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\npn");
+	return 0;
+}
+
+int eAquamentus::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int eGohma::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int eLilDig::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int eBigDig::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int eGanon::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int eMoldorm::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int esMoldorm::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int eManhandla::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int esManhandla::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int eGleeok::changetype(int newtype)
+{
+	zprint2("This npc:tnpc:ype of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int esGleeok::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int ePatra::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int esPatra::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int ePatraBS::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int esPatraBS::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int eNPC::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int eTrigger::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+int eTrap2::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eBaseLanmola::changetype(int newtype)
+{
+	zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eProjectile::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eSpinTile::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eZora::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eStalfos::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eKeese::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eWizzrobe::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eDodongo::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+int eDodongo2::changetype(int newtype)
+{
+	bool canchange = true;
+	switch(family)
+	{
+		case eeAQUA:
+		case eeMOLD:
+		case eeMANHAN:
+		case eeGLEEOK:
+		case eeGHOMA:
+		case eeLANM:
+		case eeGANON:
+		case eeDIG:
+		case eePATRA:
+		canchange = false; break;
+			
+		//if this family cannot be changed, abort
+		default: break;
+		
+	}
+	sprite *e=NULL;
+	
+	if ( canchange )
+	{
+		switch(newtype)
+		{
+			//Fixme: possible enemy memory leak. (minor)
+			case eeWALK:
+			e = new eStalfos(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeLEV:
+			e = new eLeever(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeTEK:
+			e = new eTektite(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePEAHAT:
+			e = new ePeahat(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeZORA:
+			e = new eZora(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeGHINI:
+			e = new eGhini(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeKEESE:
+			e = new eKeese(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWIZZ:
+			e = new eWizzrobe(*this, false, false);
+			//delete original here
+			break;
+		
+			case eePROJECTILE:
+			e = new eProjectile(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeWALLM:
+			e = new eWallM(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeAQUA:
+			case eeMOLD:
+			case eeMANHAN:
+			case eeGLEEOK:
+			case eeGHOMA:
+			case eeLANM:
+			case eeGANON:
+			case eeDIG:
+			case eePATRA:
+			zprint2("Cannot change an enemy type into a boss.\n");
+			break;
+		
+			case eeGUY:
+			//e = new eNPC(*this, false, false);
+			zprint2("Cannot change an enemy type into a guy.\n");
+			//delete original here
+			break;
+		
+			case eeFAIRY:
+			e = new eItemFairy(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeFIRE:
+			e = new eFire(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeOTHER: 
+			e = new eOther(*this, false, false);
+			//delete original here
+			break;
+	    
+	    
+			case eeSCRIPT01: 
+			case eeSCRIPT02: 
+			case eeSCRIPT03: 
+			case eeSCRIPT04: 
+			case eeSCRIPT05: 
+			case eeSCRIPT06: 
+			case eeSCRIPT07: 
+			case eeSCRIPT08: 
+			case eeSCRIPT09: 
+			case eeSCRIPT10: 
+			case eeSCRIPT11: 
+			case eeSCRIPT12: 
+			case eeSCRIPT13: 
+			case eeSCRIPT14: 
+			case eeSCRIPT15: 
+			case eeSCRIPT16: 
+			case eeSCRIPT17: 
+			case eeSCRIPT18: 
+			case eeSCRIPT19: 
+			case eeSCRIPT20: 
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eScript(*this, false, false);
+					//delete original here
+					
+				//}
+				break;
+			}
+						
+			case eeFFRIENDLY01:
+			case eeFFRIENDLY02:
+			case eeFFRIENDLY03:
+			case eeFFRIENDLY04:
+			case eeFFRIENDLY05:
+			case eeFFRIENDLY06:
+			case eeFFRIENDLY07:
+			case eeFFRIENDLY08:
+			case eeFFRIENDLY09:
+			case eeFFRIENDLY10:
+			{
+				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
+				//{
+					e = new eFriendly(*this, false, false);
+				//delete original here
+				//}
+				break;
+						
+			}	
+		
+			case eeSPINTILE:
+			e = new eSpinTile(*this, false, false);
+			//delete original here
+			break;
+		
+			// and these enemies use the misc10/misc2 value
+			case eeROCK:
+			e = new eRock(*this, false, false);
+			//delete original here
+			break;
+			
+			case eeTRAP:
+			e = new eTrap(*this, false, false);
+			//delete original here
+			break;
+	    
+			case eeDONGO:
+			e = new eDodongo(*this, false, false);
+			//delete original here
+			break;
+		
+			case eeNONE:
+			e = new eTrigger(*this, false, false);
+			//delete original here
+		  
+		}
+		if(e!=NULL)
+		{
+			if(guys.add(e))
+			{
+				return 1;
+			}
+		}
+	}
+	else zprint2("This type of npc (%d) cannot change its type.\n");
+	return 0;
+}
+
+
+
 bool enemy::enemycanfall(int id)
 {
 	//Z_scripterrlog("canfall family is %d:\n", family);

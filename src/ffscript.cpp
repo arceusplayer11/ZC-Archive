@@ -12193,7 +12193,22 @@ void set_register(const long arg, const long value)
 			
 		case NPCTYPE:
 		{
-			SET_NPC_VAR_INT(family, "npc->Type") break;
+			if(GuyH::loadNPC(ri->guyref, "npc->Type") == SH::_NoError)
+			{
+				int newtype = value/10000;
+				if( ((unsigned)newtype) >= eeMAX )
+				{
+					Z_scripterrlog("Invalid type (%d) assigned to npc->Type\n",newtype);
+				}
+				else
+				{
+					//GuyH::getNPC()->family = newtype;
+					ri->pc++; //otherwise, it willc reate an unlimited nuber of npcs running this script!
+					GuyH::getNPC()->changetype(newtype);
+					//guys.del(GuyH::getNPCIndex(ri->guyref));
+				}
+			}
+			break;
 		}
 		
 		case NPCWDP:

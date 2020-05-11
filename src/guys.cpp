@@ -259,7 +259,7 @@ bool flyerblocked(int dx, int dy, int special)
 
   */
 
-eFire::eFire(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eFire::eFire(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -323,9 +323,10 @@ eFire::eFire(enemy const & other, bool new_script_uid, bool clear_parent_script_
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eOther::eOther(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eOther::eOther(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -389,12 +390,13 @@ eOther::eOther(enemy const & other, bool new_script_uid, bool clear_parent_scrip
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
 
 
 
-eScript::eScript(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eScript::eScript(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -457,75 +459,10 @@ eScript::eScript(enemy const & other, bool new_script_uid, bool clear_parent_scr
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eFriendly::eFriendly(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
-     //Struct Element			Type		Purpose
-    //sprite(other),
-    enemy(other),
-    charging(charging),
-    firing(firing),
-    fclk(fclk),
-    ox(ox),
-    oy(oy),
-    c(c),
-    clk4(clk4),
-    clk5(clk5),
-    fired(fired),
-    dashing(dashing),
-    multishot(multishot),
-    haslink(haslink),
-    temprule(temprule),
-    old_y(old_y),
-    clk2start(clk2start),
-    cstart(cstart),
-    shield(shield),
-    previous_dir(previous_dir),
-    fy(fy),
-    shadowdistance(shadowdistance)
-
-{
-	
-	//arrays
-	
-	//stack(other.stack),			//int
-	//scriptData(other.scriptData)			//int
-	memset(stack, 0xFFFF, MAX_SCRIPT_REGISTERS * sizeof(long));
-	memcpy(stack, other.stack, MAX_SCRIPT_REGISTERS * sizeof(long));
-	
-	scriptData = other.scriptData;
-	//memset((refInfo)scriptData, 0xFFFF, sizeof(refInfo));
-	//memset((refInfo)scriptData, other.scriptData, sizeof(refInfo));
-	
-	for(int i=0; i<edefLAST255; i++)
-		defense[i]=other.defense[i];
-	for ( int q = 0; q < 10; q++ ) frozenmisc[q] = other.frozenmisc[q];
-	for ( int q = 0; q < NUM_HIT_TYPES_USED; q++ ) hitby[q] = other.hitby[q];
-	
-	if(new_script_uid)
-	{
-		script_UID = FFCore.GetScriptObjectUID(UID_TYPE_NPC); //This is used by child npcs. 
-	}
-	if(clear_parent_script_UID)
-	{
-		parent_script_UID = 0;
-	}
-	for ( int q = 0; q < 32; q++ ) movement[q] = other.movement[q];
-	for ( int q = 0; q < 32; q++ ) new_weapon[q] = other.new_weapon[q];
-    
-	for ( int q = 0; q < 8; q++ ) 
-	{
-	    initD[q] = other.initD[q];
-	    weap_initiald[q] = other.weap_initiald[q];
-	}
-	for ( int q = 0; q < 2; q++ ) 
-	{
-	    initA[q] = other.initA[q];
-	    weap_initiala[q] = other.weap_initiala[q];
-	}
-}
-
-eGhini::eGhini(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eFriendly::eFriendly(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -589,9 +526,10 @@ eGhini::eGhini(enemy const & other, bool new_script_uid, bool clear_parent_scrip
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eTektite::eTektite(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eGhini::eGhini(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -655,9 +593,77 @@ eTektite::eTektite(enemy const & other, bool new_script_uid, bool clear_parent_s
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eItemFairy::eItemFairy(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eTektite::eTektite(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
+     //Struct Element			Type		Purpose
+    //sprite(other),
+    enemy(other),
+    charging(charging),
+    firing(firing),
+    fclk(fclk),
+    ox(ox),
+    oy(oy),
+    c(c),
+    clk4(clk4),
+    clk5(clk5),
+    fired(fired),
+    dashing(dashing),
+    multishot(multishot),
+    haslink(haslink),
+    temprule(temprule),
+    old_y(old_y),
+    clk2start(clk2start),
+    cstart(cstart),
+    shield(shield),
+    previous_dir(previous_dir),
+    fy(fy),
+    shadowdistance(shadowdistance)
+
+{
+	
+	//arrays
+	
+	//stack(other.stack),			//int
+	//scriptData(other.scriptData)			//int
+	memset(stack, 0xFFFF, MAX_SCRIPT_REGISTERS * sizeof(long));
+	memcpy(stack, other.stack, MAX_SCRIPT_REGISTERS * sizeof(long));
+	
+	scriptData = other.scriptData;
+	//memset((refInfo)scriptData, 0xFFFF, sizeof(refInfo));
+	//memset((refInfo)scriptData, other.scriptData, sizeof(refInfo));
+	
+	for(int i=0; i<edefLAST255; i++)
+		defense[i]=other.defense[i];
+	for ( int q = 0; q < 10; q++ ) frozenmisc[q] = other.frozenmisc[q];
+	for ( int q = 0; q < NUM_HIT_TYPES_USED; q++ ) hitby[q] = other.hitby[q];
+	
+	if(new_script_uid)
+	{
+		script_UID = FFCore.GetScriptObjectUID(UID_TYPE_NPC); //This is used by child npcs. 
+	}
+	if(clear_parent_script_UID)
+	{
+		parent_script_UID = 0;
+	}
+	for ( int q = 0; q < 32; q++ ) movement[q] = other.movement[q];
+	for ( int q = 0; q < 32; q++ ) new_weapon[q] = other.new_weapon[q];
+    
+	for ( int q = 0; q < 8; q++ ) 
+	{
+	    initD[q] = other.initD[q];
+	    weap_initiald[q] = other.weap_initiald[q];
+	}
+	for ( int q = 0; q < 2; q++ ) 
+	{
+	    initA[q] = other.initA[q];
+	    weap_initiala[q] = other.weap_initiala[q];
+	}
+	if ( newfamily > -1 ) family = newfamily;
+}
+
+eItemFairy::eItemFairy(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -720,9 +726,10 @@ eItemFairy::eItemFairy(enemy const & other, bool new_script_uid, bool clear_pare
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-ePeahat::ePeahat(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+ePeahat::ePeahat(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -785,9 +792,10 @@ ePeahat::ePeahat(enemy const & other, bool new_script_uid, bool clear_parent_scr
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eLeever::eLeever(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eLeever::eLeever(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -850,9 +858,10 @@ eLeever::eLeever(enemy const & other, bool new_script_uid, bool clear_parent_scr
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eWallM::eWallM(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eWallM::eWallM(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -915,9 +924,10 @@ eWallM::eWallM(enemy const & other, bool new_script_uid, bool clear_parent_scrip
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eStalfos::eStalfos(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eStalfos::eStalfos(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -980,9 +990,10 @@ eStalfos::eStalfos(enemy const & other, bool new_script_uid, bool clear_parent_s
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eZora::eZora(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eZora::eZora(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -1045,9 +1056,10 @@ eZora::eZora(enemy const & other, bool new_script_uid, bool clear_parent_script_
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eSpinTile::eSpinTile(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eSpinTile::eSpinTile(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -1110,9 +1122,10 @@ eSpinTile::eSpinTile(enemy const & other, bool new_script_uid, bool clear_parent
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eNPC::eNPC(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eNPC::eNPC(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -1175,9 +1188,10 @@ eNPC::eNPC(enemy const & other, bool new_script_uid, bool clear_parent_script_UI
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eTrigger::eTrigger(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eTrigger::eTrigger(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other)
@@ -1220,9 +1234,10 @@ eTrigger::eTrigger(enemy const & other, bool new_script_uid, bool clear_parent_s
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eProjectile::eProjectile(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eProjectile::eProjectile(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -1286,9 +1301,10 @@ eProjectile::eProjectile(enemy const & other, bool new_script_uid, bool clear_pa
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eBoulder::eBoulder(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eBoulder::eBoulder(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -1351,9 +1367,10 @@ eBoulder::eBoulder(enemy const & other, bool new_script_uid, bool clear_parent_s
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eRock::eRock(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eRock::eRock(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -1416,9 +1433,10 @@ eRock::eRock(enemy const & other, bool new_script_uid, bool clear_parent_script_
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eTrap2::eTrap2(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eTrap2::eTrap2(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other)
@@ -1461,9 +1479,10 @@ eTrap2::eTrap2(enemy const & other, bool new_script_uid, bool clear_parent_scrip
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eTrap::eTrap(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eTrap::eTrap(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -1526,12 +1545,13 @@ eTrap::eTrap(enemy const & other, bool new_script_uid, bool clear_parent_script_
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
 
 
 
-eKeese::eKeese(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eKeese::eKeese(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -1594,9 +1614,10 @@ eKeese::eKeese(enemy const & other, bool new_script_uid, bool clear_parent_scrip
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eWizzrobe::eWizzrobe(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eWizzrobe::eWizzrobe(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -1659,9 +1680,10 @@ eWizzrobe::eWizzrobe(enemy const & other, bool new_script_uid, bool clear_parent
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eDodongo::eDodongo(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eDodongo::eDodongo(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -1724,9 +1746,10 @@ eDodongo::eDodongo(enemy const & other, bool new_script_uid, bool clear_parent_s
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eDodongo2::eDodongo2(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eDodongo2::eDodongo2(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -1789,9 +1812,10 @@ eDodongo2::eDodongo2(enemy const & other, bool new_script_uid, bool clear_parent
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eAquamentus::eAquamentus(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eAquamentus::eAquamentus(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -1836,9 +1860,10 @@ eAquamentus::eAquamentus(enemy const & other, bool new_script_uid, bool clear_pa
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eGohma::eGohma(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eGohma::eGohma(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -1882,9 +1907,10 @@ eGohma::eGohma(enemy const & other, bool new_script_uid, bool clear_parent_scrip
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eLilDig::eLilDig(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eLilDig::eLilDig(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other)
@@ -1927,9 +1953,10 @@ eLilDig::eLilDig(enemy const & other, bool new_script_uid, bool clear_parent_scr
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eBigDig::eBigDig(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eBigDig::eBigDig(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other)
@@ -1972,9 +1999,10 @@ eBigDig::eBigDig(enemy const & other, bool new_script_uid, bool clear_parent_scr
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eGanon::eGanon(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eGanon::eGanon(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -2019,9 +2047,10 @@ eGanon::eGanon(enemy const & other, bool new_script_uid, bool clear_parent_scrip
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-eMoldorm::eMoldorm(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+eMoldorm::eMoldorm(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -2067,9 +2096,10 @@ eMoldorm::eMoldorm(enemy const & other, bool new_script_uid, bool clear_parent_s
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 
-esMoldorm::esMoldorm(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+esMoldorm::esMoldorm(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     //sprite(other),
     enemy(other),
@@ -2113,6 +2143,7 @@ esMoldorm::esMoldorm(enemy const & other, bool new_script_uid, bool clear_parent
 	    initA[q] = other.initA[q];
 	    weap_initiala[q] = other.weap_initiala[q];
 	}
+	if ( newfamily > -1 ) family = newfamily;
 }
 /*
 eManhandla::eManhandla(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
@@ -2745,7 +2776,7 @@ enemy::enemy(zfix X,zfix Y,int Id,int Clk) : sprite()
 
 //base clone constructor
 
-enemy::enemy(enemy const & other, bool new_script_uid, bool clear_parent_script_UID):
+enemy::enemy(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily):
      //Struct Element			Type		Purpose
     sprite(other),
     //x(other.x), 		//int
@@ -2920,7 +2951,7 @@ enemy::enemy(enemy const & other, bool new_script_uid, bool clear_parent_script_
 	}
 	
 	
-	
+	if(newfamily) family = newfamily;
     
     
 }
@@ -19165,6 +19196,7 @@ bool canfall(int id)
 
 int enemy::changetype(int newtype)
 {
+	zprint2("enemy::changetype\n");
 	bool canchange = true, del = false;
 	switch(family)
 	{
@@ -19191,52 +19223,52 @@ int enemy::changetype(int newtype)
 		{
 			//Fixme: possible enemy memory leak. (minor)
 			case eeWALK:
-			e = new eStalfos(*this, false, false);
+			e = new eStalfos(*this, false, false, newtype);
 			del = true;
 			break;
 		
 			case eeLEV:
-			e = new eLeever(*this, false, false);
+			e = new eLeever(*this, false, false, newtype);
 			del = true;
 			break;
 		
 			case eeTEK:
-			e = new eTektite(*this, false, false);
+			e = new eTektite(*this, false, false, newtype);
 			del = true;
 			break;
 		
 			case eePEAHAT:
-			e = new ePeahat(*this, false, false);
+			e = new ePeahat(*this, false, false, newtype);
 			del = true;
 			break;
 		
 			case eeZORA:
-			e = new eZora(*this, false, false);
+			e = new eZora(*this, false, false, newtype);
 			del = true;
 			break;
 		
 			case eeGHINI:
-			e = new eGhini(*this, false, false);
+			e = new eGhini(*this, false, false, newtype);
 			del = true;
 			break;
 		
 			case eeKEESE:
-			e = new eKeese(*this, false, false);
+			e = new eKeese(*this, false, false, newtype);
 			del = true;
 			break;
 		
 			case eeWIZZ:
-			e = new eWizzrobe(*this, false, false);
+			e = new eWizzrobe(*this, false, false, newtype);
 			del = true;
 			break;
 		
 			case eePROJECTILE:
-			e = new eProjectile(*this, false, false);
+			e = new eProjectile(*this, false, false, newtype);
 			del = true;
 			break;
 		
 			case eeWALLM:
-			e = new eWallM(*this, false, false);
+			e = new eWallM(*this, false, false, newtype);
 			del = true;
 			break;
 		
@@ -19259,17 +19291,17 @@ int enemy::changetype(int newtype)
 			break;
 		
 			case eeFAIRY:
-			e = new eItemFairy(*this, false, false);
+			e = new eItemFairy(*this, false, false, newtype);
 			del = true;
 			break;
 		
 			case eeFIRE:
-			e = new eFire(*this, false, false);
+			e = new eFire(*this, false, false, newtype);
 			del = true;
 			break;
 		
 			case eeOTHER: 
-			e = new eOther(*this, false, false);
+			e = new eOther(*this, false, false, newtype);
 			del = true;
 			break;
 	    
@@ -19297,7 +19329,7 @@ int enemy::changetype(int newtype)
 			{
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
-					e = new eScript(*this, false, false);
+					e = new eScript(*this, false, false, newtype);
 					del = true;
 					
 				//}
@@ -19317,7 +19349,7 @@ int enemy::changetype(int newtype)
 			{
 				//if ( !get_bit(quest_rules, qr_SCRIPT_FRIENDLY_ENEMY_TYPES) )
 				//{
-					e = new eFriendly(*this, false, false);
+					e = new eFriendly(*this, false, false, newtype);
 				del = true;
 				//}
 				break;
@@ -19325,28 +19357,28 @@ int enemy::changetype(int newtype)
 			}	
 		
 			case eeSPINTILE:
-			e = new eSpinTile(*this, false, false);
+			e = new eSpinTile(*this, false, false, newtype);
 			del = true;
 			break;
 		
 			// and these enemies use the misc10/misc2 value
 			case eeROCK:
-			e = new eRock(*this, false, false);
+			e = new eRock(*this, false, false, newtype);
 			del = true;
 			break;
 			
 			case eeTRAP:
-			e = new eTrap(*this, false, false);
+			e = new eTrap(*this, false, false, newtype);
 			del = true;
 			break;
 	    
 			case eeDONGO:
-			e = new eDodongo(*this, false, false);
+			e = new eDodongo(*this, false, false, newtype);
 			del = true;
 			break;
 		
 			case eeNONE:
-			e = new eTrigger(*this, false, false);
+			e = new eTrigger(*this, false, false, newtype);
 			del = true;
 			break;
 		}
@@ -19354,13 +19386,16 @@ int enemy::changetype(int newtype)
 		{
 			if(guys.add(e))
 			{
+				((enemy*)guys.spr(guys.Count()-1))->family = newtype;
 				if(del)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							((enemy*)guys.spr(w))->doscript = 0;
+							//guys.del(w);
+							break;
 						}
 					}
 				}
@@ -19571,9 +19606,9 @@ int eFire::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -19587,6 +19622,7 @@ int eFire::changetype(int newtype)
 
 int eOther::changetype(int newtype)
 {
+	zprint2("other::changetype\n");
 	bool canchange = true, del = false;
 	switch(family)
 	{
@@ -19776,13 +19812,15 @@ int eOther::changetype(int newtype)
 		{
 			if(guys.add(e))
 			{
+				//((enemy*)guys.spr(guys.Count()-1))->family = newtype;
 				if(del)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
+							break;
 						}
 					}
 				}
@@ -19796,6 +19834,7 @@ int eOther::changetype(int newtype)
 
 int eScript::changetype(int newtype)
 {
+	zprint2("eScript::changetype\n");
 	bool canchange = true, del = false;
 	switch(family)
 	{
@@ -19985,13 +20024,15 @@ int eScript::changetype(int newtype)
 		{
 			if(guys.add(e))
 			{
+				//((enemy*)guys.spr(guys.Count()-1))->family = newtype;
 				if(del)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
+							break;
 						}
 					}
 				}
@@ -20199,9 +20240,9 @@ int eFriendly::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -20408,9 +20449,9 @@ int eGhini::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -20617,9 +20658,9 @@ int eTektite::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -20826,9 +20867,9 @@ int eItemFairy::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -21035,9 +21076,9 @@ int ePeahat::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -21244,9 +21285,9 @@ int eLeever::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -21453,9 +21494,9 @@ int eWallM::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -21662,9 +21703,9 @@ int eTrap::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -21871,9 +21912,9 @@ int eRock::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -22080,9 +22121,9 @@ int eBoulder::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -22386,9 +22427,9 @@ int eProjectile::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -22595,9 +22636,9 @@ int eSpinTile::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -22804,9 +22845,9 @@ int eZora::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -22820,6 +22861,7 @@ int eZora::changetype(int newtype)
 
 int eStalfos::changetype(int newtype)
 {
+	zprint2("stalfos::changetype\n");
 	bool canchange = true, del = false;
 	switch(family)
 	{
@@ -23009,13 +23051,15 @@ int eStalfos::changetype(int newtype)
 		{
 			if(guys.add(e))
 			{
+				//((enemy*)guys.spr(guys.Count()-1))->family = newtype;
 				if(del)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
+							break;
 						}
 					}
 				}
@@ -23222,9 +23266,9 @@ int eKeese::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -23431,9 +23475,9 @@ int eWizzrobe::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -23641,9 +23685,9 @@ int eDodongo::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
@@ -23850,22 +23894,13 @@ int eDodongo2::changetype(int newtype)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
-						if(guys.spr(w)->getUID() == this->getUID())
+						if(guys.spr(w)->getUID() == getUID())
 						{
-							guys.del(w);
+							//guys.del(w);
 						}
 					}
 				}
-				if(del)
-				{
-					for(word w = 0; w < guys.Count(); ++w)
-					{
-						if(guys.spr(w)->getUID() == this->getUID())
-						{
-							guys.del(w);
-						}
-					}
-				}
+				
 				return 1;
 			}
 		}

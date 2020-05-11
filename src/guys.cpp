@@ -19386,14 +19386,24 @@ int enemy::changetype(int newtype)
 		{
 			if(guys.add(e))
 			{
-				((enemy*)guys.spr(guys.Count()-1))->family = newtype;
+				sprite *newguy = guys.spr(guys.Count()-1);
+				enemy *e2 = (enemy*)e;
+				e2->family = newtype;
+				newguy->scriptData.guyref = e2->getUID();
+				newguy->scriptData.pc = ((newguy->scriptData.pc)+1);
+				
+				
+				
+				
+				al_trace("newguy->scriptData.guyref: %d\n", newguy->scriptData.guyref);
+				
 				if(del)
 				{
 					for(word w = 0; w < guys.Count(); ++w)
 					{
 						if(guys.spr(w)->getUID() == getUID())
 						{
-							((enemy*)guys.spr(w))->doscript = 0;
+							
 							//guys.del(w);
 							break;
 						}

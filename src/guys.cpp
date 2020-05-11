@@ -19196,7 +19196,9 @@ bool canfall(int id)
 
 int enemy::changetype(int newtype)
 {
-	zprint2("enemy::changetype\n");
+	
+	int tmpuid = this->getUID();
+	zprint2("enemy::changetype for enemy UID: %d\n",tmpuid);
 	bool canchange = true, del = false;
 	switch(family)
 	{
@@ -19387,6 +19389,7 @@ int enemy::changetype(int newtype)
 			if(guys.add(e))
 			{
 				sprite *newguy = guys.spr(guys.Count()-1);
+				newguy->uid = tmpuid;
 				enemy *e2 = (enemy*)e;
 				e2->family = newtype;
 				newguy->scriptData.guyref = e2->getUID();
@@ -19399,12 +19402,17 @@ int enemy::changetype(int newtype)
 				
 				if(del)
 				{
+					//enemy *t = (enemy)this;
+					//t-~enemy();
+					//this->~enemy();
+					//delete this;
+					this->~enemy();
 					for(word w = 0; w < guys.Count(); ++w)
 					{
 						if(guys.spr(w)->getUID() == getUID())
 						{
-							
-							//guys.del(w);
+							//guys.spr(w)->doscript = 0; 
+							//guys.del(w); //this crashes
 							break;
 						}
 					}
@@ -19413,7 +19421,7 @@ int enemy::changetype(int newtype)
 			}
 		}
 	}
-	else zprint2("This type of npc (%d) cannot change its type.\n");
+	else zprint2("This type of npc (%d) cannot change its type.\n", family);
 	return 0;
 }
    

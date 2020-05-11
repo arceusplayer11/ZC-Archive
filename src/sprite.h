@@ -48,7 +48,7 @@ private:
     static long getNextUID();
     //unique sprite ID
     //given upon construction
-    long uid;
+    
     
 public:
     long getUID()
@@ -57,7 +57,7 @@ public:
     }
     
    
-    
+    long uid;
     zfix x,y,z,fall;
     int tile,shadowtile,cs,flip,c_clk,clk,misc;
     zfix xofs,yofs,zofs;

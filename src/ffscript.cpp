@@ -12202,9 +12202,22 @@ void set_register(const long arg, const long value)
 				}
 				else
 				{
+					//FFScript::deallocateAllArrays(SCRIPT_NPC, ri->guyref);
+					
+					//can't get there from here
+					/*if(type == SCRIPT_NPC && ri->guyref == i)
+					{
+						zprint2("Changing npc type to: %d\n", newtype);
+						//GuyH::getNPC()->family = newtype;
+						//++ri->pc; //otherwise, it willc reate an unlimited nuber of npcs running this script!
+						GuyH::getNPC()->changetype(newtype);
+						return RUNSCRIPT_SELFDELETE;
+					}
+					*/
 					zprint2("Changing npc type to: %d\n", newtype);
 					//GuyH::getNPC()->family = newtype;
 					//++ri->pc; //otherwise, it willc reate an unlimited nuber of npcs running this script!
+					//curscript->zasm[ri->pc].command = 0xFFFF;
 					GuyH::getNPC()->changetype(newtype);
 					//guys.del(GuyH::getNPCIndex(ri->guyref));
 				}

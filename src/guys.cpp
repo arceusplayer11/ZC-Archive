@@ -19402,11 +19402,11 @@ int enemy::changetype(int newtype)
 				
 				if(del)
 				{
-					//enemy *t = (enemy)this;
-					//t-~enemy();
+					enemy *t = this;
+					t->~enemy();
 					//this->~enemy();
 					//delete this;
-					this->~enemy();
+					//this->~enemy();
 					for(word w = 0; w < guys.Count(); ++w)
 					{
 						if(guys.spr(w)->getUID() == getUID())

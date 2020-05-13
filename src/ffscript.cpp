@@ -12224,10 +12224,18 @@ void set_register(const long arg, const long value)
 						//could store the old enemy UID here, and write it to the new enemy here as well, by having
 						//changetype return the new UID or -1 on fail
 						//curscript->zasm[ri->pc].command = 0xFFFF;
+						
+						int tmpscript = GuyH::getNPC()->script;
+						int curpc = GuyH::getNPC()->scriptData.pc;
 						guys.del(GuyH::getNPCIndex(ri->guyref));
 						sprite *newguy = guys.spr(guys.Count()-1);
 						//GuyH::getNPC()->deconstruct();
 						newguy->uid = old_uid;
+						newguy->script = tmpscript;
+						newguy->doscript = 1;
+						newguy->scriptData.guyref = ri->guyref;
+						newguy->scriptData.pc = curpc;
+						//run_script(SCRIPT_NPC, tmpscript, old_uid); //maybe needs runscriptat(type,script,uid, pc) from enemy::changetype
 						return;
 					}
 					//guys.del(GuyH::getNPCIndex(ri->guyref));

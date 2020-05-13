@@ -12218,7 +12218,18 @@ void set_register(const long arg, const long value)
 					//GuyH::getNPC()->family = newtype;
 					//++ri->pc; //otherwise, it willc reate an unlimited nuber of npcs running this script!
 					//curscript->zasm[ri->pc].command = 0xFFFF;
-					GuyH::getNPC()->changetype(newtype);
+					int old_uid = GuyH::getNPC()->changetype(newtype);
+					if(old_uid != -1)
+					{
+						//could store the old enemy UID here, and write it to the new enemy here as well, by having
+						//changetype return the new UID or -1 on fail
+						//curscript->zasm[ri->pc].command = 0xFFFF;
+						guys.del(GuyH::getNPCIndex(ri->guyref));
+						sprite *newguy = guys.spr(guys.Count()-1);
+						//GuyH::getNPC()->deconstruct();
+						newguy->uid = old_uid;
+						return;
+					}
 					//guys.del(GuyH::getNPCIndex(ri->guyref));
 				}
 			}

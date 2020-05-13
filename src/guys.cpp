@@ -19194,6 +19194,13 @@ bool canfall(int id)
     return !never_in_air(id) && !isflier(id) && !isjumper(id);
 }
 
+void enemy::deconstruct()
+{
+	enemy *t = this;
+	t->~enemy();
+}
+
+
 int enemy::changetype(int newtype)
 {
 	
@@ -19389,7 +19396,7 @@ int enemy::changetype(int newtype)
 			if(guys.add(e))
 			{
 				sprite *newguy = guys.spr(guys.Count()-1);
-				newguy->uid = tmpuid;
+				//newguy->uid = tmpuid;
 				enemy *e2 = (enemy*)e;
 				e2->family = newtype;
 				newguy->scriptData.guyref = e2->getUID();
@@ -19402,8 +19409,10 @@ int enemy::changetype(int newtype)
 				
 				if(del)
 				{
-					enemy *t = this;
-					t->~enemy();
+					//deconstruct();
+					//enemy *t = this;
+					//t->~enemy();
+					
 					//this->~enemy();
 					//delete this;
 					//this->~enemy();
@@ -19417,12 +19426,12 @@ int enemy::changetype(int newtype)
 						}
 					}
 				}
-				return 1;
+				return getUID();
 			}
 		}
 	}
 	else zprint2("This type of npc (%d) cannot change its type.\n", family);
-	return 0;
+	return -1;
 }
    
     

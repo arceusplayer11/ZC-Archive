@@ -127,6 +127,7 @@ public:
     enemy(enemy const & other, bool new_script_uid, bool clear_parent_script_UID, int newfamily = 1);
     enemy(zfix X,zfix Y,int Id,int Clk);                      // : sprite()
     int changetype(int newtype);
+    void deconstruct();
     virtual ~enemy();
     
     // Supplemental animation code that all derived classes should call

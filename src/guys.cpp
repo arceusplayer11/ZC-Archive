@@ -7147,12 +7147,15 @@ void enemy::constant_walk(int newrate,int newhoming,int special)
 		if(step==0)
 			clk3=0;
 		else
-			clk3=int(16.0/((step==0)?1:step));
+			clk3=int(16.0/step);
 	}
 	else if(scored)
 	{
 		dir^=1;
-		clk3=int(16.0/((step==0)?1:step))-clk3;
+		if(step==0)
+			clk3=0;
+		else
+			clk3=int(16.0/step)-clk3;
 	}
 	
 	--clk3;
@@ -7262,7 +7265,8 @@ void enemy::halting_walk(int newrate,int newhoming,int special,int newhrate, int
 	{
 		fix_coords(true);
 		newdir(newrate,newhoming,special);
-		clk3=int(16.0/((step==0)?1:step));
+		if ( step==0 ) clk3 = 0;
+		else clk3=int(16.0/step);
 		
 		if(clk2<0)
 		{
@@ -7277,8 +7281,8 @@ void enemy::halting_walk(int newrate,int newhoming,int special,int newhrate, int
 	else if(scored)
 	{
 		dir^=1;
-		
-		clk3=int(16.0/((step==0)?1:step))-clk3;
+		if(step==0) clk3 = 0;
+		else clk3=int(16.0/step)-clk3;
 	}
 	
 	--clk3;
@@ -7294,7 +7298,8 @@ void enemy::constant_walk_8(int newrate,int newhoming,int special)
 	if(clk3<=0)
 	{
 		newdir_8(newrate,newhoming,special);
-		clk3=int(8.0/((step==0)?1:step));
+		if(step==0) clk3 = 0;
+		else clk3=int(8.0/step);
 	}
 	
 	--clk3;
@@ -7309,7 +7314,8 @@ void enemy::constant_walk_8_old(int newrate,int newhoming,int special)
 	if(clk3<=0)
 	{
 		newdir_8(newrate,newhoming,special);
-		clk3=int(8.0/((step==0)?1:step));
+		if(step==0) clk3 = 0;
+		clk3=int(8.0/step);
 	}
 	
 	--clk3;
@@ -9004,7 +9010,8 @@ eFire::eFire(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 		dir=down;
 		
 		if(!canmove(down,(zfix)8,spw_none))
-			clk3=int(13.0/((step==0)?1:step));
+			if(step==0) clk3 = 0;
+			else clk3=int(13.0/step);
 	}
 	else if(flags & guy_fadeinstant)
 	{
@@ -9097,7 +9104,8 @@ eOther::eOther(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 		dir=down;
 		
 		if(!canmove(down,(zfix)8,spw_none))
-			clk3=int(13.0/((step==0)?1:step));
+			if(step==0) clk3 = 0;
+			else clk3=int(13.0/step);
 	}
 	else if(flags & guy_fadeinstant)
 	{
@@ -9191,7 +9199,8 @@ eScript::eScript(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 		dir=down;
 		
 		if(!canmove(down,(zfix)8,spw_none))
-			clk3=int(13.0/((step==0)?1:step));
+			if(step==0) clk3 = 0;
+			clk3=int(13.0/step);
 	}
 	else if(flags & guy_fadeinstant)
 	{
@@ -9285,7 +9294,8 @@ eFriendly::eFriendly(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 		dir=down;
 		
 		if(!canmove(down,(zfix)8,spw_none))
-			clk3=int(13.0/((step==0)?1:step));
+			if(step==0) clk3 = 0;
+			clk3=int(13.0/step);
 	}
 	else if(flags & guy_fadeinstant)
 	{
@@ -11557,7 +11567,8 @@ eStalfos::eStalfos(zfix X,zfix Y,int Id,int Clk) : enemy(X,Y,Id,Clk)
 		dir=down;
 		
 		if(!canmove(down,(zfix)8,spw_none))
-			clk3=int(13.0/((step==0)?1:step));
+			if(step==0) clk3 = 0;
+			clk3=int(13.0/step);
 	}
 	else if(flags & guy_fadeinstant)
 	{
@@ -12400,8 +12411,8 @@ void eStalfos::vire_hop()
 		{
 			clk2=16*jump_width/((step==0)?1:step);
 		}
-		
-		clk3=int(16.0/((step==0)?1:step));
+		if(step==0) clk3 = 0;
+		else clk3=int(16.0/step);
 	}
 	
 	--clk3;
@@ -14886,8 +14897,8 @@ bool esMoldorm::animate(int index)
 			x.doFloor();
 			y.doFloor();
 		}
-		
-		parentclk=(parentclk+1)%((int)(8.0/((step==0)?1:step)));
+		if(step==0) parentclk = 0;
+		else parentclk=(parentclk+1)%((int)(8.0/step));
 		
 		if(!watch)
 		{

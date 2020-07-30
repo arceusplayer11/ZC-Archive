@@ -12733,9 +12733,24 @@ void eStalfos::vire_hop()
 			
 		if(clk2<=0)
 		{
+			//zprint2("setting clk: %d\n", 16*jump_width/step);
+			
+			/*This is a COMPLETE HACK to fix pols voice, so that they jup correctly. 
+				They broke with the addition of zfix in Alpha 67. 
+				I'm unsure what is happening here, but these changes correct the numbers. 
+				I do not know if this has any OTHER side effects. 
+			*/
+			//zprint2("step: %d\n",step);
+			//zprint2("jump_width: %d\n",jump_width);
 			//z=0;
+			int tempstep = (int)step;
+			//zprint2("tempstep: %d\n",tempstep);
+			int polsjump = 16*(jump_width/tempstep)*2; //SUPER HACK to get the correct numbers. -Z
+			//zprint2("polsjump: %d\n",polsjump);
 			if(!canmove(dir,(zfix)2,spw_none,false) || m_walkflag(x,y,spw_none, dir) || (rand()&15)>=hrate)
-				clk2=(wpn==ewBrang ? 1 : 16*jump_width/step);
+				clk2=(wpn==ewBrang ? 1 : polsjump); //this is the change
+				//clk2=(wpn==ewBrang ? 1 : 16*jump_width/step); //normal, old 2.53 code
+			
 		}
 		
 		if(dmisc9!=e9tPOLSVOICE && dir>=left) //if we're moving left or right
@@ -12753,10 +12768,11 @@ void eStalfos::vire_hop()
 		
 	floor_y=y;
 	clk2--;
-	
+	//zprint2("clk2: %d\n", clk2);
 	//if we're in the middle of a jump
 	if(clk2>0 && (dir>=left || dmisc9==e9tPOLSVOICE))
 	{
+		//zprint2("jump\n");
 		int h = fixtoi(fixsin(itofix(clk2*128*step/(16*jump_width)))*jump_height);
 		
 		if(get_bit(quest_rules,qr_ENEMIESZAXIS) && !(isSideViewGravity()))

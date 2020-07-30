@@ -2215,7 +2215,7 @@ enemy::enemy(zfix X,zfix Y,int Id,int Clk) : sprite()
 	clk=Clk;
 	floor_y=y;
 	ceiling=false;
-	fading = misc = clk2 = clk3 = stunclk = hclk = sclk = superman = 0;
+	fading = misc = clk2 = hopclk = clk3 = stunclk = hclk = sclk = superman = 0;
 	grumble = movestatus = posframe = timer = ox = oy = 0;
 	yofs = playing_field_offset - ((isSideViewGravity()) ? 0 : 2);
 	did_armos=true;
@@ -2431,6 +2431,7 @@ enemy::enemy(enemy const & other, bool new_script_uid, bool clear_parent_script_
 	fading(other.fading),			//int
 	//misc(other.misc),			//int
 	clk2(other.clk2),			//int
+	hopclk(other.hopclk),			//int
 	clk3(other.clk3),			//int
 	stunclk(other.stunclk),			//int
 	hclk(other.hclk),			//int
@@ -12728,36 +12729,44 @@ void eStalfos::vire_hop()
 		
 		//z=0;
 		//if we're not in the middle of a jump or if we can't complete the current jump in the current direction
-		if(clk2<=0 || !canmove(dir,(zfix)1,spw_floater,false) || (isSideViewGravity() && isOnSideviewPlatform()))
+		if(hopclk<=0 || !canmove(dir,(zfix)1,spw_floater,false) || (isSideViewGravity() && isOnSideviewPlatform()))
 			newdir(rate,homing,dmisc9==e9tPOLSVOICE ? spw_floater : spw_none);
 			
-		if(clk2<=0)
+		if(hopclk<=0)
 		{
 			//z=0;
 			if(!canmove(dir,(zfix)2,spw_none,false) || m_walkflag(x,y,spw_none, dir) || (rand()&15)>=hrate)
-				clk2=(wpn==ewBrang ? 1 : 16*jump_width/step);
+			{
+				
+				hopclk=(wpn==ewBrang ? 1 : 16*jump_width/step);
+				if (dmisc9==e9tPOLSVOICE )zprint2("setting clk2 on polsvoice to: %d\n", hopclk);
+				else zprint2("setting clk2 on vire to: %d\n", clk2);
+			}
 		}
 		
 		if(dmisc9!=e9tPOLSVOICE && dir>=left) //if we're moving left or right
 		{
-			clk2=16*jump_width/step;
+			hopclk=16*jump_width/step;
 		}
+		
 		
 		clk3=int(16.0/step);
 	}
-	
+
 	--clk3;
 	
-	if(dmisc9==e9tPOLSVOICE || clk2>0)
+	if(dmisc9==e9tPOLSVOICE || hopclk>0)
+	{
 		move(step);
+	}
 		
 	floor_y=y;
-	clk2--;
+	hopclk--;
 	
 	//if we're in the middle of a jump
-	if(clk2>0 && (dir>=left || dmisc9==e9tPOLSVOICE))
+	if(hopclk>0 && (dir>=left || dmisc9==e9tPOLSVOICE))
 	{
-		int h = fixtoi(fixsin(itofix(clk2*128*step/(16*jump_width)))*jump_height);
+		int h = fixtoi(fixsin(itofix(hopclk*128*step/(16*jump_width)))*jump_height);
 		
 		if(get_bit(quest_rules,qr_ENEMIESZAXIS) && !(isSideViewGravity()))
 		{

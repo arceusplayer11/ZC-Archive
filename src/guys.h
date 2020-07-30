@@ -75,7 +75,7 @@ public:
 	byte hitsfx,deadsfx;
 	byte submerged;
 
-	int  clk2,sclk;
+	int  clk2,sclk,hopclk;
 	int  starting_hp;
 	int  ox, oy;
 	word  s_tile; //secondary (additional) tile(s)

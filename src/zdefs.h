@@ -227,7 +227,7 @@ enum {ENC_METHOD_192B104=0, ENC_METHOD_192B105, ENC_METHOD_192B185, ENC_METHOD_2
 #define V_GUYS            42
 #define V_MIDIS            4
 #define V_CHEATS           1
-#define V_SAVEGAME        16 //skipped 13->15 for 2.53.1
+#define V_SAVEGAME        17 //skipped 13->15 for 2.53.1
 #define V_COMBOALIASES     3
 #define V_LINKSPRITES      7
 #define V_SUBSCREEN        6
@@ -3719,11 +3719,13 @@ struct gamedata
     byte  pal[48];
     long  screen_d[MAXDMAPS*MAPSCRSNORMAL][8];                // script-controlled screen variables
     long  global_d[MAX_SCRIPT_REGISTERS];                                      // script-controlled global variables
-    std::vector< ZCArray <long> > globalRAM;
     
     byte awpn, bwpn;											// Currently selected weapon slots
     signed short forced_awpn, forced_bwpn;
     bool isclearing; // The gamedata is being cleared
+    
+    std::vector< ZCArray <long> > globalRAM;
+    
     //115456 (260)
     
     // member functions

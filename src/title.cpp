@@ -684,10 +684,12 @@ static void treasures(int f)
 
 static void NES_titlescreen()
 {
+	/*
 	memset(FFCore.emulation,0,sizeof(FFCore.emulation));
 	memset(itemscriptInitialised,0,sizeof(itemscriptInitialised));
 	FFCore.kb_typing_mode = false;
 	FFCore.skip_ending_credits = 0;
+	*/
 	/*if ( FFCore.coreflags&FFCORE_SCRIPTED_MIDI_VOLUME )
 	{
 	Z_scripterrlog("Trying to restore master MIDI volume to: %d\n", FFCore.usr_midi_volume);
@@ -781,9 +783,11 @@ static void NES_titlescreen()
 
 static void DX_mainscreen(int f)
 {
+	/*
 	memset(FFCore.emulation,0,sizeof(FFCore.emulation));
 	memset(itemscriptInitialised,0,sizeof(itemscriptInitialised));
 	FFCore.kb_typing_mode = false;
+	*/
 	/*if ( FFCore.coreflags&FFCORE_SCRIPTED_MIDI_VOLUME )
 	{
 	Z_scripterrlog("Trying to restore master MIDI volume to: %d\n", FFCore.usr_midi_volume);
@@ -918,9 +922,11 @@ static void DX_mainscreen(int f)
 static void DX_titlescreen()
 {
 	//  JGMOD *yea;
+	/*
 	memset(FFCore.emulation,0,sizeof(FFCore.emulation));
 	memset(itemscriptInitialised,0,sizeof(itemscriptInitialised));
 	FFCore.kb_typing_mode = false;
+	*/
 	/*
 	if ( FFCore.coreflags&FFCORE_SCRIPTED_MIDI_VOLUME )
 	{
@@ -946,7 +952,7 @@ static void DX_titlescreen()
 	pan_style = (long)FFCore.usr_panstyle;
 	}
 	*/
-	FFCore.skip_ending_credits = 0;
+	//FFCore.skip_ending_credits = 0;
 	for ( int q = 0; q < 256; q++ ) runningItemScripts[q] = 0; //Clear scripts that were running before. 
 
 	int f=0;
@@ -1008,9 +1014,11 @@ static void DX_titlescreen()
 
 static void v25_mainscreen(int f)
 {
+	/*
 	memset(FFCore.emulation,0,sizeof(FFCore.emulation));
 	memset(itemscriptInitialised,0,sizeof(itemscriptInitialised));
 	FFCore.kb_typing_mode = false;
+	*/
 	/*
 	if ( FFCore.coreflags&FFCORE_SCRIPTED_MIDI_VOLUME )
 	{
@@ -1036,7 +1044,7 @@ static void v25_mainscreen(int f)
 	pan_style = (long)FFCore.usr_panstyle;
 	}
 	*/
-	FFCore.skip_ending_credits = 0;
+	//FFCore.skip_ending_credits = 0;
 	for ( int q = 0; q < 256; q++ ) runningItemScripts[q] = 0; //Clear scripts that were running before. 
 	
 	set_uformat(U_ASCII);
@@ -1145,9 +1153,11 @@ static void v25_mainscreen(int f)
 
 static void v25_titlescreen()
 {
+	/*
 	memset(FFCore.emulation,0,sizeof(FFCore.emulation));
 	memset(itemscriptInitialised,0,sizeof(itemscriptInitialised));
 	FFCore.kb_typing_mode = false;
+	*/
 	/*
 	if ( FFCore.coreflags&FFCORE_SCRIPTED_MIDI_VOLUME )
 	{
@@ -1173,7 +1183,7 @@ static void v25_titlescreen()
 	pan_style = (long)FFCore.usr_panstyle;
 	}
 	*/
-	FFCore.skip_ending_credits = 0;
+	//FFCore.skip_ending_credits = 0;
 	for ( int q = 0; q < 256; q++ ) runningItemScripts[q] = 0; //Clear scripts that were running before. 
 
 	//  JGMOD *yea;
@@ -1241,6 +1251,7 @@ extern char *SAVE_FILE;
 
 int readsaves(gamedata *savedata, PACKFILE *f)
 {
+	/*
 	memset(FFCore.emulation,0,sizeof(FFCore.emulation));
 	memset(itemscriptInitialised,0,sizeof(itemscriptInitialised));
 	FFCore.kb_typing_mode = false;
@@ -1268,6 +1279,7 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 	pan_style = (long)FFCore.usr_panstyle;
 	}
 	FFCore.skip_ending_credits = 0;
+	*/
 	//word item_count;
 	word qstpath_len=0;
 	word save_count=0;
@@ -1301,7 +1313,7 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 		return 3;
 	}
 	
-	if(section_version < 11) //Sorry!
+	if(section_version < 17) //Sorry!
 	{
 		//Currently unsupported
 		return 1;
@@ -1442,7 +1454,7 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 		savedata[i].set_cheat(tempbyte);
 		char temp;
 		
-		for(int j=0; j<256; j++) // why not MAXITEMS ?
+		for(int j=0; j<MAXITEMS; j++) 
 		{
 			if(!p_getc(&temp, f, true))
 				return 18;
@@ -1730,31 +1742,13 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 					}
 				}
 			}
-			if ( section_version >= 12 && FFCore.getQuestHeaderInfo(vZelda) >= 0x253 || section_version >= 16)
-			/* 2.53.1 also have a v12 for this section. 
-			I needed to path this to ensure that the s_v is specific to the build.
-			I also skipped 13 to 15 so that 2.53.1 an use these if needed with the current patch. -Z
-			*/
-		{
 			for(int j=0; j<MAX_SCRIPT_REGISTERS; j++)
 			{
-			if(!p_igetl(&savedata[i].global_d[j],f,true))
-			{
-				return 45;
+				if(!p_igetl(&savedata[i].global_d[j],f,true))
+				{
+					return 45;
+				}
 			}
-			}
-		}
-		else
-		{
-		for(int j=0; j<256; j++)
-		{
-			if(!p_igetl(&savedata[i].global_d[j],f,true))
-			{
-				return 45;
-			}
-		}    
-			
-		}
 		}
 		
 		if(section_version>2)
@@ -1819,9 +1813,23 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 			savedata[i].bwpn = 0;
 		}
 		
+		if(!p_igetw(&tempword2, f, true))
+		{
+			return 52;
+		}
+		
+		savedata[i].forced_awpn = tempword2;
+		
+		if(!p_igetw(&tempword3, f, true))
+		{
+			return 53;
+		}
+		
+		savedata[i].forced_bwpn = tempword3;
+		
 		//First we get the size of the vector
 		if(!p_igetl(&tempdword, f, true))
-			return 53;
+			return 54;
 			
 		if(tempdword != 0) //Might not be any at all
 		{
@@ -1834,7 +1842,7 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 				
 				//We get the size of each container
 				if(!p_igetl(&tempdword, f, true))
-					return 54;
+					return 55;
 					
 				//We allocate the container
 				a.Resize(tempdword);
@@ -1842,32 +1850,11 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 				//And then fill in the contents
 				for(dword k = 0; k < a.Size(); k++)
 					if(!p_igetl(&(a[k]), f, true))
-						return 55;
+						return 56;
 			}
 		}
-	if((section_version > 11 && FFCore.getQuestHeaderInfo(vZelda) < 0x255) || (section_version > 15 && FFCore.getQuestHeaderInfo(vZelda) >= 0x255))
-		{
-			if(!p_igetw(&tempword2, f, true))
-			{
-				return 56;
-			}
-			
-			savedata[i].forced_awpn = tempword2;
-			
-			if(!p_igetw(&tempword3, f, true))
-			{
-				return 57;
-			}
-			
-			savedata[i].forced_bwpn = tempword3;
-		}
-		else
-		{
-			savedata[i].forced_awpn = -1;
-			savedata[i].forced_bwpn = -1;
-		}
-	}
 	
+	}
 	return 0;
 }
 
@@ -1895,9 +1882,10 @@ void set_up_standalone_save()
 // call once at startup
 int load_savedgames()
 {
-	memset(FFCore.emulation,0,sizeof(FFCore.emulation));
+	/*memset(FFCore.emulation,0,sizeof(FFCore.emulation));
 	memset(itemscriptInitialised,0,sizeof(itemscriptInitialised));
 	FFCore.kb_typing_mode = false;
+	*/
 /*    
 if ( FFCore.coreflags&FFCORE_SCRIPTED_MIDI_VOLUME )
 	{
@@ -1923,7 +1911,7 @@ if ( FFCore.coreflags&FFCORE_SCRIPTED_MIDI_VOLUME )
 	pan_style = (long)FFCore.usr_panstyle;
 	}
 	*/
-	FFCore.skip_ending_credits = 0;
+	//FFCore.skip_ending_credits = 0;
 	char *fname = SAVE_FILE;
 	char *iname = (char *)zc_malloc(2048);
 	int ret;
@@ -2321,9 +2309,19 @@ int writesaves(gamedata *savedata, PACKFILE *f)
 			return 50;
 		}
 		
+		if(!p_iputw(savedata[i].forced_awpn, f))
+		{
+			return 51;
+		}
+		
+		if(!p_iputw(savedata[i].forced_bwpn, f))
+		{
+			return 52;
+		}
+		
 		//First we put the size of the vector
 		if(!p_iputl(savedata[i].globalRAM.size(), f))
-			return 51;
+			return 53;
 			
 		for(dword j = 0; j < savedata[i].globalRAM.size(); j++)
 		{
@@ -2331,22 +2329,14 @@ int writesaves(gamedata *savedata, PACKFILE *f)
 			
 			//Then we put the size of each container
 			if(!p_iputl(a.Size(), f))
-				return 52;
+				return 54;
 				
 			//Followed by its contents
 			for(dword k = 0; k < a.Size(); k++)
 				if(!p_iputl(a[k], f))
-					return 53;
+					return 55;
 		}
-	if(!p_iputw(savedata[i].forced_awpn, f))
-		{
-			return 54;
-		}
-		
-		if(!p_iputw(savedata[i].forced_bwpn, f))
-		{
-			return 55;
-		}
+	
 	}
 	
 	return 0;
@@ -2544,6 +2534,7 @@ static void delete_mode()
 
 static void selectscreen()
 {
+	/*
 	FFCore.kb_typing_mode = false;
 	memset(itemscriptInitialised,0,sizeof(itemscriptInitialised));
 	if ( FFCore.coreflags&FFCORE_SCRIPTED_MIDI_VOLUME )
@@ -2570,6 +2561,7 @@ static void selectscreen()
 	pan_style = (long)FFCore.usr_panstyle;
 	}
 	FFCore.skip_ending_credits = 0;
+	*/
 	//  text_mode(0);
 	init_NES_mode();
 	//  loadfullpal();
@@ -3907,9 +3899,9 @@ if ( FFCore.coreflags&FFCORE_SCRIPTED_MIDI_VOLUME )
 	{
 	pan_style = (long)FFCore.usr_panstyle;
 	}	
-	*/
-	FFCore.skip_ending_credits = 0;
 	
+	FFCore.skip_ending_credits = 0;
+	*/
 	if(q==qCONT)
 	{
 		cont_game();
@@ -3990,7 +3982,7 @@ void game_over(int type)
 
 	FFCore.kb_typing_mode = false; 
 	memset(itemscriptInitialised,0,sizeof(itemscriptInitialised));
-	/*
+	
 	if ( FFCore.coreflags&FFCORE_SCRIPTED_MIDI_VOLUME )
 	{
 	Z_scripterrlog("Trying to restore master MIDI volume to: %d\n", FFCore.usr_midi_volume);
@@ -4014,7 +4006,7 @@ void game_over(int type)
 	{
 	pan_style = (long)FFCore.usr_panstyle;
 	}
-	*/
+	
 	FFCore.skip_ending_credits = 0;
 	kill_sfx();
 	music_stop();

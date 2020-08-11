@@ -82,6 +82,7 @@ extern byte dmapscriptInitialised;
 
 extern char zc_builddate[80];
 extern char zc_aboutstr[80];
+int saveslot_zc_versions[15];
 
 int DMapEditorLastMaptileUsed = 0;
 

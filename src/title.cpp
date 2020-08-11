@@ -50,6 +50,8 @@ extern zcmodule moduledata;
 //extern byte refresh_select_screen;
 bool load_custom_game(int file);
 
+extern int saveslot_zc_versions[15];
+
 struct savedicon
 {
 	byte loaded;
@@ -1241,7 +1243,6 @@ extern char *SAVE_FILE;
 
 int readsaves(gamedata *savedata, PACKFILE *f)
 {
-	zprint2("FFCore.getQuestHeaderInfo(vZelda): %x\n", FFCore.getQuestHeaderInfo(vZelda));
 	memset(FFCore.emulation,0,sizeof(FFCore.emulation));
 	memset(itemscriptInitialised,0,sizeof(itemscriptInitialised));
 	FFCore.kb_typing_mode = false;
@@ -1344,7 +1345,13 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 			exit(0);
 		}
 	}
-	
+	byte showmetadata = get_config_int("zeldadx","print_metadata_for_each_save_slot",0);
+	for(int i=0; i<save_count; i++)
+	{
+		int ret2 = load_quest(savedata+i, false, showmetadata);
+		saveslot_zc_versions[i] = FFCore.getQuestHeaderInfo(vZelda);
+		zprint2("Made in ZC %x\n",saveslot_zc_versions[i]);
+	}
 	for(int i=0; i<save_count; i++)
 	{
 		if(!pfread(name,9,f,true))
@@ -1987,6 +1994,10 @@ if ( FFCore.coreflags&FFCORE_SCRIPTED_MIDI_VOLUME )
 	if(!f)
 		goto cantopen;
 		
+	byte showmetadata = get_config_int("zeldadx","print_metadata_for_each_save_slot",0);
+		
+	memset(saveslot_zc_versions,0,15);
+	
 	if(readsaves(saves,f)!=0)
 		goto reset;
 		
@@ -2016,17 +2027,22 @@ if ( FFCore.coreflags&FFCORE_SCRIPTED_MIDI_VOLUME )
 			
 		fclose(f2);
 	}
+
 	
+		
 	//Load game icons
 	for(int i=0; i<MAXSAVES; i++)
 	{
-		byte showmetadata = get_config_int("zeldadx","print_metadata_for_each_save_slot",0);
 		zprint2("Reading Save Slot %d\n", i);
+		int ret2 = load_quest(saves+i, false, showmetadata);
+		saveslot_zc_versions[i] = FFCore.getQuestHeaderInfo(vZelda);
 		
 		if(strlen(saves[i].qstpath))
 		{
 			if(skipicon)
 			{
+				
+					
 				for(int j=0; j<128; j++)
 				{
 					saves[i].icon[j]=0;
@@ -2042,7 +2058,6 @@ if ( FFCore.coreflags&FFCORE_SCRIPTED_MIDI_VOLUME )
 				if(!iconbuffer[i].loaded)
 				{
 					int ret2 = load_quest(saves+i, false, showmetadata);
-					
 					if(ret2 == qe_OK)
 					{
 						load_game_icon_to_buffer(false,i);

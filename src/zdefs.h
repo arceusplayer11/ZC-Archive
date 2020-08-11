@@ -227,7 +227,7 @@ enum {ENC_METHOD_192B104=0, ENC_METHOD_192B105, ENC_METHOD_192B185, ENC_METHOD_2
 #define V_GUYS            42
 #define V_MIDIS            4
 #define V_CHEATS           1
-#define V_SAVEGAME        17 //skipped 13->15 for 2.53.1
+#define V_SAVEGAME        18 //17 is last for 2.53.x. Some older 2.53/4/5 .sav files (<=v15) no longer work. 
 #define V_COMBOALIASES     3
 #define V_LINKSPRITES      7
 #define V_SUBSCREEN        6
@@ -3724,6 +3724,10 @@ struct gamedata
     byte awpn, bwpn;											// Currently selected weapon slots
     signed short forced_awpn, forced_bwpn;
     bool isclearing; // The gamedata is being cleared
+    
+    byte charpadding[8];
+    long intpadding[8];
+    
     long temp_refill_why;
     long temp_refill_what;
     //115456 (260)

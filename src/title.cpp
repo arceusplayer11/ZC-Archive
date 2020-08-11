@@ -64,6 +64,143 @@ static bool chosecustomquest = false;
 
 extern char runningItemScripts[256];
 
+int load_quest_version_info(gamedata *g, word *v, word *b)
+{
+    chop_path(qstpath);
+    char *tempdir=(char *)"";
+#ifndef ALLEGRO_MACOSX
+    tempdir=qstdir;
+#endif
+    
+    if(g->get_quest()<255)
+    {
+        // Check the ZC directory first for 1st-4th quests; check qstdir if they're not there
+	switch(g->get_quest())
+	{
+		case 1: sprintf(qstpath, moduledata.quests[0], ordinal(g->get_quest())); break;
+		case 2: sprintf(qstpath, moduledata.quests[1], ordinal(g->get_quest())); break;
+		case 3: sprintf(qstpath, moduledata.quests[2], ordinal(g->get_quest())); break;
+		case 4: sprintf(qstpath, moduledata.quests[3], ordinal(g->get_quest())); break;
+		case 5: sprintf(qstpath, moduledata.quests[4], ordinal(g->get_quest())); break;
+			
+		default: break;
+	}
+        
+	//was sprintf(qstpath, "%s.qst", ordinal(g->get_quest()));
+        
+        if(!exists(qstpath))
+        {
+            sprintf(qstpath,"%s%s.qst",tempdir,ordinal(g->get_quest()));
+        }
+    }
+    else
+    {
+        if(is_relative_filename(g->qstpath))
+        {
+            sprintf(qstpath,"%s%s",qstdir,g->qstpath);
+        }
+        else
+        {
+            sprintf(qstpath,"%s", g->qstpath);
+        }
+
+		// ZC paths are retarded.
+		// This is just an awful hack, and generally some of the worst code ever written, but it only ever gets run
+		// when there would be a "file not found error"... (it's easier than dealing with everything else. Sue me.)
+		//
+		// *side note*
+		// It does have a few perks though: You can now move around entire folders and sub-folders from one ZC directory to the next,
+		// and we can find them! You can even put all the ZC quests into different sub-directories and share save files, etc..
+		// ~Gleeok
+		if(!exists(qstpath))
+		{
+			al_trace("File not found \"%s\". Searching...\n", qstpath);
+
+			if(exists(g->qstpath)) //not found? -try this place first:
+			{
+				sprintf(qstpath,"%s", g->qstpath);
+				al_trace("Set quest path to \"%s\".\n", qstpath);
+			}
+			else // Howsabout in here?
+			{
+				std::string gQstPath = g->qstpath;
+				size_t bs1 = 0;
+				size_t bs2 = std::string::npos;
+
+				// Keep searching through every parent directory as if it was the current one.
+				while(bs1 != std::string::npos || bs2 != std::string::npos)
+				{
+					bs1 = gQstPath.find_first_of('/');
+					if(bs1 != std::string::npos)
+					{
+						gQstPath = gQstPath.substr(bs1 + 1, std::string::npos);
+					}
+					else
+					{
+						bs2 = gQstPath.find_first_of('\\');
+						if(bs2 != std::string::npos)
+							gQstPath = gQstPath.substr(bs2 + 1, std::string::npos);
+					}
+
+					if(exists(gQstPath.c_str())) //Quick! Try it now!
+					{
+						sprintf(qstpath,"%s", gQstPath.c_str());
+						al_trace("Set quest path to \"%s\".\n", qstpath);
+						break;
+					}
+					else //Still no dice eh?
+					{
+						char cwdbuf[260];
+						memset(cwdbuf,0,260*sizeof(char));
+                        getcwd(cwdbuf, 260);
+
+						std::string path = cwdbuf;
+						std::string fn;
+
+						if(path.size() != 0 && 
+							!(*(path.end()-1)=='/' || *(path.end()-1)=='\\')
+							)
+						{
+							path += '/';
+						}
+
+						fn = path + gQstPath;
+
+						if(exists(fn.c_str())) //Last chance for hookers and blackjack truck stop
+						{
+							sprintf(qstpath,"%s", fn.c_str());
+							al_trace("Set quest path to \"%s\".\n", qstpath);
+							break;
+						}
+					}
+				} //while
+
+			}
+		}//end hack
+
+    }
+    
+    //setPackfilePassword(datapwd);
+    byte skip_flags[4];
+    
+    for(int i=0; i<4; ++i)
+    {
+        skip_flags[i]=0;
+    }
+    
+    bool oldquest = false;
+    int open_error=0;
+    char deletefilename[1024];
+    int ret = 0;
+    PACKFILE *f=open_quest_file(&open_error, qstpath, deletefilename, true, true, false);
+    if(f)
+    {
+	ret = get_version_and_build(f,v,b);
+    }
+    
+    return ret;
+}
+
 FONT *get_zcfont(int index)
 {
 	//return getfont(index);
@@ -1345,8 +1482,11 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 		}
 	}
 	
+	word v_zc; word b_zc;
+			
 	for(int i=0; i<save_count; i++)
 	{
+		
 		if(!pfread(name,9,f,true))
 		{
 			return 6;
@@ -1691,6 +1831,11 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 			}
 		}
 		
+		int chk = load_quest_version_info(savedata+i, &v_zc, &b_zc);
+			
+			zprint2("Vers: %x\n", v_zc);
+			zprint2("Build: %d\n", b_zc);
+		
 		if(section_version>1)
 		{
 			if(section_version <= 5)
@@ -1732,31 +1877,48 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 					}
 				}
 			}
-			if ( (section_version >= 12 && FFCore.getQuestHeaderInfo(vZelda) >= 0x253) || section_version >= 16)
+			
+			
+		
+			
+			//! This is invalid. Saves cannot read vZelda here! -Z
+			//! Perhaps == 13 | == 14, || == 15 for the end of 2.53?, then else if >= 15
+			//! Or use cversion. 0 for 2.53.x and 1 for 2.55
+			//! if cv == 0, else if cv == 1, then used svs for each?
+			//! That might break older .sav files, though.... sigh. -Z
+			//! Perhaps saves need a V_ZC in them as a header and we can break every .sav file ever made...
+			//! can we do *tmpheader, then readheader for the file?
+			//! would this work?
+			
+			//word v_zc word b_zc;
+			//int chk = get_version_and_build(savedata+i, v_zc, b_zc)
+			
+			if ( (section_version >= 12 && v_zc >= 0x254) )
 			/* 2.53.1 also have a v12 for this section. 
 			I needed to path this to ensure that the s_v is specific to the build.
 			I also skipped 13 to 15 so that 2.53.1 an use these if needed with the current patch. -Z
 			*/
-		{
-			for(int j=0; j<MAX_SCRIPT_REGISTERS; j++)
 			{
-			if(!p_igetl(&savedata[i].global_d[j],f,true))
+				
+				for(int j=0; j<MAX_SCRIPT_REGISTERS; j++)
+				{
+					if(!p_igetl(&savedata[i].global_d[j],f,true))
+					{
+						return 45;
+					}
+				}
+			}
+			else
 			{
-				return 45;
-			}
-			}
-		}
-		else
-		{
-		for(int j=0; j<256; j++)
-		{
-			if(!p_igetl(&savedata[i].global_d[j],f,true))
-			{
-				return 45;
-			}
-		}    
+				for(int j=0; j<256; j++)
+				{
+					if(!p_igetl(&savedata[i].global_d[j],f,true))
+					{
+						return 45;
+					}
+				}    
 			
-		}
+			}
 		}
 		
 		if(section_version>2)
@@ -1883,6 +2045,32 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 		*/
 		
 		if(section_version > 16)
+		{
+			for ( int q = 0; q < 8; q++)
+			{
+				if(!p_getc(&tempbyte, f, true))
+				{
+					return 58;
+				}
+				savedata[i].charpadding[q] = tempbyte;
+			}
+			for ( int q = 0; q < 8; q++)
+			{
+				if(!p_igetl(&templong, f, true))
+				{
+					return 58;
+				}
+				savedata[i].intpadding[q] = templong;
+			}
+			
+		}
+		else
+		{
+			memset((savedata[i].charpadding),0, 8 * sizeof(char));
+			memset((savedata[i].intpadding),0, 8 * sizeof(long));
+		}
+		
+		if(section_version > 17)
 		{
 			if(!p_igetl(&templong, f, true))
 			{
@@ -2382,24 +2570,41 @@ int writesaves(gamedata *savedata, PACKFILE *f)
 				if(!p_iputl(a[k], f))
 					return 53;
 		}
+		
+		
+		for ( int q = 0; q < 8; q++)
+		{
+			if(!p_putc(savedata[i].charpadding[q], f))
+			{
+				return 54;
+			}
+		}
+		for ( int q = 0; q < 8; q++)
+		{
+			if(!p_iputl(savedata[i].intpadding[q], f))
+			{
+				return 55;
+			}
+		}
+			
 		if(!p_iputw(savedata[i].forced_awpn, f))
 		{
-			return 54;
+			return 56;
 		}
 		
 		if(!p_iputw(savedata[i].forced_bwpn, f))
 		{
-			return 55;
+			return 57;
 		}
 		zprint2("savedata[i].temp_refill_why: %d\n", savedata[i].temp_refill_why);
 		zprint2("savedata[i].temp_refill_what: %d\n", savedata[i].temp_refill_what);
 		if(!p_iputl(savedata[i].temp_refill_why, f))
 		{
-			return 56;
+			return 58;
 		}
 		if(!p_iputl(savedata[i].temp_refill_what, f))
 		{
-			return 57;
+			return 59;
 		}
 		
 	}

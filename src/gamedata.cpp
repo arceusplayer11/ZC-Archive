@@ -70,6 +70,10 @@ void gamedata::Clear()
     forced_awpn = -1; 
     forced_bwpn = -1;
     isclearing=false;
+    
+    std::fill(charpadding, charpadding+8, 0);
+    std::fill(intpadding, intpadding+8, 0);
+    
     temp_refill_why = 0;
     temp_refill_what = 0;
 }
@@ -151,6 +155,13 @@ void gamedata::Copy(const gamedata& g)
     
     forced_awpn = g.forced_awpn; 
     forced_bwpn = g.forced_bwpn;
+    
+    std::fill(charpadding, charpadding+8, 0);
+    std::fill(intpadding, intpadding+8, 0);
+    
+    memcpy(charpadding, g.charpadding, 8 * sizeof(char));
+    memcpy(intpadding, g.intpadding, 8 * sizeof(long));
+    
     temp_refill_why = g.temp_refill_why;
     temp_refill_what = g.temp_refill_what;
 }

@@ -1303,7 +1303,7 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 		return 3;
 	}
 	
-	if(section_version < 17) //Sorry!
+	if(section_version < 16) //Sorry!
 	{
 		//Currently unsupported
 		return 1;
@@ -1821,33 +1821,7 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 			savedata[i].bwpn = 0;
 		}
 		
-		if(!p_igetw(&tempword2, f, true))
-		{
-			return 56;
-		}
-		
-		savedata[i].forced_awpn = tempword2;
-		
-		if(!p_igetw(&tempword3, f, true))
-		{
-			return 57;
-		}
-		
-		savedata[i].forced_bwpn = tempword3;
-		
-		if(!p_igetl(&templong, f, true))
-		{
-			return 58;
-		}
-		savedata[i].temp_refill_why = templong;
-		zprint2("savedata[i].temp_refill_why: %d\n", templong);
-		
-		if(!p_igetl(&templong, f, true))
-		{
-			return 59;
-		}
-		savedata[i].temp_refill_what = templong;
-		zprint2("savedata[i].temp_refill_what: %d\n", templong);
+		//what, no 52?
 		
 		//First we get the size of the vector
 		if(!p_igetl(&tempdword, f, true))
@@ -1874,6 +1848,60 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 					if(!p_igetl(&(a[k]), f, true))
 						return 55;
 			}
+		}
+		if(section_version > 15)
+		{
+			if(!p_igetw(&tempword2, f, true))
+			{
+				return 56;
+			}
+			
+			savedata[i].forced_awpn = tempword2;
+			
+			if(!p_igetw(&tempword3, f, true))
+			{
+				return 57;
+			}
+			
+			savedata[i].forced_bwpn = tempword3;
+		}
+		else
+		{
+			savedata[i].forced_awpn = -1;
+			savedata[i].forced_bwpn = -1;
+		}
+		
+		/*TO DO: Add byte padding[8] and int padding[8] before this, and load them for v17, 
+		then copy that to 2.53.1 and add those to it as well.
+		Make tmp_refill v18. 
+		This allows 8 ints and 8 bytes for the remainder of the 2.53.1 duty 
+		cycle, to exist, and keeps the save file version parallel.
+		The V_SAVE in 2.53.1 will become 17 and we will load padding arrays 
+		as > 16, identical to here. 
+		The uest header version data is NOT available prior to loading the 
+		save file itself, so those version>< stmts were all evaluated as version==0. -Z
+		*/
+		
+		if(section_version > 16)
+		{
+			if(!p_igetl(&templong, f, true))
+			{
+				return 58;
+			}
+			savedata[i].temp_refill_why = templong;
+			zprint2("savedata[i].temp_refill_why: %d\n", templong);
+			
+			if(!p_igetl(&templong, f, true))
+			{
+				return 59;
+			}
+			savedata[i].temp_refill_what = templong;
+			zprint2("savedata[i].temp_refill_what: %d\n", templong);
+		}
+		else
+		{
+			savedata[i].temp_refill_why = 0;
+			savedata[i].temp_refill_what = 0;
 		}
 	
 	}
@@ -2336,7 +2364,24 @@ int writesaves(gamedata *savedata, PACKFILE *f)
 		{
 			return 50;
 		}
-		
+	
+		//First we put the size of the vector
+		if(!p_iputl(savedata[i].globalRAM.size(), f))
+			return 51;
+			
+		for(dword j = 0; j < savedata[i].globalRAM.size(); j++)
+		{
+			ZScriptArray& a = savedata[i].globalRAM[j];
+			
+			//Then we put the size of each container
+			if(!p_iputl(a.Size(), f))
+				return 52;
+				
+			//Followed by its contents
+			for(dword k = 0; k < a.Size(); k++)
+				if(!p_iputl(a[k], f))
+					return 53;
+		}
 		if(!p_iputw(savedata[i].forced_awpn, f))
 		{
 			return 54;
@@ -2355,25 +2400,6 @@ int writesaves(gamedata *savedata, PACKFILE *f)
 		if(!p_iputl(savedata[i].temp_refill_what, f))
 		{
 			return 57;
-		}
-		
-		
-		//First we put the size of the vector
-		if(!p_iputl(savedata[i].globalRAM.size(), f))
-			return 51;
-			
-		for(dword j = 0; j < savedata[i].globalRAM.size(); j++)
-		{
-			ZScriptArray& a = savedata[i].globalRAM[j];
-			
-			//Then we put the size of each container
-			if(!p_iputl(a.Size(), f))
-				return 52;
-				
-			//Followed by its contents
-			for(dword k = 0; k < a.Size(); k++)
-				if(!p_iputl(a[k], f))
-					return 53;
 		}
 		
 	}

@@ -151,6 +151,8 @@ void gamedata::Copy(const gamedata& g)
     
     forced_awpn = g.forced_awpn; 
     forced_bwpn = g.forced_bwpn;
+    temp_refill_why = g.temp_refill_why;
+    temp_refill_what = g.temp_refill_what;
 }
 
 char *gamedata::get_name()

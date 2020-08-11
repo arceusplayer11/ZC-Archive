@@ -15407,9 +15407,12 @@ void LinkClass::NES_Continue_Refill()
 {
 	if(get_bit(quest_rules,qr_NES_HP_REFILL_CONTNUE) && (game->temp_refill_what) )
 	{
-		refill_why = game->temp_refill_why;
-		refill_what = game->temp_refill_what;
-		StartRefill(refill_what);
+		zprint2("game->temp_refill_what: %d\n", game->temp_refill_what);
+		zprint2("game->temp_refill_why: %d\n", game->temp_refill_why);
+		refill_what=game->temp_refill_what;
+		refill_why=game->temp_refill_why;
+		refilling=game->temp_refill_what;
+		fairycircle(refill_what);
 	}
 }
 
@@ -15440,6 +15443,16 @@ void LinkClass::fairycircle(int type)
         
         refill_what=type;
         refill_why=REFILL_FAIRY;
+	if(get_bit(quest_rules,qr_NES_HP_REFILL_CONTNUE) )
+	{
+		zprint2("refill_why: %d\n",refill_why);
+		zprint2("refill_what: %d\n",refill_what);
+		game->temp_refill_why = refill_why;
+		game->temp_refill_what = refill_what;
+		
+		zprint2("fairycircle game->temp_refill_why: %d\n",game->temp_refill_why);
+		zprint2("fairycircle game->temp_refill_what: %d\n",game->temp_refill_what);
+	}
         StartRefill(type);
         action=freeze; FFCore.setLinkAction(freeze);
         holdclk=0;
@@ -15451,7 +15464,11 @@ void LinkClass::fairycircle(int type)
     if(refilling!=REFILL_FAIRYDONE)
     {
         if(!refill())
-            refilling=REFILL_FAIRYDONE;
+	{
+		refilling=REFILL_FAIRYDONE;
+		//game->temp_refill_why = refill_why;
+		//game->temp_refill_what = refill_what;
+	}
     }
     
     else if(++holdclk>80)
@@ -21987,6 +22004,7 @@ void LinkClass::StartRefill(int refillWhat)
 			if(get_bit(quest_rules,qr_ITEMBUBBLE))itemclk=0;
 		}
 	}
+	
     }
 }
 

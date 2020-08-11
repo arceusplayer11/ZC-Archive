@@ -1241,6 +1241,7 @@ extern char *SAVE_FILE;
 
 int readsaves(gamedata *savedata, PACKFILE *f)
 {
+	zprint2("FFCore.getQuestHeaderInfo(vZelda): %x\n", FFCore.getQuestHeaderInfo(vZelda));
 	memset(FFCore.emulation,0,sizeof(FFCore.emulation));
 	memset(itemscriptInitialised,0,sizeof(itemscriptInitialised));
 	FFCore.kb_typing_mode = false;
@@ -1283,7 +1284,7 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 	word section_version=0;
 	word section_cversion=0;
 	dword section_size = 0;
-	long templong = 0;
+	dword templong = 0;
 	
 	//section id
 	if(!p_mgetl(&section_id,f,true))
@@ -1302,7 +1303,7 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 		return 3;
 	}
 	
-	if(section_version < 11) //Sorry!
+	if(section_version < 17) //Sorry!
 	{
 		//Currently unsupported
 		return 1;
@@ -1731,7 +1732,7 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 					}
 				}
 			}
-			if ( section_version >= 12 && FFCore.getQuestHeaderInfo(vZelda) >= 0x253 || section_version >= 16)
+			if ( (section_version >= 12 && FFCore.getQuestHeaderInfo(vZelda) >= 0x253) || section_version >= 16)
 			/* 2.53.1 also have a v12 for this section. 
 			I needed to path this to ensure that the s_v is specific to the build.
 			I also skipped 13 to 15 so that 2.53.1 an use these if needed with the current patch. -Z
@@ -1820,6 +1821,34 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 			savedata[i].bwpn = 0;
 		}
 		
+		if(!p_igetw(&tempword2, f, true))
+		{
+			return 56;
+		}
+		
+		savedata[i].forced_awpn = tempword2;
+		
+		if(!p_igetw(&tempword3, f, true))
+		{
+			return 57;
+		}
+		
+		savedata[i].forced_bwpn = tempword3;
+		
+		if(!p_igetl(&templong, f, true))
+		{
+			return 58;
+		}
+		savedata[i].temp_refill_why = templong;
+		zprint2("savedata[i].temp_refill_why: %d\n", templong);
+		
+		if(!p_igetl(&templong, f, true))
+		{
+			return 59;
+		}
+		savedata[i].temp_refill_what = templong;
+		zprint2("savedata[i].temp_refill_what: %d\n", templong);
+		
 		//First we get the size of the vector
 		if(!p_igetl(&tempdword, f, true))
 			return 53;
@@ -1846,42 +1875,7 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 						return 55;
 			}
 		}
-	if((section_version > 11 && FFCore.getQuestHeaderInfo(vZelda) < 0x255) || (section_version > 15 && FFCore.getQuestHeaderInfo(vZelda) >= 0x255))
-		{
-			if(!p_igetw(&tempword2, f, true))
-			{
-				return 56;
-			}
-			
-			savedata[i].forced_awpn = tempword2;
-			
-			if(!p_igetw(&tempword3, f, true))
-			{
-				return 57;
-			}
-			
-			savedata[i].forced_bwpn = tempword3;
-		}
-		else
-		{
-			savedata[i].forced_awpn = -1;
-			savedata[i].forced_bwpn = -1;
-		}
-		
-		if (section_version > 16 && FFCore.getQuestHeaderInfo(vZelda) >= 0x255)
-		{
-			if(!p_igetl(&templong, f, true))
-			{
-				return 58;
-			}
-			savedata[i].temp_refill_why = templong;
-			
-			if(!p_igetl(&templong, f, true))
-			{
-				return 59;
-			}
-			savedata[i].temp_refill_what = templong;
-		}
+	
 	}
 	
 	
@@ -2138,6 +2132,7 @@ int writesaves(gamedata *savedata, PACKFILE *f)
 	int section_cversion=CV_SAVEGAME;
 	int section_size=0;
 	
+	
 	//section id
 	if(!p_mputl(section_id,f))
 	{
@@ -2342,6 +2337,27 @@ int writesaves(gamedata *savedata, PACKFILE *f)
 			return 50;
 		}
 		
+		if(!p_iputw(savedata[i].forced_awpn, f))
+		{
+			return 54;
+		}
+		
+		if(!p_iputw(savedata[i].forced_bwpn, f))
+		{
+			return 55;
+		}
+		zprint2("savedata[i].temp_refill_why: %d\n", savedata[i].temp_refill_why);
+		zprint2("savedata[i].temp_refill_what: %d\n", savedata[i].temp_refill_what);
+		if(!p_iputl(savedata[i].temp_refill_why, f))
+		{
+			return 56;
+		}
+		if(!p_iputl(savedata[i].temp_refill_what, f))
+		{
+			return 57;
+		}
+		
+		
 		//First we put the size of the vector
 		if(!p_iputl(savedata[i].globalRAM.size(), f))
 			return 51;
@@ -2359,23 +2375,7 @@ int writesaves(gamedata *savedata, PACKFILE *f)
 				if(!p_iputl(a[k], f))
 					return 53;
 		}
-	if(!p_iputw(savedata[i].forced_awpn, f))
-		{
-			return 54;
-		}
 		
-		if(!p_iputw(savedata[i].forced_bwpn, f))
-		{
-			return 55;
-		}
-		if(!p_iputl(savedata[i].temp_refill_why, f))
-		{
-			return 55;
-		}
-		if(!p_iputl(savedata[i].temp_refill_what, f))
-		{
-			return 56;
-		}
 	}
 	
 	return 0;

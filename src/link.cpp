@@ -1205,6 +1205,7 @@ void LinkClass::init()
 						//are properly set by the engine.
 	}
 	FFCore.nostepforward = 0;
+	NES_Continue_Refill();
 }
 
 void LinkClass::draw_under(BITMAP* dest)
@@ -15401,6 +15402,17 @@ void LinkClass::checkswordtap()
     }
     
 }
+
+void LinkClass::NES_Continue_Refill()
+{
+	if(get_bit(quest_rules,qr_NES_HP_REFILL_CONTNUE) && (game->temp_refill_what) )
+	{
+		refill_why = game->temp_refill_why;
+		refill_what = game->temp_refill_what;
+		StartRefill(refill_what);
+	}
+}
+
 
 void LinkClass::fairycircle(int type)
 {

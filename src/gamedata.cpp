@@ -70,6 +70,8 @@ void gamedata::Clear()
     forced_awpn = -1; 
     forced_bwpn = -1;
     isclearing=false;
+    temp_refill_why = 0;
+    temp_refill_what = 0;
 }
 
 void gamedata::Copy(const gamedata& g)

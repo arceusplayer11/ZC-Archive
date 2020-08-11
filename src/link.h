@@ -338,6 +338,7 @@ private:
     void positionSword(weapon* w,int itemid);
     bool checkstab();
     void fairycircle(int type);
+    void NES_Continue_Refill();
     void StartRefill(int refillWhat);
     void Start250Refill(int refillWhat);
     int  EwpnHit();

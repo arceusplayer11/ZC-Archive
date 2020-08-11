@@ -227,7 +227,7 @@ enum {ENC_METHOD_192B104=0, ENC_METHOD_192B105, ENC_METHOD_192B185, ENC_METHOD_2
 #define V_GUYS            42
 #define V_MIDIS            4
 #define V_CHEATS           1
-#define V_SAVEGAME        16 //skipped 13->15 for 2.53.1
+#define V_SAVEGAME        17 //skipped 13->15 for 2.53.1
 #define V_COMBOALIASES     3
 #define V_LINKSPRITES      7
 #define V_SUBSCREEN        6
@@ -959,7 +959,7 @@ enum
 	//26
 	qr_DISABLE_4WAY_GRIDLOCK, qr_NEW_COMBO_ANIMATION, qr_OLD_STRING_EDITOR_MARGINS, qr_NO_OVERWRITING_HOPPING,
 	qr_DUNGEON_DMAPS_PERM_SECRETS, qr_STRING_FRAME_OLD_WIDTH_HEIGHT, qr_NO_SCROLL_WHILE_IN_AIR,
-	qr_INSTANT_RESPAWN,
+	qr_INSTANT_RESPAWN,qr_NES_HP_REFILL_CONTNUE,
 	
 	//ZScript Parser //room for 20 of these
 	//80
@@ -3724,6 +3724,8 @@ struct gamedata
     byte awpn, bwpn;											// Currently selected weapon slots
     signed short forced_awpn, forced_bwpn;
     bool isclearing; // The gamedata is being cleared
+    long temp_refill_why;
+    long temp_refill_what;
     //115456 (260)
     
     // member functions

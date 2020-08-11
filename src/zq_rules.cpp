@@ -309,7 +309,7 @@ int onWeaponRules()
 
 static int herorules_tab_1[] =
 {
-	6,7,
+	6,7,8,9,10,
     -1
 };
 
@@ -337,6 +337,7 @@ static DIALOG herorules_dlg[] =
 	{ jwin_check_proc,      10, 33+20,  185,    9,    vc(14),   vc(1),      0,      0,          1,             0, (void *) "Large Hitbox", NULL, NULL },
 	{ jwin_check_proc,      10, 33+30,  185,    9,    vc(14),   vc(1),      0,      0,          1,             0, (void *) "New Hero Movement", NULL, NULL },
 	{ jwin_check_proc,      10, 33+40,  185,    9,    vc(14),   vc(1),      0,      0,          1,             0, (void *) "Disable 4-Way Movement's Gridlock", NULL, NULL },
+	{ jwin_check_proc,      10, 33+50,  185,    9,    vc(14),   vc(1),      0,      0,          1,             0, (void *) "Refills Persist Through Continue and Save", NULL, NULL },
 	// { d_dummy_proc,      10, 33+10,  185,    9,    vc(14),   vc(1),      0,      0,          1,             0, (void *) "", NULL, NULL },
 	{ NULL,                  0,    0,     0,    0,    0,        0,          0,      0,          0,             0,       NULL, NULL, NULL }
 };
@@ -344,6 +345,7 @@ static DIALOG herorules_dlg[] =
 static int herorules[] =
 {
    qr_LTTPWALK, qr_LTTPCOLLISION, qr_NEW_HERO_MOVEMENT, qr_DISABLE_4WAY_GRIDLOCK,
+	qr_NES_HP_REFILL_CONTNUE,
     -1
 };
 

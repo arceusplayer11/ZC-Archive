@@ -1283,6 +1283,7 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 	word section_version=0;
 	word section_cversion=0;
 	dword section_size = 0;
+	long templong = 0;
 	
 	//section id
 	if(!p_mgetl(&section_id,f,true))
@@ -1866,7 +1867,24 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 			savedata[i].forced_awpn = -1;
 			savedata[i].forced_bwpn = -1;
 		}
+		
+		if (section_version > 16 && FFCore.getQuestHeaderInfo(vZelda) >= 0x255)
+		{
+			if(!p_igetl(&templong, f, true))
+			{
+				return 58;
+			}
+			savedata[i].temp_refill_why = templong;
+			
+			if(!p_igetl(&templong, f, true))
+			{
+				return 59;
+			}
+			savedata[i].temp_refill_what = templong;
+		}
 	}
+	
+	
 	
 	return 0;
 }
@@ -2349,6 +2367,14 @@ int writesaves(gamedata *savedata, PACKFILE *f)
 		if(!p_iputw(savedata[i].forced_bwpn, f))
 		{
 			return 55;
+		}
+		if(!p_iputl(savedata[i].temp_refill_why, f))
+		{
+			return 55;
+		}
+		if(!p_iputl(savedata[i].temp_refill_what, f))
+		{
+			return 56;
 		}
 	}
 	

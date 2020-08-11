@@ -1893,7 +1893,7 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 			//word v_zc word b_zc;
 			//int chk = get_version_and_build(savedata+i, v_zc, b_zc)
 			
-			if ( (section_version >= 12 && v_zc >= 0x254) )
+			if ( (section_version >= 12 && v_zc >= 0x254) || section_version >= 16)
 			/* 2.53.1 also have a v12 for this section. 
 			I needed to path this to ensure that the s_v is specific to the build.
 			I also skipped 13 to 15 so that 2.53.1 an use these if needed with the current patch. -Z
@@ -1910,13 +1910,27 @@ int readsaves(gamedata *savedata, PACKFILE *f)
 			}
 			else
 			{
-				for(int j=0; j<256; j++)
+				if ( section_version < 12 )
 				{
-					if(!p_igetl(&savedata[i].global_d[j],f,true))
+					for(int j=0; j<256; j++)
 					{
-						return 45;
+						if(!p_igetl(&savedata[i].global_d[j],f,true))
+						{
+							return 45;
+						}
+					}  
+				}
+				else
+				{
+					for(int j=0; j<MAX_SCRIPT_REGISTERS; j++)
+					{
+						if(!p_igetl(&savedata[i].global_d[j],f,true))
+						{
+							return 45;
+						}
 					}
-				}    
+					
+				}
 			
 			}
 		}

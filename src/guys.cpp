@@ -5590,6 +5590,16 @@ hitclock:
 				return 0;
 		}
 	}
+	//get the weapon screen index
+	for(int i=0; i<Lwpns.Count(); i++)
+	{
+		weapon *w2 = (weapon*)Lwpns.spr(i);
+		if ( w2->getUID() == w->getUID() )
+		{
+			hitby[HIT_BY_LWEAPON] = i+1;
+		}
+		
+	}
 	hitby[HIT_BY_LWEAPON_UID] = w->script_UID;
 	hitby[HIT_BY_LWEAPON_FAMILY] = w->id;
 	hitby[HIT_BY_LWEAPON_LITERAL_ID] = w->parentitem;

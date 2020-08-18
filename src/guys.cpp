@@ -5590,7 +5590,9 @@ hitclock:
 				return 0;
 		}
 	}
-	
+	hitby[HIT_BY_LWEAPON_UID] = w->script_UID;
+	hitby[HIT_BY_LWEAPON_FAMILY] = w->id;
+	hitby[HIT_BY_LWEAPON_LITERAL_ID] = w->parentitem;
 	return ret;
 }
 
@@ -16107,6 +16109,7 @@ bool esLanmola::animate(int index)
 
 int esLanmola::takehit(weapon *w)
 {
+	
 	if(enemy::takehit(w))
 		return (w->id==wSBomb) ? 1 : 2;                         // force it to wait a frame before checking sword attacks again
 		
@@ -21379,13 +21382,28 @@ void check_collisions()
 	for(int i=0; i<Lwpns.Count(); i++)
 	{
 		weapon *w = (weapon*)Lwpns.spr(i);
-		
+		if(w->id==wSword && w->id==wHammer && w->id==wWand)
+		{
+			for(int j=0; j<guys.Count(); j++)
+			{
+				enemy *e = (enemy*)guys.spr(j);
+				int h = e->takehit(w);
+				if (h == -1) 
+				{
+					e->hitby[HIT_BY_LWEAPON] = i+1; temp_hit = true; 
+					e->hitby[HIT_BY_LWEAPON_UID] = w->script_UID;
+					e->hitby[HIT_BY_LWEAPON_FAMILY] = w->id;
+					e->hitby[HIT_BY_LWEAPON_LITERAL_ID] = w->parentitem;
+					
+				}
+			}
+		}
 		if(!(w->Dead()) && w->id!=wSword && w->id!=wHammer && w->id!=wWand)
 		{
 			for(int j=0; j<guys.Count(); j++)
 			{
 				enemy *e = (enemy*)guys.spr(j);
-		if ( !temp_hit ) e->hitby[HIT_BY_LWEAPON] = 0;
+				if ( !temp_hit ) e->hitby[HIT_BY_LWEAPON] = 0;
 				
 				if(e->hit(w)) //boomerangs and such that last for more than a frame can write hitby[] for more than one frame, 
 				//because this only checks `if(dying || clk<0 || hclk>0 || superman)`

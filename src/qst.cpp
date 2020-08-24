@@ -1927,6 +1927,8 @@ bool check_questpwd(zquestheader *Header, char *pwd)
 
 int readheader(PACKFILE *f, zquestheader *Header, bool keepdata)
 {
+	return 0;
+    al_trace("HEADER:\n");
     int dummy;
     zquestheader tempheader;
     memcpy(&tempheader, Header, sizeof(tempheader));
@@ -1946,13 +1948,18 @@ int readheader(PACKFILE *f, zquestheader *Header, bool keepdata)
         return qe_invalid;
     }
     
+    
+    al_trace("Header string size: %d\n", sizeof(tempheader.id_str));
+    al_trace("Header string: %s\n", tempheader.id_str);
     // check header
     if(strcmp(tempheader.id_str,QH_NEWIDSTR))
     {
         if(strcmp(tempheader.id_str,QH_IDSTR))
         {
             Z_message("Invalid header string:  '%s' (was expecting '%s' or '%s')\n", tempheader.id_str, QH_IDSTR, QH_NEWIDSTR);
-            return qe_invalid;
+            strcpy(tempheader.id_str, "AG ZC Enhanced Quest File");
+	    al_trace("Header string is now: %s\n", tempheader.id_str);
+		//return qe_invalid;
         }
     }
     
@@ -1971,6 +1978,7 @@ int readheader(PACKFILE *f, zquestheader *Header, bool keepdata)
         {
             return qe_invalid;
         }
+	al_trace("Version: %x\n", tempheader.zelda_version);
         
         if(tempheader.zelda_version > ZELDA_VERSION)
         {
@@ -13774,6 +13782,7 @@ int loadquest(const char *filename, zquestheader *Header, miscQdata *Misc, zctun
     //header
     box_out("Reading Header...");
     ret=readheader(f, &tempheader, true);
+    tempheader.zelda_version = 0x210;
     checkstatus(ret);
     box_out("okay.");
     box_eol();

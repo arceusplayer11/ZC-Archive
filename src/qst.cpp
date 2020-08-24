@@ -112,6 +112,15 @@ enum { ssiBOMB, ssiSWORD, ssiSHIELD, ssiCANDLE, ssiLETTER, ssiPOTION, ssiLETTERP
 
 static byte deprecated_rules[QUESTRULES_SIZE];
 
+//Skips over a header from 2.10.0
+void skip_210_header(PACKFILE *f, zquestheader *Header, bool keepdata, int ofs)
+{
+	char tempchar;
+	dword section_size=38+18+131+20+280+1-ofs;   
+	for ( int c = 0; c < section_size; ++c )
+		p_getc(&tempchar,f,true);
+}
+
 
 void delete_combo_aliases()
 {
@@ -1952,7 +1961,10 @@ int readheader(PACKFILE *f, zquestheader *Header, bool keepdata)
         if(strcmp(tempheader.id_str,QH_IDSTR))
         {
             Z_message("Invalid header string:  '%s' (was expecting '%s' or '%s')\n", tempheader.id_str, QH_IDSTR, QH_NEWIDSTR);
-            return qe_invalid;
+            Header->zelda_version=0x210;
+	    skip_210_header(f, Header, keepdata,0);
+	    return 0;
+		//return qe_invalid;
         }
     }
     

@@ -13879,23 +13879,6 @@ int loadquest(const char *filename, zquestheader *Header, miscQdata *Misc, zctun
                 box_eol();
                 break;
                 
-            case ID_COMBOALIASES:
-            
-                //combo aliases
-                if(catchup)
-                {
-                    box_out("found.");
-                    box_eol();
-                    catchup=false;
-                }
-                
-                box_out("Reading Combo Aliases...");
-                ret=readcomboaliases(f, &tempheader, tempheader.zelda_version, tempheader.build, keepall&&!get_bit(skip_flags, skip_comboaliases));
-                checkstatus(ret);
-                box_out("okay.");
-                box_eol();
-                break;
-                
             case ID_CSETS:
             
                 //color data
@@ -14002,36 +13985,12 @@ int loadquest(const char *filename, zquestheader *Header, miscQdata *Misc, zctun
                 
             case ID_COLORS:
             
-                //misc. colors
-                if(catchup)
-                {
-                    box_out("found.");
-                    box_eol();
-                    catchup=false;
-                }
                 
-                box_out("Reading Misc. Colors...");
-                ret=readmisccolors(f, &tempheader, Misc, keepall&&!get_bit(skip_flags, skip_colors));
-                checkstatus(ret);
-                box_out("okay.");
-                box_eol();
                 break;
                 
             case ID_ICONS:
             
-                //game icons
-                if(catchup)
-                {
-                    box_out("found.");
-                    box_eol();
-                    catchup=false;
-                }
-                
-                box_out("Reading Game Icons...");
-                ret=readgameicons(f, &tempheader, Misc, keepall&&!get_bit(skip_flags, skip_icons));
-                checkstatus(ret);
-                box_out("okay.");
-                box_eol();
+            
                 break;
                 
             case ID_INITDATA:
@@ -14099,89 +14058,8 @@ int loadquest(const char *filename, zquestheader *Header, miscQdata *Misc, zctun
                 box_eol();
                 break;
                 
-            case ID_LINKSPRITES:
             
-                //link sprites
-                if(catchup)
-                {
-                    box_out("found.");
-                    box_eol();
-                    catchup=false;
-                }
-                
-                box_out("Reading Custom Link Sprite Data...");
-                ret=readlinksprites(f, &tempheader, keepall&&!get_bit(skip_flags, skip_linksprites));
-                checkstatus(ret);
-                box_out("okay.");
-                box_eol();
-                break;
-                
-            case ID_SUBSCREEN:
-            
-                //custom subscreens
-                if(catchup)
-                {
-                    box_out("found.");
-                    box_eol();
-                    catchup=false;
-                }
-                
-                box_out("Reading Custom Subscreen Data...");
-                ret=readsubscreens(f, &tempheader, keepall&&!get_bit(skip_flags, skip_subscreens));
-                checkstatus(ret);
-                box_out("okay.");
-                box_eol();
-                break;
-                
-            case ID_FFSCRIPT:
-            
-                //Freeform combo scripts
-                if(catchup)
-                {
-                    box_out("found.");
-                    box_eol();
-                    catchup=false;
-                }
-                
-                box_out("Reading FF Script Data...");
-                ret=readffscript(f, &tempheader, keepall&&!get_bit(skip_flags, skip_ffscript));
-                checkstatus(ret);
-                box_out("okay.");
-                box_eol();
-                break;
-                
-            case ID_SFX:
-            
-                //SFX data
-                if(catchup)
-                {
-                    box_out("found.");
-                    box_eol();
-                    catchup=false;
-                }
-                
-                box_out("Reading SFX Data...");
-                ret=readsfx(f, &tempheader, keepall&&!get_bit(skip_flags, skip_sfx));
-                checkstatus(ret);
-                box_out("okay.");
-                box_eol();
-                break;
-                
             case ID_MIDIS:
-            
-                //midis
-                if(catchup)
-                {
-                    box_out("found.");
-                    box_eol();
-                    catchup=false;
-                }
-                
-                box_out("Reading Tunes...");
-                ret=readtunes(f, &tempheader, tunes, keepall&&!get_bit(skip_flags, skip_midis));
-                checkstatus(ret);
-                box_out("okay.");
-                box_eol();
                 break;
                 
             case ID_CHEATS:
@@ -14196,40 +14074,6 @@ int loadquest(const char *filename, zquestheader *Header, miscQdata *Misc, zctun
                 
                 box_out("Reading Cheat Codes...");
                 ret=readcheatcodes(f, &tempheader, keepall&&!get_bit(skip_flags, skip_cheats));
-                checkstatus(ret);
-                box_out("okay.");
-                box_eol();
-                break;
-                
-            case ID_ITEMDROPSETS:
-            
-                //item drop sets
-                if(catchup)
-                {
-                    box_out("found.");
-                    box_eol();
-                    catchup=false;
-                }
-                
-                box_out("Reading Item Drop Sets...");
-                ret=readitemdropsets(f, tempheader.zelda_version, tempheader.build, keepall&&!get_bit(skip_flags, skip_itemdropsets));
-                checkstatus(ret);
-                box_out("okay.");
-                box_eol();
-                break;
-                
-            case ID_FAVORITES:
-            
-                //favorite combos and combo aliases
-                if(catchup)
-                {
-                    box_out("found.");
-                    box_eol();
-                    catchup=false;
-                }
-                
-                box_out("Reading Favorite Combos...");
-                ret=readfavorites(f, tempheader.zelda_version, tempheader.build, keepall&&!get_bit(skip_flags, skip_favorites));
                 checkstatus(ret);
                 box_out("okay.");
                 box_eol();

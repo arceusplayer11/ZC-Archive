@@ -4625,6 +4625,9 @@ INLINE void SCRFIX()
     putpixel(screen,0,0,getpixel(screen,0,0));
 }
 
+#define until(n) while(!(n))
+#define unless(n) if(!(n))
+
 // ack no, inline doesn't work this way -DD
 //INLINE int new_return(int x) { fake_pack_writing=false; return x; }
 #define new_return(x) {assert(x == 0); fake_pack_writing = false; return x; }

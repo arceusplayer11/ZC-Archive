@@ -174,7 +174,10 @@ decorationsprite	TOKEN( DECORATION );
 "["		TOKEN( LBRACKET );
 "]"		TOKEN( RBRACKET );
 "{"		TOKEN( LBRACE );
+"begin"		TOKEN( LBRACE );
+"then"		TOKEN( LBRACE );
 "}"		TOKEN( RBRACE );
+"end"		TOKEN( RBRACE );
 "?"		TOKEN( QMARK ); //for ternary
 
 "#"		{

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding = "UTF-8"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9.00"
+	Name="exswitch"
+	ProjectGUID="{0BF63B13-B077-377A-8725-D31C260907BF}"
+	Keyword="Win32Proj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="E:\ZC\Allegro5\examples\Release"
+			IntermediateDirectory="exswitch.dir\Release"
+			ConfigurationType="1"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="E:\ZC\Allegro5\include;&quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include&quot;;"
+				AssemblerListingLocation="Release/"
+				CompileAs="1"
+				ExceptionHandling="0"
+				InlineFunctionExpansion="2"
+				Optimization="2"
+				RuntimeLibrary="2"
+				WarningLevel="3"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;ALLEGRO_STATICLINK;NDEBUG;CMAKE_INTDIR=\&quot;Release\&quot;"
+				ObjectFile="$(IntDir)\"
+/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				AdditionalIncludeDirectories="E:\ZC\Allegro5\include;&quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include&quot;;"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;ALLEGRO_STATICLINK;NDEBUG;CMAKE_INTDIR=\&quot;Release\&quot;"/>
+			<Tool
+				Name="VCMIDLTool"
+				AdditionalIncludeDirectories="E:\ZC\Allegro5\include;&quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include&quot;;"
+				MkTypLibCompatible="false"
+				TargetEnvironment="1"
+				GenerateStublessProxies="true"
+				TypeLibraryName="$(InputName).tlb"
+				OutputDirectory="$(IntDir)"
+				HeaderFileName="$(InputName).h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="$(InputName)_i.c"
+				ProxyFileName="$(InputName)_p.c"/>
+			<Tool
+				Name="VCManifestTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib ..\lib\Release\alleg.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib ole32.lib &quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Lib\x86\dinput8.lib&quot; &quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Lib\x86\ddraw.lib&quot; &quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Lib\x86\dxguid.lib&quot; winmm.lib &quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Lib\x86\dsound.lib&quot; "
+				OutputFile="E:\ZC\Allegro5\examples\Release\exswitch.exe"
+				Version="0.0"
+				AdditionalOptions="/machine:X86"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories=""
+				ProgramDatabaseFile="E:\ZC\Allegro5\examples\Release/exswitch.pdb"
+				SubSystem="2"
+				ImportLibrary="E:\ZC\Allegro5\examples\Release\exswitch.lib"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+			<File
+				RelativePath="E:\ZC\Allegro5\examples\CMakeLists.txt">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+					Name="VCCustomBuildTool"
+					Description="Building Custom Rule E:/ZC/Allegro5/examples/CMakeLists.txt"
+					CommandLine="&quot;C:\Program Files\CMake\bin\cmake.exe&quot; -HE:/ZC/Allegro5 -BE:/ZC/Allegro5 --check-stamp-file E:/ZC/Allegro5/examples/CMakeFiles/generate.stamp&#x0D;&#x0A;if errorlevel 1 goto :VCReportError"
+					AdditionalDependencies="E:\ZC\Allegro5\examples\CMakeLists.txt;E:\ZC\Allegro5\examples\CMakeLists.txt;"
+					Outputs="E:\ZC\Allegro5\examples\CMakeFiles\generate.stamp"/>
+				</FileConfiguration>
+			</File>
+		<Filter
+			Name="Source Files"
+			Filter="">
+			<File
+				RelativePath="E:\ZC\Allegro5\examples\exswitch.c">
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

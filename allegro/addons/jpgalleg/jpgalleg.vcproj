@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding = "UTF-8"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9.00"
+	Name="jpgalleg"
+	ProjectGUID="{EA1AF515-EACC-34D6-8CBC-39569B0F0F56}"
+	Keyword="Win32Proj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="E:\ZC\Allegro5\lib\Release"
+			IntermediateDirectory="jpgalleg.dir\Release"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="E:\ZC\Allegro5\include;&quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include&quot;;E:\ZC\Allegro5\addons\jpgalleg\include;"
+				AssemblerListingLocation="Release/"
+				CompileAs="1"
+				ExceptionHandling="0"
+				InlineFunctionExpansion="2"
+				Optimization="2"
+				RuntimeLibrary="2"
+				WarningLevel="3"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;ALLEGRO_STATICLINK;NDEBUG;CMAKE_INTDIR=\&quot;Release\&quot;"
+				ObjectFile="$(IntDir)\"
+/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				AdditionalIncludeDirectories="E:\ZC\Allegro5\include;&quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include&quot;;E:\ZC\Allegro5\addons\jpgalleg\include;"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;ALLEGRO_STATICLINK;NDEBUG;CMAKE_INTDIR=\&quot;Release\&quot;"/>
+			<Tool
+				Name="VCMIDLTool"
+				AdditionalIncludeDirectories="E:\ZC\Allegro5\include;&quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include&quot;;E:\ZC\Allegro5\addons\jpgalleg\include;"
+				MkTypLibCompatible="false"
+				TargetEnvironment="1"
+				GenerateStublessProxies="true"
+				TypeLibraryName="$(InputName).tlb"
+				OutputDirectory="$(IntDir)"
+				HeaderFileName="$(InputName).h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="$(InputName)_i.c"
+				ProxyFileName="$(InputName)_p.c"/>
+			<Tool
+				Name="VCManifestTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				AdditionalOptions="/machine:X86"
+				OutputFile="E:\ZC\Allegro5\lib\Release\jpgalleg.lib"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+			<File
+				RelativePath="E:\ZC\Allegro5\addons\jpgalleg\CMakeLists.txt">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+					Name="VCCustomBuildTool"
+					Description="Building Custom Rule E:/ZC/Allegro5/addons/jpgalleg/CMakeLists.txt"
+					CommandLine="&quot;C:\Program Files\CMake\bin\cmake.exe&quot; -HE:/ZC/Allegro5 -BE:/ZC/Allegro5 --check-stamp-file E:/ZC/Allegro5/addons/jpgalleg/CMakeFiles/generate.stamp&#x0D;&#x0A;if errorlevel 1 goto :VCReportError"
+					AdditionalDependencies="E:\ZC\Allegro5\addons\jpgalleg\CMakeLists.txt;E:\ZC\Allegro5\addons\jpgalleg\include\mmx.h.cmake;E:\ZC\Allegro5\addons\jpgalleg\CMakeLists.txt;"
+					Outputs="E:\ZC\Allegro5\addons\jpgalleg\CMakeFiles\generate.stamp"/>
+				</FileConfiguration>
+			</File>
+		<Filter
+			Name="Source Files"
+			Filter="">
+			<File
+				RelativePath="E:\ZC\Allegro5\addons\jpgalleg\src\decode.c">
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\addons\jpgalleg\src\encode.c">
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\addons\jpgalleg\src\error.c">
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\addons\jpgalleg\src\init.c">
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\addons\jpgalleg\src\io.c">
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\addons\jpgalleg\src\jpgalleg.c">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="">
+			<File
+				RelativePath="E:\ZC\Allegro5\addons\jpgalleg\include\jpgalleg.h">
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

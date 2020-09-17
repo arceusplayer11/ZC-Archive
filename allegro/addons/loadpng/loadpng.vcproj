@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding = "UTF-8"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9.00"
+	Name="loadpng"
+	ProjectGUID="{18928553-6793-349A-BAE7-EA5C837A450B}"
+	Keyword="Win32Proj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="E:\ZC\Allegro5\lib\Release"
+			IntermediateDirectory="loadpng.dir\Release"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="E:\ZC\Allegro5\include;&quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include&quot;;C:\Users\DELL\Downloads\A4DepSources\libsrc\libpng-1.6.37;C:\Users\DELL\Downloads\A4DepSources\libsrc\zlib-1.2.11;E:\ZC\Allegro5\addons\loadpng;"
+				AssemblerListingLocation="Release/"
+				CompileAs="1"
+				ExceptionHandling="0"
+				InlineFunctionExpansion="2"
+				Optimization="2"
+				RuntimeLibrary="2"
+				WarningLevel="3"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;ALLEGRO_STATICLINK;NDEBUG;CMAKE_INTDIR=\&quot;Release\&quot;"
+				ObjectFile="$(IntDir)\"
+/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				AdditionalIncludeDirectories="E:\ZC\Allegro5\include;&quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include&quot;;C:\Users\DELL\Downloads\A4DepSources\libsrc\libpng-1.6.37;C:\Users\DELL\Downloads\A4DepSources\libsrc\zlib-1.2.11;E:\ZC\Allegro5\addons\loadpng;"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;ALLEGRO_STATICLINK;NDEBUG;CMAKE_INTDIR=\&quot;Release\&quot;"/>
+			<Tool
+				Name="VCMIDLTool"
+				AdditionalIncludeDirectories="E:\ZC\Allegro5\include;&quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include&quot;;C:\Users\DELL\Downloads\A4DepSources\libsrc\libpng-1.6.37;C:\Users\DELL\Downloads\A4DepSources\libsrc\zlib-1.2.11;E:\ZC\Allegro5\addons\loadpng;"
+				MkTypLibCompatible="false"
+				TargetEnvironment="1"
+				GenerateStublessProxies="true"
+				TypeLibraryName="$(InputName).tlb"
+				OutputDirectory="$(IntDir)"
+				HeaderFileName="$(InputName).h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="$(InputName)_i.c"
+				ProxyFileName="$(InputName)_p.c"/>
+			<Tool
+				Name="VCManifestTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				AdditionalOptions="/machine:X86"
+				OutputFile="E:\ZC\Allegro5\lib\Release\loadpng.lib"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+			<File
+				RelativePath="E:\ZC\Allegro5\addons\loadpng\CMakeLists.txt">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+					Name="VCCustomBuildTool"
+					Description="Building Custom Rule E:/ZC/Allegro5/addons/loadpng/CMakeLists.txt"
+					CommandLine="&quot;C:\Program Files\CMake\bin\cmake.exe&quot; -HE:/ZC/Allegro5 -BE:/ZC/Allegro5 --check-stamp-file E:/ZC/Allegro5/addons/loadpng/CMakeFiles/generate.stamp&#x0D;&#x0A;if errorlevel 1 goto :VCReportError"
+					AdditionalDependencies="E:\ZC\Allegro5\addons\loadpng\CMakeLists.txt;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPNG.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindZLIB.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\SelectLibraryConfigurations.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPackageHandleStandardArgs.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPackageMessage.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\SelectLibraryConfigurations.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPackageHandleStandardArgs.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPackageMessage.cmake&quot;;E:\ZC\Allegro5\addons\loadpng\CMakeLists.txt;"
+					Outputs="E:\ZC\Allegro5\addons\loadpng\CMakeFiles\generate.stamp"/>
+				</FileConfiguration>
+			</File>
+		<Filter
+			Name="Source Files"
+			Filter="">
+			<File
+				RelativePath="E:\ZC\Allegro5\addons\loadpng\loadpng.c">
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\addons\loadpng\savepng.c">
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\addons\loadpng\regpng.c">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="">
+			<File
+				RelativePath="E:\ZC\Allegro5\addons\loadpng\loadpng.h">
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

@@ -1,0 +1,995 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9.00"
+	Name="docs"
+	ProjectGUID="{D5F3310D-6043-3665-A144-A9DF9B5DD48D}"
+	Keyword="Win32Proj"
+	TargetFrameworkVersion="0"
+	>
+	<Platforms>
+		<Platform
+			Name="Win32"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="docs.dir\Release"
+			ConfigurationType="10"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				AdditionalIncludeDirectories="E:\ZC\Allegro5\include;&quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include&quot;;"
+				MkTypLibCompatible="false"
+				TargetEnvironment="1"
+				GenerateStublessProxies="true"
+				TypeLibraryName="$(InputName).tlb"
+				OutputDirectory="$(IntDir)"
+				HeaderFileName="$(InputName).h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="$(InputName)_i.c"
+				ProxyFileName="$(InputName)_p.c"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="CMake Rules"
+			>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\abi.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/abi.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/abi.html E:/ZC/Allegro5/docs/src/abi._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\abi._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\abi.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\abi.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/abi.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/abi.txt E:/ZC/Allegro5/docs/src/abi._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\abi._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\abi.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\addons.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/addons.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/addons.html E:/ZC/Allegro5/docs/src/addons._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\addons._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\addons.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\addons.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/addons.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/addons.txt E:/ZC/Allegro5/docs/src/addons._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\addons._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\addons.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\ahack.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/ahack.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/ahack.html E:/ZC/Allegro5/docs/src/ahack._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\ahack._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\ahack.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\ahack.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/ahack.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/ahack.txt E:/ZC/Allegro5/docs/src/ahack._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\ahack._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\ahack.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\scite\allegro.api.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating scite/allegro.api"
+						CommandLine="Release\makedoc.exe -scite E:/ZC/Allegro5/docs/scite/allegro.api E:/ZC/Allegro5/docs/src/allegro._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;"
+						Outputs="E:\ZC\Allegro5\docs\scite\allegro.api"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\allegro.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/allegro.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/allegro.html E:/ZC/Allegro5/docs/src/allegro._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\allegro._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\allegro.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\allegro.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/allegro.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/allegro.txt E:/ZC/Allegro5/docs/src/allegro._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\allegro._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\allegro.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\man\allegro_init.3.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating man/allegro_init.3"
+						CommandLine="Release\makedoc.exe -man E:/ZC/Allegro5/docs/man/allegro_init.3 E:/ZC/Allegro5/docs/src/allegro._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\allegro._tx;"
+						Outputs="E:\ZC\Allegro5\docs\man\allegro_init.3"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\api.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/api.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/api.html E:/ZC/Allegro5/docs/src/api._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\api._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\api.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\api.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/api.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/api.txt E:/ZC/Allegro5/docs/src/api._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\api._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\api.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\AUTHORS.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating AUTHORS"
+						CommandLine="Release\makedoc.exe -part -ascii E:/ZC/Allegro5/docs/AUTHORS E:/ZC/Allegro5/docs/src/thanks._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\thanks._tx;"
+						Outputs="E:\ZC\Allegro5\docs\AUTHORS"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\changes.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/changes.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/changes.html E:/ZC/Allegro5/docs/src/changes._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\changes._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\changes.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\CHANGES.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating CHANGES"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/CHANGES E:/ZC/Allegro5/docs/src/changes._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\changes._tx;"
+						Outputs="E:\ZC\Allegro5\docs\CHANGES"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\changes.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/changes.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/changes.txt E:/ZC/Allegro5/docs/src/changes._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\changes._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\changes.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\build\cmake.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating build/cmake.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/build/cmake.html E:/ZC/Allegro5/docs/src/build/cmake._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\build\cmake._tx;"
+						Outputs="E:\ZC\Allegro5\docs\build\cmake.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\build\cmake.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating build/cmake.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/build/cmake.txt E:/ZC/Allegro5/docs/src/build/cmake._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\build\cmake._tx;"
+						Outputs="E:\ZC\Allegro5\docs\build\cmake.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\const.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/const.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/const.html E:/ZC/Allegro5/docs/src/const._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\const._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\const.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\const.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/const.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/const.txt E:/ZC/Allegro5/docs/src/const._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\const._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\const.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\dat.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/dat.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/dat.html E:/ZC/Allegro5/docs/src/dat._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\dat._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\dat.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\dat.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/dat.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/dat.txt E:/ZC/Allegro5/docs/src/dat._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\dat._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\dat.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\dat2c.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/dat2c.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/dat2c.html E:/ZC/Allegro5/docs/src/dat2c._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\dat2c._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\dat2c.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\dat2c.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/dat2c.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/dat2c.txt E:/ZC/Allegro5/docs/src/dat2c._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\dat2c._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\dat2c.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\dat2s.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/dat2s.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/dat2s.html E:/ZC/Allegro5/docs/src/dat2s._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\dat2s._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\dat2s.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\dat2s.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/dat2s.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/dat2s.txt E:/ZC/Allegro5/docs/src/dat2s._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\dat2s._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\dat2s.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\datafile.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/datafile.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/datafile.html E:/ZC/Allegro5/docs/src/datafile._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\datafile._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\datafile.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\datafile.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/datafile.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/datafile.txt E:/ZC/Allegro5/docs/src/datafile._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\datafile._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\datafile.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\CMakeFiles\docs.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description=""
+						CommandLine=""
+						AdditionalDependencies="E:\ZC\Allegro5\docs\txt\abi.txt;E:\ZC\Allegro5\docs\html\abi.html;E:\ZC\Allegro5\docs\txt\addons.txt;E:\ZC\Allegro5\docs\html\addons.html;E:\ZC\Allegro5\docs\txt\ahack.txt;E:\ZC\Allegro5\docs\html\ahack.html;E:\ZC\Allegro5\docs\txt\allegro.txt;E:\ZC\Allegro5\docs\html\allegro.html;E:\ZC\Allegro5\docs\txt\api.txt;E:\ZC\Allegro5\docs\html\api.html;E:\ZC\Allegro5\docs\txt\changes.txt;E:\ZC\Allegro5\docs\html\changes.html;E:\ZC\Allegro5\docs\txt\const.txt;E:\ZC\Allegro5\docs\html\const.html;E:\ZC\Allegro5\docs\txt\dat2c.txt;E:\ZC\Allegro5\docs\html\dat2c.html;E:\ZC\Allegro5\docs\txt\dat2s.txt;E:\ZC\Allegro5\docs\html\dat2s.html;E:\ZC\Allegro5\docs\txt\datafile.txt;E:\ZC\Allegro5\docs\html\datafile.html;E:\ZC\Allegro5\docs\txt\dat.txt;E:\ZC\Allegro5\docs\html\dat.html;E:\ZC\Allegro5\docs\txt\faq.txt;E:\ZC\Allegro5\docs\html\faq.html;E:\ZC\Allegro5\docs\txt\grabber.txt;E:\ZC\Allegro5\docs\html\grabber.html;E:\ZC\Allegro5\docs\txt\help.txt;E:\ZC\Allegro5\docs\html\help.html;E:\ZC\Allegro5\docs\txt\index.txt;E:\ZC\Allegro5\docs\html\index.html;E:\ZC\Allegro5\docs\txt\license.txt;E:\ZC\Allegro5\docs\html\license.html;E:\ZC\Allegro5\docs\txt\makedoc.txt;E:\ZC\Allegro5\docs\html\makedoc.html;E:\ZC\Allegro5\docs\txt\mistakes.txt;E:\ZC\Allegro5\docs\html\mistakes.html;E:\ZC\Allegro5\docs\txt\packfile.txt;E:\ZC\Allegro5\docs\html\packfile.html;E:\ZC\Allegro5\docs\txt\readme.txt;E:\ZC\Allegro5\docs\html\readme.html;E:\ZC\Allegro5\docs\txt\thanks.txt;E:\ZC\Allegro5\docs\html\thanks.html;E:\ZC\Allegro5\docs\build\cmake.txt;E:\ZC\Allegro5\docs\build\cmake.html;E:\ZC\Allegro5\docs\build\linux.txt;E:\ZC\Allegro5\docs\build\linux.html;E:\ZC\Allegro5\docs\build\macosx.txt;E:\ZC\Allegro5\docs\build\macosx.html;E:\ZC\Allegro5\docs\build\mingw32.txt;E:\ZC\Allegro5\docs\build\mingw32.html;E:\ZC\Allegro5\docs\build\msvc.txt;E:\ZC\Allegro5\docs\build\msvc.html;E:\ZC\Allegro5\docs\build\unix.txt;E:\ZC\Allegro5\docs\build\unix.html;E:\ZC\Allegro5\docs\AUTHORS;E:\ZC\Allegro5\docs\THANKS;E:\ZC\Allegro5\docs\CHANGES;E:\ZC\Allegro5\docs\readme.txt;E:\ZC\Allegro5\docs\man\allegro_init.3;E:\ZC\Allegro5\docs\scite\allegro.api;"
+						Outputs="E:\ZC\Allegro5\docs\CMakeFiles\docs"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\faq.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/faq.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/faq.html E:/ZC/Allegro5/docs/src/faq._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\faq._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\faq.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\faq.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/faq.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/faq.txt E:/ZC/Allegro5/docs/src/faq._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\faq._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\faq.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\grabber.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/grabber.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/grabber.html E:/ZC/Allegro5/docs/src/grabber._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\grabber._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\grabber.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\grabber.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/grabber.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/grabber.txt E:/ZC/Allegro5/docs/src/grabber._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\grabber._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\grabber.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\help.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/help.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/help.html E:/ZC/Allegro5/docs/src/help._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\help._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\help.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\help.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/help.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/help.txt E:/ZC/Allegro5/docs/src/help._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\help._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\help.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\index.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/index.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/index.html E:/ZC/Allegro5/docs/src/index._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\index._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\index.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\index.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/index.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/index.txt E:/ZC/Allegro5/docs/src/index._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\index._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\index.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\license.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/license.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/license.html E:/ZC/Allegro5/docs/src/license._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\license._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\license.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\license.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/license.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/license.txt E:/ZC/Allegro5/docs/src/license._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\license._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\license.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\build\linux.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating build/linux.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/build/linux.html E:/ZC/Allegro5/docs/src/build/linux._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\build\linux._tx;"
+						Outputs="E:\ZC\Allegro5\docs\build\linux.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\build\linux.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating build/linux.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/build/linux.txt E:/ZC/Allegro5/docs/src/build/linux._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\build\linux._tx;"
+						Outputs="E:\ZC\Allegro5\docs\build\linux.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\build\macosx.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating build/macosx.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/build/macosx.html E:/ZC/Allegro5/docs/src/build/macosx._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\build\macosx._tx;"
+						Outputs="E:\ZC\Allegro5\docs\build\macosx.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\build\macosx.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating build/macosx.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/build/macosx.txt E:/ZC/Allegro5/docs/src/build/macosx._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\build\macosx._tx;"
+						Outputs="E:\ZC\Allegro5\docs\build\macosx.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\makedoc.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/makedoc.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/makedoc.html E:/ZC/Allegro5/docs/src/makedoc._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\makedoc._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\makedoc.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\makedoc.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/makedoc.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/makedoc.txt E:/ZC/Allegro5/docs/src/makedoc._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\makedoc._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\makedoc.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\build\mingw32.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating build/mingw32.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/build/mingw32.html E:/ZC/Allegro5/docs/src/build/mingw32._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\build\mingw32._tx;"
+						Outputs="E:\ZC\Allegro5\docs\build\mingw32.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\build\mingw32.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating build/mingw32.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/build/mingw32.txt E:/ZC/Allegro5/docs/src/build/mingw32._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\build\mingw32._tx;"
+						Outputs="E:\ZC\Allegro5\docs\build\mingw32.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\mistakes.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/mistakes.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/mistakes.html E:/ZC/Allegro5/docs/src/mistakes._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\mistakes._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\mistakes.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\mistakes.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/mistakes.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/mistakes.txt E:/ZC/Allegro5/docs/src/mistakes._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\mistakes._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\mistakes.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\build\msvc.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating build/msvc.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/build/msvc.html E:/ZC/Allegro5/docs/src/build/msvc._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\build\msvc._tx;"
+						Outputs="E:\ZC\Allegro5\docs\build\msvc.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\build\msvc.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating build/msvc.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/build/msvc.txt E:/ZC/Allegro5/docs/src/build/msvc._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\build\msvc._tx;"
+						Outputs="E:\ZC\Allegro5\docs\build\msvc.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\packfile.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/packfile.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/packfile.html E:/ZC/Allegro5/docs/src/packfile._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\packfile._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\packfile.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\packfile.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/packfile.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/packfile.txt E:/ZC/Allegro5/docs/src/packfile._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\packfile._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\packfile.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\readme.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/readme.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/readme.html E:/ZC/Allegro5/docs/src/readme._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\readme._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\readme.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\readme.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating readme.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/readme.txt E:/ZC/Allegro5/docs/src/readme._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\readme._tx;"
+						Outputs="E:\ZC\Allegro5\docs\readme.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\readme.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/readme.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/readme.txt E:/ZC/Allegro5/docs/src/readme._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\readme._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\readme.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\html\thanks.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating html/thanks.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/html/thanks.html E:/ZC/Allegro5/docs/src/thanks._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\thanks._tx;"
+						Outputs="E:\ZC\Allegro5\docs\html\thanks.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\THANKS.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating THANKS"
+						CommandLine="Release\makedoc.exe -part -ascii E:/ZC/Allegro5/docs/THANKS E:/ZC/Allegro5/docs/src/thanks._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\thanks._tx;"
+						Outputs="E:\ZC\Allegro5\docs\THANKS"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\txt\thanks.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating txt/thanks.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/txt/thanks.txt E:/ZC/Allegro5/docs/src/thanks._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\thanks._tx;"
+						Outputs="E:\ZC\Allegro5\docs\txt\thanks.txt"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\build\unix.html.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating build/unix.html"
+						CommandLine="Release\makedoc.exe -html E:/ZC/Allegro5/docs/build/unix.html E:/ZC/Allegro5/docs/src/build/unix._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\build\unix._tx;"
+						Outputs="E:\ZC\Allegro5\docs\build\unix.html"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="E:\ZC\Allegro5\docs\build\unix.txt.rule"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating build/unix.txt"
+						CommandLine="Release\makedoc.exe -ascii E:/ZC/Allegro5/docs/build/unix.txt E:/ZC/Allegro5/docs/src/build/unix._tx&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+						AdditionalDependencies="E:\ZC\Allegro5\docs\Release\makedoc.exe;E:\ZC\Allegro5\docs\src\build\unix._tx;"
+						Outputs="E:\ZC\Allegro5\docs\build\unix.txt"
+					/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<File
+			RelativePath="E:\ZC\Allegro5\docs\CMakeLists.txt"
+			>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Building Custom Rule E:/ZC/Allegro5/docs/CMakeLists.txt"
+					CommandLine="&quot;C:\Program Files\CMake\bin\cmake.exe&quot; -HE:/ZC/Allegro5 -BE:/ZC/Allegro5 --check-stamp-file E:/ZC/Allegro5/docs/CMakeFiles/generate.stamp&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+					AdditionalDependencies="E:\ZC\Allegro5\docs\CMakeLists.txt;E:\ZC\Allegro5\docs\CMakeLists.txt;"
+					Outputs="E:\ZC\Allegro5\docs\CMakeFiles\generate.stamp"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="E:\ZC\Allegro5\docs\CMakeFiles\docs"
+			>
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

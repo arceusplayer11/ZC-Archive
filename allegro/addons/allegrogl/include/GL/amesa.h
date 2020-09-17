@@ -1,4 +1,4 @@
-/* $Id: amesa.h 8619 2001-12-27 00:57:05Z bcoconni $ */
+/* $Id$ */
 
 /*
  * Mesa 3-D graphics library

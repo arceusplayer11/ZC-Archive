@@ -6,7 +6,7 @@
 /* #undef ALLEGRO_MACOSX */
 /* #undef ALLEGRO_MINGW32 */
 /* #undef ALLEGRO_MPW */
-/* #define ALLEGRO_MSVC */
+#define ALLEGRO_MSVC
 /* #undef ALLEGRO_PSP */
 /* #undef ALLEGRO_QNX */
 /* #undef ALLEGRO_UNIX */

@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9.00"
+	Name="ALL_BUILD"
+	ProjectGUID="{E3AA240D-FEBD-396B-B700-851189651767}"
+	Keyword="Win32Proj"
+	TargetFrameworkVersion="0"
+	>
+	<Platforms>
+		<Platform
+			Name="Win32"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="ALL_BUILD.dir\Release"
+			ConfigurationType="10"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				AdditionalIncludeDirectories="E:\ZC\Allegro5\include;&quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include&quot;;"
+				MkTypLibCompatible="false"
+				TargetEnvironment="1"
+				GenerateStublessProxies="true"
+				TypeLibraryName="$(InputName).tlb"
+				OutputDirectory="$(IntDir)"
+				HeaderFileName="$(InputName).h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="$(InputName)_i.c"
+				ProxyFileName="$(InputName)_p.c"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<File
+			RelativePath="E:\ZC\Allegro5\CMakeLists.txt"
+			>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Building Custom Rule E:/ZC/Allegro5/CMakeLists.txt"
+					CommandLine="&quot;C:\Program Files\CMake\bin\cmake.exe&quot; -HE:/ZC/Allegro5 -BE:/ZC/Allegro5 --check-stamp-file E:/ZC/Allegro5/CMakeFiles/generate.stamp&#x0D;&#x0A;if errorlevel 1 goto :VCReportError&#x0D;&#x0A;"
+					AdditionalDependencies="E:\ZC\Allegro5\CMakeLists.txt;E:\ZC\Allegro5\CMakeFiles\3.10.0-rc5\CMakeSystem.cmake;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\CMakeSystemSpecificInitialize.cmake&quot;;E:\ZC\Allegro5\CMakeFiles\3.10.0-rc5\CMakeCCompiler.cmake;E:\ZC\Allegro5\CMakeFiles\3.10.0-rc5\CMakeCXXCompiler.cmake;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\CMakeGenericSystem.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\Platform\Windows.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\Platform\WindowsPaths.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\CMakeCInformation.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\CMakeLanguageInformation.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\Platform\Windows-MSVC-C.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\Platform\Windows-MSVC.cmake&quot;;E:\ZC\Allegro5\CMakeFiles\3.10.0-rc5\CMakeRCCompiler.cmake;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\CMakeRCInformation.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\CMakeCXXInformation.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\CMakeLanguageInformation.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\Compiler\MSVC-CXX.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\Compiler\CMakeCommonCompilerMacros.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\Platform\Windows-MSVC-CXX.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\Platform\Windows-MSVC.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\CMakeCommonLanguageInclude.cmake&quot;;E:\ZC\Allegro5\cmake\FileList.cmake;E:\ZC\Allegro5\cmake\Common.cmake;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\CheckIncludeFiles.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\CheckFunctionExists.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\CheckCSourceCompiles.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\CheckCSourceRuns.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPkgConfig.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPackageHandleStandardArgs.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPackageMessage.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\TestBigEndian.cmake&quot;;E:\ZC\Allegro5\cmake\FindDDraw.cmake;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPackageHandleStandardArgs.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPackageMessage.cmake&quot;;E:\ZC\Allegro5\cmake\FindDInput.cmake;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPackageHandleStandardArgs.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPackageMessage.cmake&quot;;E:\ZC\Allegro5\cmake\FindDSound.cmake;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPackageHandleStandardArgs.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPackageMessage.cmake&quot;;E:\ZC\Allegro5\cmake\FindDXGuid.cmake;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPackageHandleStandardArgs.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.10\Modules\FindPackageMessage.cmake&quot;;E:\ZC\Allegro5\include\allegro\platform\alplatf.h.cmake;E:\ZC\Allegro5\CMakeLists.txt;"
+					Outputs="E:\ZC\Allegro5\CMakeFiles\generate.stamp"
+				/>
+			</FileConfiguration>
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

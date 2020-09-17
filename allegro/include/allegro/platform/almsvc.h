@@ -78,11 +78,11 @@
 #define INLINE       __inline
 
 #define LONG_LONG    __int64
-
-/* Why does Allegro always insist on doing this? Sigh... -DD */
-#if _MSC_VER <= 1600
-#define int64_t      signed __int64
-#define uint64_t     unsigned __int64
+#if (_MSC_VER >= 1600)
+   #define ALLEGRO_HAVE_STDINT_H
+#else
+   #define int64_t      signed __int64
+   #define uint64_t     unsigned __int64
 #endif
 
 #define AL_CONST     const

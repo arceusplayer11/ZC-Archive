@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding = "UTF-8"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9.00"
+	Name="INSTALL"
+	ProjectGUID="{5D357D6B-8E18-3E18-B025-3B30BADFEB0F}"
+	Keyword="Win32Proj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			IntermediateDirectory="INSTALL.dir\Release"
+			ConfigurationType="10"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="E:\ZC\Allegro5\include;&quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include&quot;;"
+				AssemblerListingLocation="Release/"
+				ExceptionHandling="0"
+				PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Release\&quot;"
+				ObjectFile="$(IntDir)\"
+/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				AdditionalIncludeDirectories="E:\ZC\Allegro5\include;&quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include&quot;;"
+				PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Release\&quot;"/>
+			<Tool
+				Name="VCMIDLTool"
+				AdditionalIncludeDirectories="E:\ZC\Allegro5\include;&quot;C:\Program Files (x86)\Microsoft DirectX SDK (February 2010)\Include&quot;;"
+				MkTypLibCompatible="false"
+				TargetEnvironment="1"
+				GenerateStublessProxies="true"
+				TypeLibraryName="$(InputName).tlb"
+				OutputDirectory="$(IntDir)"
+				HeaderFileName="$(InputName).h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="$(InputName)_i.c"
+				ProxyFileName="$(InputName)_p.c"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+CommandLine="&quot;C:\Program Files\CMake\bin\cmake.exe&quot; -DBUILD_TYPE=$(ConfigurationName) -P cmake_install.cmake&#x0D;&#x0A;if errorlevel 1 goto :VCReportError"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter
+			Name="CMake Rules"
+			Filter="">
+			<File
+				RelativePath="E:\ZC\Allegro5\examples\CMakeFiles\INSTALL_force.rule">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+					Name="VCCustomBuildTool"
+					Description=" "
+					CommandLine="cd .&#x0D;&#x0A;if errorlevel 1 goto :VCReportError"
+					AdditionalDependencies="E:\ZC\Allegro5\examples\CMakeFiles\INSTALL_force.rule"
+					Outputs="E:\ZC\Allegro5\examples\CMakeFiles\INSTALL_force"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

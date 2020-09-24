@@ -9625,6 +9625,112 @@ midi		 *
 
 */
 
+int writechiptunes(PACKFILE *f)
+{
+    dword section_id=ID_CHIPTUNES;
+    dword section_version=V_CHIPTUNES;
+    dword section_cversion=CV_CHIPTUNES;
+    dword section_size = 0;
+    
+    //section id
+    if(!p_mputl(section_id,f))
+    {
+        new_return(1);
+    }
+    
+    //section version info
+    if(!p_iputw(section_version,f))
+    {
+        new_return(2);
+    }
+    
+    if(!p_iputw(section_cversion,f))
+    {
+        new_return(3);
+    }
+    
+    for(int writecycle=0; writecycle<2; ++writecycle)
+    {
+        fake_pack_writing=(writecycle==0);
+        
+        //section size
+        if(!p_iputl(section_size,f))
+        {
+            new_return(4);
+        }
+        
+        writesize=0;
+        char tempfilename[256] = {0};
+	char *ext=get_extension(&customchiptunes[i].filename);
+        
+	int chiptype = 0;
+	
+	if(stricmp(ext,"it")==0) chiptype = CHIPTYPE_IT;
+	else if(stricmp(ext,"xm")==0) chiptype = CHIPTYPE_XM;
+	else if(stricmp(ext,"sm3")==0) chiptype = CHIPTYPE_SM3;
+	else if(stricmp(ext,"mod")==0) chiptype = CHIPTYPE_MOD;
+	else if(stricmp(ext,"spc")==0) chiptype = CHIPTYPE_SPC;
+	else if(stricmp(ext,"gbs")==0) chiptype = CHIPTYPE_GBS;
+	else if(stricmp(ext,"vgm")==0) chiptype = CHIPTYPE_VGM;
+	else if(stricmp(ext,"gym")==0) chiptype = CHIPTYPE_GYM;
+	else if(stricmp(ext,"nsf")==0) chiptype = CHIPTYPE_NSF;
+        
+        for(int i=0; i<MAXCUSTOMCHIPTUNES; i++)
+        {
+		if(!p_putc(&customchiptunes[i].id, f)
+		{
+			new_return(5);
+		}
+                if(!pfwrite(&customchiptunes[i].filename,sizeof(customchiptunes[0].filename),f))
+                {
+                    new_return(6);
+                }
+                
+                if(!p_putc(chiptype,f))
+                {
+                    new_return(7);
+                }
+		
+		if(!pfwrite(&customchiptunes[i].flags, sizeof(customchiptunes[i].flags),f))
+                {
+                    new_return(8);
+                }
+		
+		if(!pfwrite(&customchiptunes[i].data, sizeof(customchiptunes[i].data),f))
+                {
+                    new_return(9);
+                }
+                
+                /*switch(customtunes[i].format)
+                {
+                case MFORMAT_MIDI:
+                    if(!write_midi((MIDI*) customtunes[i].data,f)) new_return(14);
+                    
+                    break;
+                    
+                default:
+                    new_return(15);
+                    break;
+                }*/
+            
+        }
+        
+        if(writecycle==0)
+        {
+            section_size=writesize;
+        }
+    }
+    
+    if(writesize!=int(section_size) && save_warn)
+    {
+        char ebuf[80];
+        sprintf(ebuf, "%d != %d", writesize, int(section_size));
+        jwin_alert("Error:  writeechiptunes()","writesize != section_size",ebuf,NULL,"O&K",NULL,'k',0,lfont);
+    }
+    
+    new_return(0);
+}
+
 int writemidis(PACKFILE *f)
 {
     dword section_id=ID_MIDIS;

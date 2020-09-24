@@ -576,6 +576,7 @@ zquestheader QHeader;
 byte                quest_rules[QUESTRULES_NEW_SIZE];
 byte                extra_rules[EXTRARULES_SIZE];
 byte                midi_flags[MIDIFLAGS_SIZE];
+byte		    chiptune_flags[CHIPTUNEFLAGS_SIZE];
 byte                music_flags[MUSICFLAGS_SIZE];
 word                map_count=0;
 MsgStr              *MsgStrings;
@@ -706,6 +707,11 @@ zctune tunes[MAXMIDIS] =
     zctune((char *)"Zelda - Title",       0,  -1,  -1,  0,  168,  NULL, 0),
     zctune((char *)"Zelda - Triforce",    0,  -1,  -1,  0,  168,  NULL, 0)
 };
+
+zcchiptune chiptunes[MAXCUSTOMCHIPTUNES] =
+{	//	(id)   (filename) 	(format) 	(flags) 	(data)
+	zcchiptune(0,  (char *)"None",  0,  		-0,  	 	NULL)
+}
 
 // emusic enhancedMusic[MAXMUSIC];
 

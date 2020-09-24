@@ -1430,6 +1430,7 @@ zquestheader header;
 byte                quest_rules[QUESTRULES_NEW_SIZE];
 byte                extra_rules[EXTRARULES_SIZE];
 byte                midi_flags[MIDIFLAGS_SIZE];
+byte		    chiptune_flags[CHIPTUNEFLAGS_SIZE];
 byte                music_flags[MUSICFLAGS_SIZE];
 word                map_count;
 miscQdata           misc;
@@ -30362,6 +30363,10 @@ int main(int argc,char **argv)
     Z_message("Allocating tunes buffer (%s)... ", byte_conversion2(sizeof(zctune)*MAXCUSTOMMIDIS_ZQ,memrequested,-1,-1));
     customtunes = (zctune*)zc_malloc(sizeof(class zctune)*MAXCUSTOMMIDIS_ZQ);
     memset(customtunes, 0, sizeof(class zctune)*MAXCUSTOMMIDIS_ZQ);
+    
+    Z_message("Allocating chiptunes buffer (%s)... ", byte_conversion2(sizeof(zctune)*MAXCUSTOMMIDIS_ZQ,memrequested,-1,-1));
+    customchiptunes = (zcchiptune*)zc_malloc(sizeof(class zcchiptune)*MAXCUSTOMCHIPTUNES);
+    memset(customchiptunes, 0, sizeof(class zcchiptune)*MAXCUSTOMCHIPTUNES);
     
     /*
     FFCore.ZScriptConsole

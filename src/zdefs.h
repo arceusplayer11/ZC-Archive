@@ -206,6 +206,7 @@ enum {ENC_METHOD_192B104=0, ENC_METHOD_192B105, ENC_METHOD_192B185, ENC_METHOD_2
 #define ID_FAVORITES      ZC_ID('F','A','V','S')              //favorite combos and combo aliases
 #define ID_FFSCRIPT       ZC_ID('F','F','S','C')              //ff scripts data
 #define ID_SFX            ZC_ID('S','F','X',' ')              //sfx data
+#define ID_CHIPTUNES      ZC_ID('C','H','P',' ')              //sfx data
 
 //Version number of the different section types
 #define V_HEADER           5
@@ -235,6 +236,7 @@ enum {ENC_METHOD_192B104=0, ENC_METHOD_192B105, ENC_METHOD_192B185, ENC_METHOD_2
 #define V_FFSCRIPT         18
 #define V_SFX              7
 #define V_FAVORITES        1
+#define V_CHIPTUNES        1
 //= V_SHOPS is under V_MISC
 
 /*
@@ -273,6 +275,7 @@ enum {ENC_METHOD_192B104=0, ENC_METHOD_192B105, ENC_METHOD_192B185, ENC_METHOD_2
 #define CV_FFSCRIPT        1
 #define CV_SFX             5
 #define CV_FAVORITES       1
+#define CV_CHIPTUNES       1
 
 
 // Loose Object Version Metadata
@@ -373,7 +376,8 @@ extern bool fake_pack_writing;
 //The offset from currmidi to ZScript MIDI values
 #define MIDIOFFSET_ZSCRIPT	(ZC_MIDI_COUNT-1)
 //Use together as `(MIDIOFFSET_DMAP-MIDIOFFSET_ZSCRIPT)` to go from `dmap` directly to `zscript`
-
+#define MAXCUSTOMCHIPTUNES 255
+#define CHIPTUNEFLAGS_SIZE  ((MAXCUSTOMCHIPTUNES)>>3)
 
 #define MAXMUSIC              256                                 // uses bit string for music flags, so 32 bytes
 #define MUSICFLAGS_SIZE       MAXMUSIC>>3
@@ -3522,6 +3526,87 @@ public:
     }
     
 };
+
+ #define CHIPTYPE_IT  1
+ #define CHIPTYPE_XM  2
+ #define CHIPTYPE_SM3 3
+ #define CHIPTYPE_MOD 4
+ #define CHIPTYPE_SPC 5
+ #define CHIPTYPE_GBS 6
+ #define CHIPTYPE_VGM 7
+ #define CHIPTYPE_GYM 8
+ #define CHIPTYPE_NSF 9
+
+class zcchiptune
+{
+
+public:
+
+    byte id;
+    char filename[256];
+    byte format;
+    byte flags;
+    // 37
+    void *data;
+    // 41
+    
+    
+    
+    zctune()
+    {
+	id = 0;
+        data = NULL;
+        format = 0;
+        reset();
+    }
+    
+    zctune(byte _id, char _filename[256], byte _format, byte _flags, void *_data)
+        : id(_id), format(_format), format(_flags), data(_data)
+    {
+        //memcpy(title, _title, 20); //NOT SAFE for short strings
+        strncpy(filename, _filename, 256);
+    }
+    
+    void clear()
+    {
+	id = 0;
+        memset(title,0,256);
+        format = flags = 0;
+        data = NULL;
+    }
+    
+    void copyfrom(zcchiptune z)
+    {
+        id = z.id;
+        format = z.format;
+        flags = z.flags;
+        //memcpy(title, z.title,20); //NOT SAFE for short title strings
+        strncpy(title, z.title, 36);
+        data = z.data;
+    }
+    
+    void reset()
+    {
+	id = 0;
+        title[0]=0;
+        format = 0;
+        flags=0;
+        
+        //if(data) switch(format)
+        //    {
+        //    case 0:
+        //        destroy_midi((MIDI*) data);
+        //        break;
+                
+        //    default:
+        //        break;
+        //    }
+            
+        data = NULL;
+    }
+    
+};
+
 
 /*typedef struct zcmidi_ // midi or other sound format (nsf ...)
 {

@@ -891,7 +891,7 @@ PACKFILE *open_quest_template(zquestheader *Header, char *deletefilename, bool v
     return f;
 }
 
-bool init_section(zquestheader *Header, long section_id, miscQdata *Misc, zctune *tunes, bool validate)
+bool init_section(zquestheader *Header, long section_id, miscQdata *Misc, zctune *tunes, bool validate, zcchiptune *chiptunes,)
 {
     combosread=false;
     mapsread=false;
@@ -1080,6 +1080,11 @@ bool init_section(zquestheader *Header, long section_id, miscQdata *Misc, zctune
     case ID_FAVORITES:
         // favorite combos and aliases
         ret=readfavorites(f, version, build, true);
+        break;
+    
+    case ID_MIDIS:
+        //midis
+        ret=readchiptunes(f, Header, chiptunes, true);
         break;
         
     default:
@@ -1556,6 +1561,14 @@ void reset_tunes(zctune *tune)
     for(int i=0; i<MAXCUSTOMTUNES; i++)
     {
         tune[i].reset();
+    }
+}
+
+void reset_chiptunes(zcchiptune *chiptune)
+{
+    for(int i=0; i<MAXCUSTOMCHIPTUNES; i++)
+    {
+        chiptune[i].reset();
     }
 }
 
@@ -15863,6 +15876,123 @@ int readtiles(PACKFILE *f, tiledata *buf, zquestheader *Header, word version, wo
     return 0;
 }
 
+int readchiptunes(PACKFILE *f, zquestheader *Header, zcchiptune *chiptunes /*zcmidi_ *midis*/, bool keepdata)
+{
+	byte *mf=midi_flags;
+	// zcmidi_ temp_midi;
+	int tunes_to_read = MAXCUSTOMCHIPTUNES;
+	int tune_count=0;
+	word section_version=0;
+	word secion_cversion = 0;
+	int secsize = 0;
+	zcchiptune temp;
+    
+        //section version info
+        if(!p_igetw(&section_version,f,true))
+        {
+            return qe_invalid;
+        }
+	
+	FFCore.quest_format[vChiptunes] = section_version;
+        
+        //al_trace("Tunes version %d\n", section_version);
+        if(!p_igetw(&section_cversion,f,true))
+        {
+            return qe_invalid;
+        }
+        
+        //section size
+        if(!p_igetl(&secsize,f,true))
+        {
+            return qe_invalid;
+        }
+        
+    
+	//for(int i=0; i<MAXCUSTOMTUNES; ++i)
+	//{
+	//    if(get_bit(mf, i))
+	//    {
+	//        ++tune_count;
+	//    }
+	//}
+    
+	if(keepdata==true)
+	{
+		reset_chiptunes(chiptunes); //reset_midis(midis);
+	}
+    
+	for(int i=0; i<tunes_to_read; i++)
+	{
+		temp.clear(); //memset(&temp_midi,0,sizeof(zcmidi_));
+        
+		if(keepdata==true)
+		{
+			chiptunes[i].reset(); // reset_midi(midis+i);
+		}
+	
+		if(!p_getc(&temp.id,f,true))
+		{
+			return qe_invalid;
+		}
+	
+		if(!pfread(&temp.filename,sizeof(char)*256,f,true))
+		{
+			return qe_invalid;
+		}
+        
+		if(!p_getc(&temp.format,f,true))
+		{
+			return qe_invalid;
+		}	
+	
+		if(!pfread(&temp.flags,sizeof(temp.flags),f,true))
+		{
+			return qe_invalid;
+		}
+
+           
+		if(keepdata==true)
+		{
+			chiptunes[i].copyfrom(temp); // memcpy(&midis[i], &temp_midi, sizeof(zcmidi_));
+		}
+	
+		//char *ext=get_extension(temp.filename);
+            
+		//zctune *ptr = (keepdata==true)?&(chiptunes[i]):&temp;
+                
+                switch(temp.format)
+                {
+			case CHIPTYPE_IT:
+			case CHIPTYPE_XM:
+			case CHIPTYPE_SM3:
+			case CHIPTYPE_MOD:
+			case CHIPTYPE_SPC:
+			case CHIPTYPE_GBS:
+			case CHIPTYPE_VGM:
+			case CHIPTYPE_GYM:
+			case CHIPTYPE_NSF:
+			if(!pfread(&temp.data,sizeof(temp.data),f,true))
+			{
+			    return qe_invalid;
+			}
+	
+			//case ZCMF_DUH:
+			//  if((ptr->data=read_midi(f, true))==NULL)
+			//{
+			//  return qe_invalid;
+			//}
+                    
+			break;
+                    
+			default:
+				return qe_invalid;
+				break;
+                }
+        }
+    
+	return 0;
+}
+
 int readtunes(PACKFILE *f, zquestheader *Header, zctune *tunes /*zcmidi_ *midis*/, bool keepdata)
 {
     byte *mf=midi_flags;
@@ -17666,7 +17796,7 @@ void portBombRules()
 	
 }
 
-int loadquest(const char *filename, zquestheader *Header, miscQdata *Misc, zctune *tunes, bool show_progress, bool compressed, bool encrypted, bool keepall, byte *skip_flags, byte printmetadata)
+int loadquest(const char *filename, zquestheader *Header, miscQdata *Misc, zctune *tunes, bool show_progress, bool compressed, bool encrypted, bool keepall, byte *skip_flags, byte printmetadata, zcchiptune *chiptunes)
 {
 	
     DMapEditorLastMaptileUsed = 0;
@@ -17691,6 +17821,7 @@ int loadquest(const char *filename, zquestheader *Header, miscQdata *Misc, zctun
     byte old_quest_rules[QUESTRULES_NEW_SIZE] = {0};
     byte old_extra_rules[EXTRARULES_SIZE] = {0};
     byte old_midi_flags[MIDIFLAGS_SIZE] = {0};
+    byte old_chiptune_flags[CHIPTUNEFLAGS_SIZE] = {0};
     
     if(keepall==false||get_bit(skip_flags, skip_rules))
     {
@@ -17704,6 +17835,7 @@ int loadquest(const char *filename, zquestheader *Header, miscQdata *Misc, zctun
     if(keepall==false||get_bit(skip_flags, skip_midis))
     {
         memcpy(old_midi_flags, midi_flags, MIDIFLAGS_SIZE);
+        memcpy(old_chiptune_flags, chiptune_flags, MIDIFLAGS_SIZE);
     }
     
     
@@ -18251,6 +18383,24 @@ int loadquest(const char *filename, zquestheader *Header, miscQdata *Misc, zctun
                 
                 box_out("Reading Favorite Combos...");
                 ret=readfavorites(f, tempheader.zelda_version, tempheader.build, keepall&&!get_bit(skip_flags, skip_favorites));
+                checkstatus(ret);
+                box_out("okay.");
+                box_eol();
+                break;
+		
+		
+	    case ID_CHIPTUNES:
+            
+                //midis
+                if(catchup)
+                {
+                    box_out("found.");
+                    box_eol();
+                    catchup=false;
+                }
+                
+                box_out("Reading Chiptunes...");
+                ret=readchiptunes(f, &tempheader, chiptunes, keepall&&!get_bit(skip_flags, skip_midis));
                 checkstatus(ret);
                 box_out("okay.");
                 box_eol();

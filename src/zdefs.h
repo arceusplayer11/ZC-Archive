@@ -3547,7 +3547,8 @@ public:
     byte format;
     byte flags;
     // 37
-    Music_Emu *data;
+    //Music_Emu *data;
+    AUDIOSTREAM *data; //raw alleg stream; nees conversion based on type during play???!
     // 41
     
     

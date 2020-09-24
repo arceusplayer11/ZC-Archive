@@ -1,5 +1,26 @@
 /* This is such a mess. We have Music_Emu*, GMEFILE*, and ZCMUSIC* all somehow intermixed ust to play a chiptune.
 I'm not yet certain if we can load a chiptune in this anner than direct zc_music to play it out of the zcchiptunes struct's *data element.
+
+perhaps *data needs to be of the type AUDIOSTREAM *data?! Then we load it when playing into the correct structure?
+
+typedef struct GMEFILE : public ZCMUSICBASE
+{
+    AUDIOSTREAM *stream;
+    class Music_Emu* emu;
+    int samples;
+} GMEFILE;
+
+typedef struct ZCMUSICBASE
+{
+    int type;                                               // uses ZCMF defines
+    int playing;                                            // -1 = paused, 0 = stopped, 1 = playing
+    int position;                                           // Only needed to sync Triforce jingle
+    char filename[256];
+    int track;
+} ZCMUSIC;
+
+
+
 */
 
 
@@ -273,13 +294,8 @@ void edit_chiptune(int i)
     
     if(ret==27)
     {
-        strcpy(customchiptunes[i].title,title);
-        customchiptunes[i].volume = volume;
-        customchiptunes[i].loop = loop;
-        customchiptunes[i].start = start;
-        customchiptunes[i].loop_start = loop_start;
-        customchiptunes[i].loop_end = loop_end;
-        customchiptunes[i].format = MFORMAT_MIDI;
+        strcpy(customchiptunes[i].filename,title);
+        customchiptunes[i].format = format;
         customchiptunes[i].flags = flags;
         
         if(data!=customchiptunes[i].data)

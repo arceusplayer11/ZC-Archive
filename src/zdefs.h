@@ -3547,7 +3547,7 @@ public:
     byte format;
     byte flags;
     // 37
-    void *data;
+    Music_Emu *data;
     // 41
     
     

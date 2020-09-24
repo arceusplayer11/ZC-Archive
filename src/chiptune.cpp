@@ -1,3 +1,7 @@
+/* This is such a mess. We have Music_Emu*, GMEFILE*, and ZCMUSIC* all somehow intermixed ust to play a chiptune.
+I'm not yet certain if we can load a chiptune in this anner than direct zc_music to play it out of the zcchiptunes struct's *data element.
+*/
+
 
 /*******************************/
 /**********  onMidis  **********/
@@ -121,7 +125,7 @@ void edit_chiptune(int i)
         switch(ret)
         {
         case 9:
-            if(getname("Load Chiptune","it;xm;sm3;mod;spc;gbs;vgm;gym;nsf",NULL,temppath,true))
+            if(getname("Load Chiptune","spc;gbs;vgm;gym;nsf",NULL,temppath,true))
             {
                 stop_midi();
 		char *ext=get_extension(temp.filename);
@@ -142,7 +146,7 @@ void edit_chiptune(int i)
 
                 //packfile_password("");
 		    
-		switch(format)
+		/*switch(format)
 		{
 			//load based on file type
 			case CHIPTYPE_IT:
@@ -172,6 +176,7 @@ void edit_chiptune(int i)
 					loaded_ok = 1;
 				}
 				break;
+			
 				
 			case CHIPTYPE_SPC:
 				if((data=gme_load_file(temppath,ext))!=NULL)
@@ -182,9 +187,9 @@ void edit_chiptune(int i)
 		
 			
 			default: break;
-		}
+		}*/
 
-                if(!loaded_ok)
+                if((data=gme_load_file(temppath,ext))==NULL)
                 {
                     jwin_alert("Error","Error loading tune:",temppath,NULL,"Dang",NULL,13,27,lfont);
                 }
@@ -215,7 +220,8 @@ void edit_chiptune(int i)
         {
 		midi_stop();
 		zcmusic_stop(data);
-		switch(format)
+		//gme_play((GMEFILE*) zcm, vol);
+		/*switch(format)
 		{
 			//load based on file type
 			case CHIPTYPE_IT:
@@ -256,6 +262,7 @@ void edit_chiptune(int i)
 			
 			default: break;
 		}
+		*/
         }
         break;
         }

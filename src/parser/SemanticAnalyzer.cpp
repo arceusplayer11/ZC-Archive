@@ -1,11 +1,16 @@
+#include "precompiled.h"
 #include "SemanticAnalyzer.h"
 
-#include <cassert>
-#include <sstream>
 #include "Scope.h"
 #include "Types.h"
 #include "CompileError.h"
 
+#include <boost/move/unique_ptr.hpp>
+
+#include <cassert>
+#include <sstream>
+
+using boost::movelib::unique_ptr;
 using std::string;
 using std::vector;
 using std::ostringstream;
@@ -555,7 +560,7 @@ void SemanticAnalyzer::caseDataDecl(ASTDataDecl& host, void*)
 		// Make sure we can cast the initializer to the type.
 		DataType const& initType = *host.getInitializer()->getReadType(scope, this);
 		//If this is in an `enum`, then the write type is `CFLOAT`.
-		ASTDataType* temp = new ASTDataType(DataType::CFLOAT, host.location);
+		unique_ptr<ASTDataType> temp(new ASTDataType(DataType::CFLOAT, host.location));
 		DataType const& enumType = temp->resolve(*scope, this);
 
 		checkCast(initType, (host.list && host.list->isEnum()) ? enumType : type, &host);

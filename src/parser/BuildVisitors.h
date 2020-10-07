@@ -15,7 +15,12 @@ namespace ZScript
 	{
 	public:
 		BuildOpcodes(Scope* curScope);
-
+		~BuildOpcodes()
+		{
+			for (size_t i = 0; i < opcodeTargets.size(); i++) {
+				deleteElements(opcodeTargets.at(i));
+			}
+		}
 		using RecursiveVisitor::visit;
 		void visit(AST& node, void* param = NULL);
 		void literalVisit(AST& node, void* param = NULL);
@@ -111,7 +116,7 @@ namespace ZScript
 		int breakRefCount;
 		std::list<long> arrayRefs;
 		// Stack of opcode targets. Only the latest is used.
-		std::vector<std::vector<Opcode*>*> opcodeTargets;
+		std::vector<std::vector<Opcode*> > opcodeTargets;
 
 		// Helper Functions.
 

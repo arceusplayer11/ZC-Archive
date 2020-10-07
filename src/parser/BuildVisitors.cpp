@@ -17,7 +17,7 @@ BuildOpcodes::BuildOpcodes(Scope* curScope)
 	: returnlabelid(-1), continuelabelid(-1), breaklabelid(-1), 
 	  returnRefCount(0), continueRefCount(0), breakRefCount(0)
 {
-	opcodeTargets.push_back(&result);
+	opcodeTargets.push_back(result);
 	scope = curScope;
 }
 
@@ -61,7 +61,7 @@ void BuildOpcodes::caseDefault(AST&, void*)
 
 void BuildOpcodes::addOpcode(Opcode* code)
 {
-	opcodeTargets.back()->push_back(code);
+	opcodeTargets.back().push_back(code);
 }
 
 template <class Container>
@@ -2167,7 +2167,7 @@ void BuildOpcodes::arrayLiteralFree(
 		else
 		{
 			context.initCode.push_back(new OPushRegister(new VarArgument(INDEX)));
-			opcodeTargets.push_back(&context.initCode);
+			opcodeTargets.push_back(context.initCode);
 			visit(*it, &context);
 			opcodeTargets.pop_back();
 			context.initCode.push_back(new OPopRegister(new VarArgument(INDEX)));

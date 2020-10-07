@@ -442,14 +442,15 @@ Function::~Function()
 
 vector<Opcode*> Function::takeCode()
 {
-	vector<Opcode*> code = ownedCode;
-	ownedCode.clear();
+	vector<Opcode*> code;
+	code.swap(ownedCode);
 	return code;
 }
 
 void Function::giveCode(vector<Opcode*>& code)
 {
 	appendElements(ownedCode, code);
+	code.assign(code.size(), boost::add_pointer<Opcode>::type());
 	code.clear();
 }
 

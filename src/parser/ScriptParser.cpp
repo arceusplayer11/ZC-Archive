@@ -47,7 +47,7 @@ void ScriptParser::initialize()
 	CompileOption::initialize();
 }
 
-ScriptsData* ZScript::compile(string const& filename)
+unique_ptr<ScriptsData> ZScript::compile(string const& filename)
 {
     ScriptParser::initialize();
 
@@ -104,12 +104,12 @@ ScriptsData* ZScript::compile(string const& filename)
 
 	ScriptParser::assemble(id.get());
 
-	ScriptsData* result = new ScriptsData(program);
+	unique_ptr<ScriptsData> result(new ScriptsData(program));
     
 	box_out("Success!");
 	box_eol();
 
-	return result;
+	return unique_ptr<ScriptsData>(result.release());
 }
 
 int ScriptParser::vid = 0;

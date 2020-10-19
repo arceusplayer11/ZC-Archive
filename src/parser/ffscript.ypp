@@ -65,6 +65,8 @@ extern YYLTYPE noloc;
 
 %code requires {
 	#include <boost/move/unique_ptr.hpp>
+	
+	#include <string>
 	namespace ZScript
 	{
 		class ASTFile;

@@ -3,38 +3,19 @@
 #ifndef ZSCRIPT_COMPILER_UTILS_H
 #define ZSCRIPT_COMPILER_UTILS_H
 
-// prevent compiler errors
-#ifdef ASTDINT_H
-#undef int8_t
-#undef uint8_t
-#undef int16_t
-#undef uint16_t
-#undef int32_t
-#undef uint32_t
-#undef intptr_t
-#undef uintptr_t
-#endif // ASTDINT_H
-
-#ifdef int64_t
-#undef int64_t
-#endif // int64_t
-
-#ifdef uint64_t
-#undef uint64_t
-#endif // uint64_t
+#include "../undefine_astdint.h"
 
 #ifdef new
 #undef new
 #endif // new
 
-#include <boost/optional.hpp>
 #include <boost/type_traits.hpp>
+#include <boost/optional.hpp>
 
 #include <cassert>
-#include <cstdarg>
+#include <cstddef>
 #include <set>
 #include <sstream>
-#include <string>
 #include <vector>
 
 ////////////////////////////////////////////////////////////////
@@ -133,7 +114,7 @@ bool operator!=(SafeBool<T> const& lhs, SafeBool<U> const& rhs) {
 #if (__cplusplus < 201703L)
 // Empty optional instance.
 typedef boost::none_t nullopt_t;
-const nullopt_t nullopt(boost::none);
+static const nullopt_t& nullopt(boost::none);
 
 template<typename T>
 class optional : public SafeBool<optional<T> >
@@ -255,10 +236,8 @@ void deleteElements(Container& container)
 	typedef typename Container::value_type value_type;
 	for (typename Container::iterator it = container.begin();
 		it != container.end(); ++it) {
-		delete *it;
-		*it = typename Container::value_type(); // techinically a pointer but this stuff is non-standard
+		delete_s(*it);
 	}
-		
 }
 
 // Return the only element of a container, or nothing.
@@ -300,8 +279,7 @@ void deleteSeconds(Map& map)
 {
 	for (typename Map::iterator it = map.begin();
 		it != map.end(); ++it) {
-		delete it->second;
-		it->second = typename Map::mapped_type(); // a pointer, but this code is non-standard, should use nullptr later
+		delete_s(it->second);
 	}
 }
 

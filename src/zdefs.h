@@ -98,15 +98,18 @@
   GFX_QUARTZ_WINDOW
   */
 
+#include "gamedata.h"
+#include "zc_alleg.h"
+#include "undefine_astdint.h"
+#include "zc_array.h"
+
+#include <cassert>
 #include <cstdio>
-#include <math.h>
-#include <string.h>
+#include <cmath>
+#include <cstring>
 #include <vector>
 #include <set>
-#include <assert.h>
-#include "zc_alleg.h"
-#include "gamedata.h"
-#include "zc_array.h"
+
 
 #define ZELDA_VERSION       0x0255                         //version of the program
 #define ZC_VERSION 25500 //Version ID for ZScript Game->Version

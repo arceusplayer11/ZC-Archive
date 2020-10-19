@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.18.4)
 set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE TYPE INTERNAL FORCE)
 project (ZeldaClassic)
 
@@ -8,6 +8,10 @@ set(UNITY_BUILD FALSE CACHE BOOL "Unity build")
 set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 option(WANT_ZSCRIPT "Enable ZScript Compiler" on)
+
+if(POLICY CMP0066)
+	cmake_policy(SET CMP0066 NEW)
+endif()
 
 if(UNIX AND NOT APPLE)
 	set(LINUX TRUE)
@@ -43,7 +47,6 @@ include_directories(./include/dumb)
 include_directories(./include/alogg)
 include_directories(./include/almp3)
 include_directories(./include/gme)
-include_directories(./src)
 
 set(ZCSOUNDSOURCES
 	src/zcmusic.cpp
@@ -240,18 +243,29 @@ if(UNITY_BUILD)
 	enable_unity_build(ZQuestZScript ZQUEST_ZSCRIPT_SOURCES)
 endif()
 
-set(Boost_DEBUG ON) # set to ON if you want to see more info in cmake
-set(BOOST_ROOT ${CMAKE_SOURCE_DIR}/include/boost_1_74_0)
+set(Boost_DEBUG OFF) # turn on to see what's going on
+set(BOOST_ROOT ${CMAKE_SOURCE_DIR}/include/boost_1_73_0)
 set(Boost_INCLUDE_DIR ${BOOST_ROOT})
+set(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib)
 
-find_package(Boost 1.74.0)
+# Boost_USE_DEBUG_LIBS, Boost_USE_RELEASE_LIBS, Boost_USE_MULTITHREADED, Boost_USE_DEBUG_RUNTIME, are ON by default
+set(Boost_USE_STATIC_LIBS ON)
+if (MSVC)
+	# Setting these explictly as the root boost directory is somewhere else
+	set(Boost_USE_STATIC_RUNTIME ON)
+	#set(Boost_LIBRARY_DIR_RELEASE ${CMAKE_SOURCE_DIR}/libs/win32)
+	#set(Boost_LIBRARY_DIR_DEBUG ${CMAKE_SOURCE_DIR}/libs/win32dbg)
+endif()
+
+find_package(Boost 1.73.0 COMPONENTS atomic chrono date_time thread REQUIRED)
 
 if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
+	link_directories(${Boost_LIBRARY_DIRS})
 	add_definitions(-DHAS_BOOST)
     add_executable(zquest ${ZQUEST_CORE_SOURCES} ${ZQUEST_GUI_SOURCES} ${ZQUEST_MISC_SOURCES} ${ZQUEST_ZSCRIPT_SOURCES} ${ZQUESTEXTRASOURCES} ${BISON_ZScriptParser_OUTPUTS} ${FLEX_ZScriptLexer_OUTPUTS} ${ZQUEST_MODULES})
 
-	target_link_libraries(zquest zcsound ${IMAGELIBS} ${ALLEGROLIB} ${ZQUESTLIBSEXTRA})
+	target_link_libraries(zquest zcsound ${BOOST_LIBRARIES} ${IMAGELIBS} ${ALLEGROLIB} ${ZQUESTLIBSEXTRA})
 	if(MSVC AND USE_PCH)
 		set_target_properties(zquest PROPERTIES COMPILE_FLAGS "/Yuprecompiled.h /FIprecompiled.h /Fp\"${ZQPrecompiledBinary}\"" OBJECT_DEPENDS "${ZQPrecompiledBinary}")
 		target_compile_definitions(zquest PRIVATE ZC_PCH)

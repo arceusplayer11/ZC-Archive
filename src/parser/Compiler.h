@@ -6,14 +6,17 @@
 #define __GTHREAD_HIDE_WIN32API 1
 #endif
 
-#include <stdio.h>
-#include <map>
-#include <vector>
-#include <string>
-#include "CompilerUtils.h"
-#include "Types.h"
-#include "parserDefs.h"
 #include "../ffasmexport.h"
+#include "CompilerUtils.h"
+#include "parserDefs.h"
+#include "Types.h"
+
+#include <boost/move/unique_ptr.hpp>
+
+#include <cstdio>
+#include <map>
+#include <string>
+#include <vector>
 
 namespace ZScript
 {
@@ -121,7 +124,7 @@ namespace ZScript
 		std::map<std::string, ScriptType> scriptTypes;
 	};
 
-	ScriptsData *compile(std::string const& filename);
+	boost::movelib::unique_ptr<ScriptsData> compile(std::string const& filename);
 
 	class ScriptParser
 	{

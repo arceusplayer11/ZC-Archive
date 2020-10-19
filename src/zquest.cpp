@@ -17,16 +17,18 @@
 #define MIDI_TRACK_BUFFER_SIZE 50
 
 #include "precompiled.h" //always first
+
+#include <boost/move/unique_ptr.hpp>
+
+#include <cassert>
+#include <cctype>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
 #include <memory>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <sstream>
-#include <ctype.h>
-#include <assert.h>
-#include <time.h>
 #include <vector>
-#include <malloc.h>
 
 #include "parser/Compiler.h"
 #include "zc_alleg.h"
@@ -157,6 +159,7 @@ FILE _iob[] = { *stdin, *stdout, *stderr };
 extern "C" FILE * __cdecl __iob_func(void) { return _iob; }
 #endif
 
+using boost::movelib::unique_ptr;
 
 #ifdef _WIN32
 #include "ConsoleLogger.h"
@@ -25607,7 +25610,7 @@ int onCompileScript()
 			fclose(tempfile);
 			box_start(1, "Compile Progress", lfont, sfont,true);
 			gotoless_not_equal = (0 != get_bit(quest_rules, qr_GOTOLESSNOTEQUAL)); // Used by BuildVisitors.cpp
-			ZScript::ScriptsData *result = ZScript::compile("tmp");
+			unique_ptr<ZScript::ScriptsData> result(ZScript::compile("tmp"));
 			unlink("tmp");
 			if ( result )
 			{
@@ -25705,7 +25708,7 @@ int onCompileScript()
 			
 			std::map<string, ZScript::ScriptType> stypes = result->scriptTypes;
 			std::map<string, disassembled_script_data> scripts = result->theScripts;
-			delete result;
+			result.reset();
 			asffcscripts.clear();
 			asffcscripts.push_back("<none>");
 			asglobalscripts.clear();

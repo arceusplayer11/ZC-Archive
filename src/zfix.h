@@ -6,7 +6,8 @@
 #ifndef ZFIX_H
 #define ZFIX_H
 #include "zdefs.h"
-#include <math.h>
+#include <cassert>
+#include <cmath>
 #include <limits>
 #define NAN 0
 //std::numeric_limits<t>::quiet_NaN()

@@ -14,17 +14,19 @@ namespace ZScript
 #endif
 #endif
 
+#include "y.tab.hpp"
+#include "Compiler.h"
+#include "CompileOption.h"
+#include "Scope.h"
+#include "../undefine_astdint.h"
+#include "owning_ptr.h"
+#include "owning_vector.h"
+
 #include <list>
 #include <vector>
 #include <map>
 #include <memory>
 #include <string>
-#include "y.tab.hpp"
-#include "Compiler.h"
-#include "CompileOption.h"
-#include "Scope.h"
-#include "owning_ptr.h"
-#include "owning_vector.h"
 
 ////////////////////////////////////////////////////////////////
 

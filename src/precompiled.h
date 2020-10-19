@@ -34,6 +34,7 @@
 
 //allegro
 #include "zc_alleg.h"
+#include "undefine_astdint.h"
 
 //zc
 #include "mem_debug.h"

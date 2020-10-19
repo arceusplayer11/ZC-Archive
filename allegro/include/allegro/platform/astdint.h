@@ -22,7 +22,9 @@
  * and don't add more than inttypes.h/stdint.h emulation here.  Thanks.
  */
 
-
+#ifndef __STDC_VERSION__
+#define __STDC_VERSION__ 0
+#endif /* !__STDC_VERSION__ */
 
 #if defined ALLEGRO_HAVE_INTTYPES_H
    #include <inttypes.h>
@@ -32,14 +34,25 @@
    #ifndef ALLEGRO_GUESS_INTTYPES_OK
       #warning Guessing the definitions of fixed-width integer types.
    #endif
-   #define int8_t       signed char
-   #define uint8_t      unsigned char
-   #define int16_t      signed short
-   #define uint16_t     unsigned short
-   #define int32_t      signed int
-   #define uint32_t     unsigned int
-   #define intptr_t     int32_t
-   #define uintptr_t    uint32_t
+   #ifdef __cplusplus
+      typedef signed char    int8_t;
+      typedef unsigned char  uint8_t;
+      typedef signed short   int16_t;
+      typedef unsigned short uint16_t;
+      typedef signed int     int32_t;
+      typedef unsigned int   uint32_t;
+      typedef int32_t        intptr_t;
+      typedef uint32_t       uintptr_t;
+   #else
+       #define int8_t       signed char
+       #define uint8_t      unsigned char
+       #define int16_t      signed short
+       #define uint16_t     unsigned short
+       #define int32_t      signed int
+       #define uint32_t     unsigned int
+       #define intptr_t     int32_t
+       #define uintptr_t    uint32_t
+   #endif
 #else
    #error I dunno how to get the definitions of fixed-width integer types on your platform.  Please report this to your friendly Allegro developer.
 #endif

@@ -81,8 +81,13 @@
 
 /* Why does Allegro always insist on doing this? Sigh... -DD */
 #if _MSC_VER <= 1600
+#ifdef __cplusplus
+typedef signed __int64   int64_t;
+typedef unsigned __int64 uint64_t;
+#else
 #define int64_t      signed __int64
 #define uint64_t     unsigned __int64
+#endif /* __cplusplus */
 #endif
 
 #define AL_CONST     const

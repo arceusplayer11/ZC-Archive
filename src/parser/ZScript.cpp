@@ -33,7 +33,7 @@ Program::Program(ASTFile& root, CompileErrorHandler* errorHandler)
 Program::~Program()
 {
 	deleteElements(scripts);
-	delete rootScope_;
+	delete_s(rootScope_);
 }
 
 Script* Program::getScript(string const& name) const

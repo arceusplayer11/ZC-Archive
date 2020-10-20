@@ -100,7 +100,6 @@
 
 #include "gamedata.h"
 #include "zc_alleg.h"
-#include "undefine_astdint.h"
 #include "zc_array.h"
 
 #include <cassert>

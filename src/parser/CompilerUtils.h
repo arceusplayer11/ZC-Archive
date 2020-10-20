@@ -3,8 +3,6 @@
 #ifndef ZSCRIPT_COMPILER_UTILS_H
 #define ZSCRIPT_COMPILER_UTILS_H
 
-#include "../undefine_astdint.h"
-
 #ifdef new
 #undef new
 #endif // new

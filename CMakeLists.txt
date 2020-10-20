@@ -258,7 +258,7 @@ if (MSVC)
 endif()
 
 find_package(Boost 1.73.0 COMPONENTS atomic chrono date_time thread REQUIRED)
-
+#find_package(Boost 1.73.0)
 if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
 	link_directories(${Boost_LIBRARY_DIRS})

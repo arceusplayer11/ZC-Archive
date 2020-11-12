@@ -1014,6 +1014,9 @@ void LinkClass::setAction(actiontype new_action) // Used by ZScript
 	case falling:
 		if(!fallclk)
 		{
+			//Remove sword charge
+			charging = 0;
+			spins = 0;
 			//If there is a pit under Link, use it's combo.
 			if(int c = getpitfall(x+8,y+(bigHitbox?8:12))) fallCombo = c;
 			else if(int c = getpitfall(x,y+(bigHitbox?0:8))) fallCombo = c;
@@ -1051,6 +1054,11 @@ void LinkClass::setAction(actiontype new_action) // Used by ZScript
         break;
     }
     
+    if ( action == falling || new_action == falling )
+    {
+	charging = 0;
+	spins = 0;
+    }
     action=new_action; FFCore.setLinkAction(new_action);
 }
 
@@ -2105,8 +2113,11 @@ attack:
                 linktile(&tile, &flip, &extend, ls_jump, dir, zinit.linkanimationstyle);
                 if ( script_link_sprite <= 0 ) tile+=((int)jumping2/8)*(extend==2?2:1);
             }
-            else if(fallclk>0)
+	    //this should not be an ELSE IF -Z
+            if(fallclk>0)
 			{
+				spins = 0;
+				charging = 0;
 				linktile(&tile, &flip, &extend, ls_falling, dir, zinit.linkanimationstyle);
 				if ( script_link_sprite <= 0 ) tile += ((PITFALL_FALL_FRAMES-fallclk)/10)*(extend==2?2:1);
 			}
@@ -2187,8 +2198,10 @@ attack:
                 linktile(&tile, &flip, &extend, ls_jump, dir, zinit.linkanimationstyle);
                 if ( script_link_sprite <= 0 ) tile+=((int)jumping2/8)*(extend==2?2:1);
             }
-            else if(fallclk>0)
+	    //This should never be ELSE IF -Z
+            if(fallclk>0)
 			{
+				spins = 0; charging = 0;
 				linktile(&tile, &flip, &extend, ls_falling, dir, zinit.linkanimationstyle);
 				if ( script_link_sprite <= 0 ) tile += ((PITFALL_FALL_FRAMES-fallclk)/10)*(extend==2?2:1);
 			}
@@ -7163,6 +7176,7 @@ bool LinkClass::animate(int)
     }
 	if(fallclk)
 	{
+		spins = 0; charging = 0;
 		action=falling; FFCore.setLinkAction(falling);
 	}
         
@@ -9906,6 +9920,8 @@ int LinkClass::check_pitslide(bool ignore_hover)
 
 bool LinkClass::pitslide() //Runs pitslide movement; returns true if pit is irresistable
 {
+	spins = 0; 
+	charging = 0;
 	pitfall();
 	if(fallclk) return true;
 	int val = check_pitslide();

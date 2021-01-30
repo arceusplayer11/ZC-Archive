@@ -20774,8 +20774,15 @@ void do_drawing_command(const int script_command)
 	}
 	case REGENERATEBITMAP:	
 	{
+		
 		set_user_bitmap_command_args(j, 3);
 		script_drawing_commands[j][17] = SH::read_stack(ri->sp+3);
+		if ( get_bit(quest_rules,qr_OLDCREATEBITMAP_ARGS) )
+		{
+			script_drawing_commands[j][3] = script_drawing_commands[j][3] ^ script_drawing_commands[j][2];
+			script_drawing_commands[j][2] = script_drawing_commands[j][3] ^ script_drawing_commands[j][2]; 
+			script_drawing_commands[j][3] = script_drawing_commands[j][3] ^ script_drawing_commands[j][2];
+		}
 		break;
 	}
 	case BMPPOLYGONR:

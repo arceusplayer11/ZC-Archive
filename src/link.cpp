@@ -20296,6 +20296,7 @@ void LinkClass::checkscroll()
         if(y>160 && currscr>=112) y=160;
     }
     
+	bool done = false;
     if(y<0)
     {
         bool doit=true;
@@ -20315,6 +20316,7 @@ void LinkClass::checkscroll()
         
         if(doit || action==inwind)
         {
+			done = true;
             if(currscr>=128)
             {
                 if(specialcave >= GUYCAVE)
@@ -20354,9 +20356,10 @@ void LinkClass::checkscroll()
                     lastentrance = homescr;
                 }
             }
+			else done = false;
         }
     }
-    
+    if(done) return;
     if(y>160)
     {
         bool doit=true;
@@ -20376,6 +20379,7 @@ void LinkClass::checkscroll()
         
         if(doit || action==inwind)
         {
+			done = true;
             if(currscr>=128)
             {
                 if(specialcave >= GUYCAVE)
@@ -20415,9 +20419,10 @@ void LinkClass::checkscroll()
                     lastentrance = homescr;
                 }
             }
+			else done = false;
         }
     }
-    
+    if(done) return;
     if(x<0)
     {
         bool doit=true;
@@ -20437,14 +20442,14 @@ void LinkClass::checkscroll()
         
         if(doit || action==inwind)
         {
+			done = true;
             if(currscr>=128)
             {
                 if(specialcave >= GUYCAVE)
                     exitcave();
                 else stepout();
             }
-            
-            if(action==inwind)
+            else if(action==inwind)
             {
                 if(DMaps[currdmap].flags&dmfWHIRLWINDRET)
                 {
@@ -20477,9 +20482,10 @@ void LinkClass::checkscroll()
                     lastentrance = homescr;
                 }
             }
+			else done = false;
         }
     }
-    
+    if(done) return;
     if(x>240)
     {
         bool doit=true;
@@ -20499,6 +20505,7 @@ void LinkClass::checkscroll()
         
         if(doit || action==inwind)
         {
+			done = true;
             if(currscr>=128)
             {
                 if(specialcave >= GUYCAVE)
@@ -20539,6 +20546,7 @@ void LinkClass::checkscroll()
                     lastentrance = homescr;
                 }
             }
+			else done = false;
         }
     }
 }
